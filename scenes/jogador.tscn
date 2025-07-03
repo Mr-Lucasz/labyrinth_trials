@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://bpviuslabowc7"]
+[gd_scene load_steps=15 format=3 uid="uid://bpviuslabowc7"]
 
 [ext_resource type="Script" uid="uid://b44ekq35k0f3t" path="res://scripts/jogador.gd" id="1_g1ob3"]
 [ext_resource type="Texture2D" uid="uid://msdli2ch00" path="res://sprite/spriteJogador.png" id="1_uahlj"]
 [ext_resource type="Texture2D" uid="uid://bt8av36msic1n" path="res://sprite/spriteJogador1.png" id="2_g1ob3"]
+[ext_resource type="Script" uid="uid://cv1h56d5mi14p" path="res://scripts/camera_2d.gd" id="4_qcln2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qcln2"]
 atlas = ExtResource("1_uahlj")
@@ -84,7 +85,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g1ob3"]
-size = Vector2(193, 255.875)
+size = Vector2(125, 227)
 
 [node name="Jogador" type="CharacterBody2D"]
 script = ExtResource("1_g1ob3")
@@ -97,5 +98,12 @@ animation = &"parado_frente"
 frame_progress = 0.693549
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(110, -132.063)
+position = Vector2(104.5, -137.5)
 shape = SubResource("RectangleShape2D_g1ob3")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_left = 0
+limit_top = 0
+limit_right = 3611
+limit_bottom = 2711
+script = ExtResource("4_qcln2")
