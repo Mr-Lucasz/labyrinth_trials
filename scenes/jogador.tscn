@@ -1,0 +1,101 @@
+[gd_scene load_steps=14 format=3 uid="uid://bpviuslabowc7"]
+
+[ext_resource type="Script" uid="uid://b44ekq35k0f3t" path="res://scripts/jogador.gd" id="1_g1ob3"]
+[ext_resource type="Texture2D" uid="uid://msdli2ch00" path="res://sprite/spriteJogador.png" id="1_uahlj"]
+[ext_resource type="Texture2D" uid="uid://bt8av36msic1n" path="res://sprite/spriteJogador1.png" id="2_g1ob3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qcln2"]
+atlas = ExtResource("1_uahlj")
+region = Rect2(682, 512, 341, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s760d"]
+atlas = ExtResource("1_uahlj")
+region = Rect2(341, 512, 341, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_32758"]
+atlas = ExtResource("1_uahlj")
+region = Rect2(0, 512, 341, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lj65x"]
+atlas = ExtResource("2_g1ob3")
+region = Rect2(341, 512, 341, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a7p4t"]
+atlas = ExtResource("2_g1ob3")
+region = Rect2(0, 512, 341, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8gwte"]
+atlas = ExtResource("2_g1ob3")
+region = Rect2(682, 512, 341, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jl1eh"]
+atlas = ExtResource("1_uahlj")
+region = Rect2(341, 0, 341, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uahlj"]
+atlas = ExtResource("1_uahlj")
+region = Rect2(682, 0, 341, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1lopk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qcln2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s760d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_32758")
+}],
+"loop": true,
+"name": &"andando_ladoL",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lj65x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a7p4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8gwte")
+}],
+"loop": true,
+"name": &"andando_ladoR",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jl1eh")
+}],
+"loop": true,
+"name": &"parado_costa",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uahlj")
+}],
+"loop": true,
+"name": &"parado_frente",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g1ob3"]
+size = Vector2(193, 255.875)
+
+[node name="Jogador" type="CharacterBody2D"]
+script = ExtResource("1_g1ob3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(92.8769, -137.428)
+scale = Vector2(0.540311, 0.533484)
+sprite_frames = SubResource("SpriteFrames_1lopk")
+animation = &"parado_frente"
+frame_progress = 0.693549
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(110, -132.063)
+shape = SubResource("RectangleShape2D_g1ob3")
