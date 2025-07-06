@@ -133,7 +133,10 @@ func save_checkpoint():
 	print("=== CHECKPOINT ALCANÇADO ===")
 	Global.checkpoint_alcancado = true
 	Global.puzzle_atual = 3 # Próximo puzzle após o checkpoint
-	Global.save_game_at_checkpoint()
+	if jogador:
+		Global.save_game_at_checkpoint(jogador._get_current_state())
+	else:
+		print("[ERRO] Jogador não encontrado ao salvar checkpoint!")
 	checkpoint_salvo = true
 	print("Progresso salvo automaticamente!")
 

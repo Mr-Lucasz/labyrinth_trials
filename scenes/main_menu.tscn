@@ -316,6 +316,18 @@ text = "Versão 1.0"
 layout_mode = 2
 text = "Fechar"
 
+[node name="RankingWindow" type="AcceptDialog" parent="."]
+
+[node name="ScoreContainer" type="VBoxContainer" parent="RankingWindow"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelTitle" type="Label" parent="RankingWindow/ScoreContainer"]
+layout_mode = 2
+
+[node name="ItemList" type="ItemList" parent="RankingWindow/ScoreContainer"]
+layout_mode = 2
+
 [connection signal="pressed" from="VBoxContainer/ButtonNovo" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonCarregar" to="." method="_on_button_carregar_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonRanking" to="." method="_on_button_ranking_pressed"]

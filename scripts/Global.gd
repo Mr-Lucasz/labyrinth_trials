@@ -7,6 +7,8 @@ var checkpoint_alcancado: bool = false
 var puzzle_atual: int = 1
 var puzzles_completados: int = 0
 
+const RANKING_FILE_PATH = "user://ranking.dat"
+
 # Função para verificar se existe um arquivo de save para o nickname
 func has_save_file(nickname: String) -> bool:
 	if nickname.strip_edges().is_empty():
@@ -25,15 +27,23 @@ func has_save_file(nickname: String) -> bool:
 func get_save_file_path(nickname: String) -> String:
 	return "user://savegame_%s.dat" % nickname
 
-func save_game_at_checkpoint():
+func save_game_at_checkpoint(player_state: Dictionary):
+	# Esta função agora recebe o estado do jogador e o combina com o estado global.
+	var puzzles_completed = int(player_state.get("shape_completed", false)) + \
+	                        int(player_state.get("number_completed", false)) + \
+	                        int(player_state.get("arrow_completed", false))
+
 	var save_data = {
 		"nickname": player_nickname,
 		"fase_atual": fase_atual,
-		"checkpoint_alcancado": checkpoint_alcancado,
 		"puzzle_atual": puzzle_atual,
-		"puzzles_completados": puzzles_completados,
+		"checkpoint_alcancado": player_state.get("checkpoint_reached", false),
+		"puzzles_completados": puzzles_completed,
 		"timestamp": Time.get_unix_time_from_system()
 	}
+	# Adiciona todos os dados específicos do jogador ao save
+	save_data.merge(player_state, true)
+	
 	var file_path = get_save_file_path(player_nickname)
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	if file:
@@ -62,6 +72,13 @@ func load_game_data(nickname: String):
 		print("Erro ao abrir arquivo de save")
 		return null
 
+func get_player_state_for_level() -> Dictionary:
+	# Esta função é chamada pelo jogador no _ready() para obter seu estado inicial.
+	# Se um jogo foi carregado, ele retorna os dados salvos.
+	# Se for um novo jogo, retorna um dicionário vazio.
+	var data = load_game_data(player_nickname)
+	return data if data else {}
+
 func delete_save_file(nickname: String):
 	var file_path = get_save_file_path(nickname)
 	if FileAccess.file_exists(file_path):
@@ -87,11 +104,40 @@ func apply_loaded_data(data: Dictionary) -> void:
 	puzzle_atual = data.get("puzzle_atual", 1)
 	puzzles_completados = data.get("puzzles_completados", 0)
 
+# --- Funções do Ranking ---
+
+func add_score(nickname: String, time_seconds: float) -> void:
+	var ranking = load_ranking()
+	ranking.append({"nickname": nickname, "time": time_seconds})
+	
+	# Salva o ranking atualizado
+	var file = FileAccess.open(RANKING_FILE_PATH, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(ranking))
+		file.close()
+		print("Nova pontuação adicionada ao ranking para %s: %f segundos" % [nickname, time_seconds])
+	else:
+		print("Erro ao salvar o ranking!")
+
+func load_ranking() -> Array:
+	if not FileAccess.file_exists(RANKING_FILE_PATH):
+		return []
+	
+	var file = FileAccess.open(RANKING_FILE_PATH, FileAccess.READ)
+	if file:
+		var json_text = file.get_as_text()
+		file.close()
+		var json = JSON.new()
+		var parse_result = json.parse(json_text)
+		if parse_result == OK:
+			return json.data as Array
+	
+	print("Erro ao carregar ou analisar o arquivo de ranking.")
+	return []
 # Função para resetar os dados do jogo para um novo jogo
 func reset_game_data():
 	fase_atual = 1
 	checkpoint_alcancado = false
 	puzzle_atual = 1
-	puzzles_completados = 0
-	# Não resetamos o nickname, pois ele é importante para identificação
+	puzzles_completados = 0 # Este valor agora é derivado do estado do jogador
 	print("Dados de jogo resetados para novo jogo")

@@ -1,21 +1,22 @@
 # jogador.gd
 extends CharacterBody2D
 
-@export var speed: float = 300.0
+@export var speed: float = 300.0 # Player movement speed.
+
 const HOLD_OFFSET: Vector2 = Vector2(0, -24)
 
+var player_name: String = ""
 # ——— Flags dos puzzles ———
-var shape_completed: bool    = false
-var number_completed: bool   = false
-var arrow_completed: bool    = false
-
-var all_completed_printed: bool = false
+var shape_completed: bool = false
+var number_completed: bool = false
+var arrow_completed: bool = false
+var all_completed_printed: bool = false # Prevents multiple "congrats" messages.
 
 # --- Checkpoint ---
 var checkpoint_reached: bool = false
 
-# Nome do jogador para save por usuário
-var player_name: String = ""
+# --- Cronômetro para Ranking ---
+var start_time: float = 0.0
 
 
 # ——— Puzzle numérico ———
@@ -43,6 +44,8 @@ var arrow_targets := {
 }
 
 func _ready() -> void:
+	# --- Setup Inicial ---
+	_initialize_from_global_state()
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
 
@@ -73,6 +76,11 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		return_to_main_menu()
 
+	# --- ATALHO DE DEBUG PARA TESTAR RANKING ---
+	# Pressione '9' para completar a fase instantaneamente
+	if OS.is_debug_build() and Input.is_action_just_pressed("debug_complete"):
+		_force_complete_and_rank()
+
 	# Verificação de conclusão dos puzzles
 	if shape_completed and number_completed and arrow_completed:
 		# Garante que labels antigos são escondidos
@@ -95,71 +103,25 @@ func _physics_process(delta: float) -> void:
 		elif nearby_arrow and not arrow_completed:
 			_rotate_arrow(nearby_arrow)
 
-
-func get_save_path() -> String:
-	if player_name == "":
-		return "user://savegame.save"
-	return "user://savegame_%s.save" % player_name
-
-func save_game() -> void:
-	var save_data = {
-		"player_name": player_name,
-		"shape_completed": shape_completed,
-		"number_completed": number_completed,
-		"arrow_completed": arrow_completed,
-		"next_number_index": next_number_index,
-		"checkpoint_reached": checkpoint_reached,
-		"all_completed_printed": all_completed_printed,
-		"position": {"x": position.x, "y": position.y},
-		"timestamp": Time.get_unix_time_from_system()
-	}
+func _initialize_from_global_state():
+	# Carrega o estado do jogo a partir do singleton Global.
+	# Isso centraliza a lógica de save/load e simplifica o jogador.
+	var data = Global.get_player_state_for_level()
 	
-	# Salvar o arquivo local
-	var file = FileAccess.open(get_save_path(), FileAccess.WRITE)
-	file.store_var(save_data)
-	file.close()
+	shape_completed = data.get("shape_completed", false)
+	number_completed = data.get("number_completed", false)
+	arrow_completed = data.get("arrow_completed", false)
+	next_number_index = data.get("next_number_index", 0)
+	checkpoint_reached = data.get("checkpoint_reached", false)
+	all_completed_printed = data.get("all_completed_printed", false)
+	start_time = data.get("start_time", Time.get_unix_time_from_system())
 	
-	# Sincronizar com o sistema Global de save
-	Global.player_nickname = player_name
-	Global.checkpoint_alcancado = checkpoint_reached
-	Global.puzzles_completados = int(shape_completed) + int(number_completed) + int(arrow_completed)
-	Global.save_game_at_checkpoint()
+	var start_pos = data.get("position", null)
+	if start_pos:
+		position = Vector2(start_pos["x"], start_pos["y"])
 	
-	print("Jogo salvo para ", player_name)
-
-func load_game(nome: String = "") -> void:
-	if nome != "":
-		player_name = nome
-	var path = get_save_path()
-	if not FileAccess.file_exists(path):
-		print("Nenhum save encontrado para ", player_name)
-		return
-	var file = FileAccess.open(path, FileAccess.READ)
-	var save_data = file.get_var()
-	file.close()
-
-	player_name = save_data.get("player_name", player_name)
-	shape_completed = save_data.get("shape_completed", false)
-	number_completed = save_data.get("number_completed", false)
-	arrow_completed = save_data.get("arrow_completed", false)
-	next_number_index = save_data.get("next_number_index", 0)
-	checkpoint_reached = save_data.get("checkpoint_reached", false)
-	all_completed_printed = save_data.get("all_completed_printed", false)
-	
-	# Restaurar a posição do jogador, se disponível
-	if save_data.has("position"):
-		position.x = save_data["position"]["x"]
-		position.y = save_data["position"]["y"]
-	
-	# Atualizar estado visual dos puzzles
+	print("Jogador inicializado para '%s' com %d puzzles completos." % [Global.player_nickname, data.get("puzzles_completados", 0)])
 	_update_puzzle_visuals()
-	
-	# Sincronizar com o Global
-	Global.player_nickname = player_name
-	Global.checkpoint_alcancado = checkpoint_reached
-	Global.puzzles_completados = int(shape_completed) + int(number_completed) + int(arrow_completed)
-	
-	print("Jogo carregado para ", player_name)
 
 # Atualiza o estado visual dos puzzles baseado nos valores carregados
 func _update_puzzle_visuals() -> void:
@@ -186,16 +148,18 @@ func _update_puzzle_visuals() -> void:
 	# Atualizar os itens físicos nos puzzles, isso precisa ser implementado
 	# conforme o design específico da sua cena
 
-# Função para criar um save de teste já com dois puzzles concluídos
-func criar_save_teste(nome: String) -> void:
-	player_name = nome
-	shape_completed = true
-	number_completed = true
-	arrow_completed = false
-	next_number_index = number_sequence.size()
-	checkpoint_reached = true
-	save_game()
-	print("Save de teste criado para ", nome)
+func _get_current_state() -> Dictionary:
+	# Coleta todos os dados relevantes do jogador em um dicionário para salvar.
+	return {
+		"shape_completed": shape_completed,
+		"number_completed": number_completed,
+		"arrow_completed": arrow_completed,
+		"next_number_index": next_number_index,
+		"checkpoint_reached": checkpoint_reached,
+		"all_completed_printed": all_completed_printed,
+		"position": { "x": position.x, "y": position.y },
+		"start_time": start_time
+	}
 
 func _handle_movement(_delta: float) -> void:
 	var iv = Vector2(
@@ -312,22 +276,41 @@ func _on_number_completed() -> void:
 	message_label.visible = true
 	_check_all_puzzles()
 
-func _check_all_puzzles() -> void:
+func _check_all_puzzles(return_to_menu := false) -> void:
 	var completed_count = int(shape_completed) + int(number_completed) + int(arrow_completed)
 	if completed_count == 2 and not checkpoint_reached:
 		_on_checkpoint_reached()
 	if shape_completed and number_completed and arrow_completed and not all_completed_printed:
 		message_label_finish.text = "Parabéns! 🎉 Você concluiu os puzzles\ndessa fase, vá para os próximos\ndesafios por aqui"
 		message_label_finish.visible = true
+		# Salva a pontuação no ranking
+		var final_time = Time.get_unix_time_from_system() - start_time
+		Global.add_score(Global.player_nickname, final_time)
 		all_completed_printed = true
+		if return_to_menu:
+			await get_tree().process_frame
+			return_to_main_menu()
 
 func _on_checkpoint_reached() -> void:
 	checkpoint_reached = true
 	if message_label:
 		message_label.text = "Checkpoint alcançado! Progresso salvo."
 		message_label.visible = true
-	save_game()
+	# Delega o salvamento para o Global, enviando o estado atual do jogador.
+	Global.save_game_at_checkpoint(_get_current_state())
+	print("Checkpoint salvo para %s" % Global.player_nickname)
 
 func return_to_main_menu() -> void:
 	print("Voltando ao menu principal...")
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/main_menu.tscn")
+
+func _force_complete_and_rank() -> void:
+	# Evita registrar o score múltiplas vezes
+	if all_completed_printed:
+		return
+
+	print("DEBUG: Forçando conclusão da fase para teste de ranking.")
+	shape_completed = true
+	number_completed = true
+	arrow_completed = true
+	_check_all_puzzles(true) # Chama a função que calcula o tempo, salva o score e volta ao menu
