@@ -2,6 +2,7 @@ extends Control
 
 @onready var nickname_window = $NicknameWindow
 @onready var nickname_edit = $NicknameWindow/VBoxContainer/NicknameEdit
+@onready var sobre_window = $SobreWindow
 
 # Referências aos botões (você pode precisar ajustar os caminhos baseado na sua estrutura de cena)
 var carregar_button: Button
@@ -28,12 +29,21 @@ func _on_button_carregar_pressed():
 	var save_data = Global.load_game_data(Global.player_nickname)
 	
 	if save_data:
-		# Restaura os dados do jogador
+		# Restaura os dados do jogador exatamente como estavam no checkpoint
 		Global.player_nickname = save_data["nickname"]
 		Global.fase_atual = save_data["fase_atual"]
 		Global.checkpoint_alcancado = save_data["checkpoint_alcancado"]
-		Global.puzzle_atual = save_data.get("puzzle_atual", 3)
-		Global.puzzles_completados = save_data.get("puzzles_completados", 2)
+		
+		# Se houver um checkpoint salvo, usa os valores salvos exatamente como estão
+		if Global.checkpoint_alcancado:
+			# Importante: usa os dados exatos que foram salvos no checkpoint
+			Global.puzzle_atual = save_data["puzzle_atual"] 
+			Global.puzzles_completados = save_data["puzzles_completados"]
+			print("Carregando do checkpoint: Fase %d, Puzzle %d, Puzzles completados: %d" % [Global.fase_atual, Global.puzzle_atual, Global.puzzles_completados])
+		else:
+			# Caso não haja checkpoint, começa do início
+			Global.puzzle_atual = save_data.get("puzzle_atual", 1)
+			Global.puzzles_completados = save_data.get("puzzles_completados", 0)
 		
 		# Também atualiza o PlayerData para compatibilidade
 		PlayerData.nickname = Global.player_nickname
@@ -54,11 +64,12 @@ func _on_button_ranking_pressed():
 # Esta função será chamada pelo botão "Sobre".
 func _on_button_sobre_pressed():
 	# A lógica para mostrar a tela com os nomes dos desenvolvedores virá aqui.
-	print("Botão Sobre Pressionado!")
+	sobre_window.popup_centered()
 
 func _ready():
 	nickname_window.hide() # Começa invisível
-	
+	sobre_window.hide()    # Garante que a janela "Sobre" comece invisível
+
 	# Busca o botão carregar na cena (ajuste o caminho conforme sua estrutura)
 	carregar_button = find_button_by_name("carregar") # Tentativa de encontrar automaticamente
 	
@@ -123,9 +134,17 @@ func _on_confirm_button_pressed():
 			print("Nenhum save encontrado para: ", player_nickname)
 			# Pode mostrar mensagem de erro aqui
 	else:
-		# Novo jogo
-		Global.reset_game_data() # Reseta os dados para um novo jogo
-		Global.player_nickname = player_nickname # Mantém o nickname
+		# Novo jogo - Remove qualquer save anterior para garantir um início limpo
+		if Global.has_save_file(player_nickname):
+			Global.delete_save_file(player_nickname)
+			print("Save anterior deletado para novo jogo")
+		
+		# Reseta todos os dados para um novo jogo
+		Global.reset_game_data()
+		Global.player_nickname = player_nickname # Mantém apenas o nickname
+		
+		# Não salvamos os dados iniciais agora - deixamos que o jogo salve quando alcançar um checkpoint
+		# Isso evita confusão entre um jogo novo e um checkpoint
 		
 		nickname_window.hide()
 		get_tree().change_scene_to_file("res://scenes/Level1.tscn")
@@ -133,3 +152,13 @@ func _on_confirm_button_pressed():
 
 func _on_nickname_window_close_requested() -> void:
 	nickname_window.hide()
+
+# Função para fechar a janela "Sobre" ao clicar no botão "Fechar" dentro dela.
+# Conecte o sinal 'pressed' do seu botão de fechar a este método.
+func _on_sobre_close_button_pressed() -> void:
+	sobre_window.hide()
+
+# Função para fechar a janela "Sobre" ao clicar no 'X' da janela.
+# Conecte o sinal 'close_requested' da sua SobreWindow a este método.
+func _on_sobre_window_close_requested() -> void:
+	sobre_window.hide()

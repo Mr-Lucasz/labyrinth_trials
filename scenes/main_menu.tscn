@@ -278,6 +278,44 @@ position = Vector2(478, 2074)
 scale = Vector2(2, 2)
 speed = 500.0
 
+[node name="SobreWindow" type="AcceptDialog" parent="."]
+initial_position = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SobreWindow"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.5
+offset_top = -95.5
+offset_right = 128.5
+offset_bottom = 95.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="SobreWindow/VBoxContainer"]
+layout_mode = 2
+text = "Labirinto dos Desafios"
+
+[node name="DevsLabel" type="Label" parent="SobreWindow/VBoxContainer"]
+layout_mode = 2
+text = "Desenvolvedores:
+Lucas Rodrigues
+Breno Coelho"
+
+[node name="ContactLabel" type="Label" parent="SobreWindow/VBoxContainer"]
+layout_mode = 2
+text = "Contato: l.cunha14.lc@gmail.com"
+
+[node name="VersionLabel" type="Label" parent="SobreWindow/VBoxContainer"]
+layout_mode = 2
+text = "Versão 1.0"
+
+[node name="CloseButton" type="Button" parent="SobreWindow/VBoxContainer"]
+layout_mode = 2
+text = "Fechar"
+
 [connection signal="pressed" from="VBoxContainer/ButtonNovo" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonCarregar" to="." method="_on_button_carregar_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonRanking" to="." method="_on_button_ranking_pressed"]
