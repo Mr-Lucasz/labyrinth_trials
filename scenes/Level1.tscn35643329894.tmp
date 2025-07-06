@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cyqqyiphxnnc1"]
+[gd_scene load_steps=32 format=3 uid="uid://cyqqyiphxnnc1"]
 
 [ext_resource type="Texture2D" uid="uid://etach0bxs0c" path="res://maps/mapafase1.png" id="1_odhdn"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_dw26h"]
@@ -13,8 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://b73l6fuj5l0aa" path="res://assets/numero_dois.png" id="10_av1gt"]
 [ext_resource type="Texture2D" uid="uid://bwr28ixrbgqts" path="res://assets/numero_tres.png" id="11_r7dij"]
 [ext_resource type="Texture2D" uid="uid://d4lfd2pe5ltfd" path="res://assets/setas.png" id="12_2meft"]
+[ext_resource type="Script" uid="uid://c0avcruu7ewwn" path="res://scripts/PickableNumber.gd" id="12_av1gt"]
 [ext_resource type="Texture2D" uid="uid://dm23r0k7idper" path="res://assets/setaRedonda.png" id="13_0xqs2"]
 [ext_resource type="Script" uid="uid://d3s7r2mnh3bbn" path="res://scripts/Slot.gd" id="14_0xqs2"]
+[ext_resource type="Script" uid="uid://xsdl86g6u658" path="res://scripts/SlotNumber.gd" id="17_r7dij"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(141.353, 148.75)
@@ -217,6 +219,7 @@ polygon = PackedVector2Array(-3110.3, 336.349, -1791.14, 382.467, -1816.13, -10.
 
 [node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
 position = Vector2(2253, -106)
+speed = null
 
 [node name="Area2D (Portal saída)" type="Area2D" parent="."]
 position = Vector2(1837, -1146)
@@ -298,7 +301,7 @@ texture = ExtResource("5_4dyl1")
 
 [node name="Numero1" type="StaticBody2D" parent="." groups=["pickable"]]
 position = Vector2(3141, -1021)
-script = ExtResource("8_ipmer")
+script = ExtResource("12_av1gt")
 item_type = "Numero1"
 
 [node name="Sprite2D" type="Sprite2D" parent="Numero1"]
@@ -310,7 +313,7 @@ shape = SubResource("RectangleShape2D_4dyl1")
 
 [node name="Numero2" type="StaticBody2D" parent="." groups=["pickable"]]
 position = Vector2(3381, -1019)
-script = ExtResource("8_ipmer")
+script = ExtResource("12_av1gt")
 item_type = "Numero2"
 
 [node name="Sprite2D" type="Sprite2D" parent="Numero2"]
@@ -322,7 +325,7 @@ shape = SubResource("RectangleShape2D_0xqs2")
 
 [node name="Numero3" type="StaticBody2D" parent="." groups=["pickable"]]
 position = Vector2(2874, -1021)
-script = ExtResource("8_ipmer")
+script = ExtResource("12_av1gt")
 item_type = "Numero3"
 
 [node name="Sprite2D" type="Sprite2D" parent="Numero3"]
@@ -366,7 +369,7 @@ position = Vector2(3110, -1045)
 
 [node name="Slot_1" type="Area2D" parent="SlotsNumbers" groups=["drop_zone_number"]]
 position = Vector2(-270, 4)
-script = ExtResource("14_0xqs2")
+script = ExtResource("17_r7dij")
 slot_type = "Numero2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlotsNumbers/Slot_1"]
@@ -374,20 +377,20 @@ position = Vector2(-1, -4)
 shape = SubResource("RectangleShape2D_2ouud")
 
 [node name="Slot_2" type="Area2D" parent="SlotsNumbers" groups=["drop_zone_number"]]
-position = Vector2(-53, -1)
-script = ExtResource("14_0xqs2")
+position = Vector2(-52, 12)
+script = ExtResource("17_r7dij")
 slot_type = "Numero3"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlotsNumbers/Slot_2"]
 shape = SubResource("RectangleShape2D_i2gr7")
 
 [node name="Slot_3" type="Area2D" parent="SlotsNumbers" groups=["drop_zone_number"]]
-position = Vector2(179, 2)
-script = ExtResource("14_0xqs2")
+position = Vector2(271, 19)
+script = ExtResource("17_r7dij")
 slot_type = "Numero1"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlotsNumbers/Slot_3"]
-position = Vector2(-2, 3)
+position = Vector2(-91, -7)
 shape = SubResource("RectangleShape2D_t46sy")
 
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]

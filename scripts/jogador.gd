@@ -1,18 +1,27 @@
 extends CharacterBody2D
 
 @export var speed: float = 300.0
-const HOLD_OFFSET := Vector2(0, -24)  # ajuste pra posicionar o item na mão
+const HOLD_OFFSET: Vector2 = Vector2(0, -24)
+
+var shape_completed: bool = false
+var number_completed: bool = false
+
+var number_sequence := ["Numero2", "Numero3", "Numero1"]
+var next_number_index := 0
 
 var nearby_item: Node2D = null
 var carried: Node2D = null
 
 func _ready() -> void:
-	# Conecta sinais do detector de itens
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
+	
+	if shape_completed and number_completed:
+		return
+
 	if Input.is_action_just_pressed("ui_select"):
 		if carried:
 			_drop_item()
@@ -31,56 +40,80 @@ func _handle_movement(delta: float) -> void:
 func _update_animation(iv: Vector2) -> void:
 	if iv == Vector2.ZERO:
 		$AnimatedSprite2D.play("parado_frente")
+	elif abs(iv.x) > abs(iv.y):
+		var anim = "andando_ladoR" if iv.x > 0 else "andando_ladoL"
+		$AnimatedSprite2D.play(anim)
 	else:
-		if abs(iv.x) > abs(iv.y):
-			# ternário em GDScript
-			var anim = "andando_ladoR" if iv.x > 0 else "andando_ladoL"
-			$AnimatedSprite2D.play(anim)
-		else:
-			var anim = "parado_costa" if iv.y < 0 else "parado_frente"
-			$AnimatedSprite2D.play(anim)
+		var anim = "parado_costa" if iv.y < 0 else "parado_frente"
+		$AnimatedSprite2D.play(anim)
 
-# —–––––––––––––––––––––––––––––––––––––––––––––––––
-# Sinais do PickupDetector
 func _on_body_entered(body: Node) -> void:
-	if body.is_in_group("pickable") and carried == null:
-		print("body")
-		nearby_item = body
+	if not body.is_in_group("pickable") or carried != null:
+		return
+
+	if number_completed and body.has_method("get") and body.get("item_type") in number_sequence:
+		return
+		
+	nearby_item = body
 
 func _on_body_exited(body: Node) -> void:
 	if body == nearby_item:
 		nearby_item = null
 
-# —–––––––––––––––––––––––––––––––––––––––––––––––––
-# Funções de pegar e soltar
 func _pick_item(item: Node2D) -> void:
 	carried = item
-	# remove do nível original e adiciona como filho do jogador
-	var orig_parent = item.get_parent()
-	orig_parent.remove_child(item)
+	item.get_parent().remove_child(item)
 	add_child(item)
-	# posiciona na mão
 	item.position = HOLD_OFFSET
-	# opcional: desativa colisão do item enquanto carrega
 	if item.has_node("CollisionShape2D"):
 		item.get_node("CollisionShape2D").disabled = true
 
 func _drop_item() -> void:
-	# posição global para soltar
-	var world_pos = to_global(carried.position)
-	# reparenta para a cena raiz
+	var drop_pos = to_global(carried.position)
+
 	remove_child(carried)
 	get_tree().current_scene.add_child(carried)
-	carried.global_position = world_pos
-	# reativa colisão
+	carried.global_position = drop_pos
 	if carried.has_node("CollisionShape2D"):
 		carried.get_node("CollisionShape2D").disabled = false
 
-	# se houver zonas de drop, faz “snap” automático
-	for zone in get_tree().get_nodes_in_group("drop_zone"):
-		if zone is Area2D and zone.get_overlapping_bodies().has(carried):
-			carried.global_position = zone.global_position
-			break
+	if not shape_completed:
+		for zone in get_tree().get_nodes_in_group("drop_zone"):
+			if zone.global_position.distance_to(drop_pos) < 32 and zone.accepts(carried):
+				zone.snap_item(carried)
+				break
+		if _check_shape_complete():
+			_on_shape_completed()
 
-	carried = null
+	if not number_completed:
+		for zone in get_tree().get_nodes_in_group("drop_zone_number"):
+			if zone.global_position.distance_to(drop_pos) < 32:
+				var expected = number_sequence[next_number_index]
+				if carried.item_type == expected and zone.accepts(carried):
+					zone.snap_item(carried)
+					next_number_index += 1
+					if _check_number_complete():
+						_on_number_completed()
+				else:
+					carried.global_position = drop_pos + Vector2(0,16)
+				break
+
 	nearby_item = null
+	carried = null
+
+func _check_shape_complete() -> bool:
+	for zone in get_tree().get_nodes_in_group("drop_zone"):
+		if not zone.filled:
+			return false
+	return true
+
+func _on_shape_completed() -> void:
+	shape_completed = true
+	print("🎉 Puzzle de formas concluído!")
+
+func _check_number_complete() -> bool:
+	return next_number_index >= number_sequence.size()
+
+func _on_number_completed() -> void:
+	number_completed = true
+	print("🎉 Puzzle de números concluído!")
