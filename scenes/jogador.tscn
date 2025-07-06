@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bpviuslabowc7"]
+[gd_scene load_steps=16 format=3 uid="uid://bpviuslabowc7"]
 
 [ext_resource type="Script" uid="uid://b44ekq35k0f3t" path="res://scripts/jogador.gd" id="1_g1ob3"]
 [ext_resource type="Texture2D" uid="uid://msdli2ch00" path="res://sprite/spriteJogador.png" id="1_uahlj"]
@@ -87,6 +87,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g1ob3"]
 size = Vector2(125, 227)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_qcln2"]
+radius = 150.0
+
 [node name="Jogador" type="CharacterBody2D"]
 script = ExtResource("1_g1ob3")
 
@@ -100,6 +103,13 @@ frame_progress = 0.693549
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(104.5, -137.5)
 shape = SubResource("RectangleShape2D_g1ob3")
+
+[node name="PickupDetector" type="Area2D" parent="."]
+position = Vector2(101, -79)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetector"]
+position = Vector2(0, -55)
+shape = SubResource("CircleShape2D_qcln2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 limit_left = 0

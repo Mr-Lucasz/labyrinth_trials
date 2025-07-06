@@ -1,11 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://cyqqyiphxnnc1"]
+[gd_scene load_steps=14 format=3 uid="uid://cyqqyiphxnnc1"]
 
 [ext_resource type="Texture2D" uid="uid://etach0bxs0c" path="res://maps/mapafase1.png" id="1_odhdn"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_dw26h"]
 [ext_resource type="Script" uid="uid://beudoyp7syxxc" path="res://scripts/area_2d_(portal_saída).gd" id="3_lrl65"]
 [ext_resource type="Script" uid="uid://cv1h56d5mi14p" path="res://scripts/camera_2d.gd" id="4_camera"]
-[ext_resource type="Texture2D" uid="uid://b8pdl4hoip2rn" path="res://assets/campo_formula.png" id="5_4dyl1"]
-[ext_resource type="Texture2D" uid="uid://dxow6gi1fo24j" path="res://assets/bola.png" id="6_jxjwb"]
 [ext_resource type="Texture2D" uid="uid://dl6bb5tf5ener" path="res://assets/triangulo.png" id="7_2meft"]
 [ext_resource type="Texture2D" uid="uid://djoakljlqy3s6" path="res://assets/quadrado.png" id="8_0xqs2"]
 [ext_resource type="Texture2D" uid="uid://b5xm6e1vpopi3" path="res://assets/numero_um.png" id="9_ipmer"]
@@ -17,34 +15,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(141.353, 148.75)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jxjwb"]
-size = Vector2(86, 108)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_2meft"]
-radius = 46.6905
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2meft"]
-size = Vector2(83, 85)
-
-[sub_resource type="GDScript" id="GDScript_2meft"]
-script/source = "extends Area2D
-
-@export var forma_esperada: String = \"\"
-
-func _on_body_entered(body):
-	if body.name == forma_esperada:
-		print(\"Forma correta no local!\")
-		# Opcional: marcar como resolvido, travar forma, dar ponto etc.
-"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4dyl1"]
-size = Vector2(183, 210)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xqs2"]
-size = Vector2(169, 209)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ipmer"]
-size = Vector2(180, 204)
+size = Vector2(123, 98)
 
 [node name="Level1" type="Node2D"]
 
@@ -196,7 +168,7 @@ scale = Vector2(0.529296, 0.213647)
 polygon = PackedVector2Array(-3110.3, 336.349, -1791.14, 382.467, -1816.13, -10.0161, -3104.63, -131.712)
 
 [node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
-position = Vector2(1694, -962)
+position = Vector2(1651, -948)
 
 [node name="Area2D (Portal saída)" type="Area2D" parent="."]
 position = Vector2(1837, -1146)
@@ -206,6 +178,27 @@ script = ExtResource("3_lrl65")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Portal saída)"]
 position = Vector2(557.094, 344.643)
 shape = SubResource("RectangleShape2D_jyhfs")
+
+[node name="Triangulo" type="Sprite2D" parent="."]
+position = Vector2(1264, -1840)
+rotation = -1.53085
+texture = ExtResource("7_2meft")
+
+[node name="Quadrado" type="Sprite2D" parent="."]
+position = Vector2(2326, -1868)
+texture = ExtResource("8_0xqs2")
+
+[node name="NumeroUm" type="Sprite2D" parent="."]
+position = Vector2(3134, -984)
+texture = ExtResource("9_ipmer")
+
+[node name="NumeroDois" type="Sprite2D" parent="."]
+position = Vector2(2914, -980)
+texture = ExtResource("10_av1gt")
+
+[node name="NumeroTres" type="Sprite2D" parent="."]
+position = Vector2(3366, -974)
+texture = ExtResource("11_r7dij")
 
 [node name="FormaSetas" type="Sprite2D" parent="."]
 position = Vector2(3155, -1909)
@@ -228,76 +221,15 @@ position = Vector2(3352.75, -1692.75)
 scale = Vector2(0.197754, 0.159668)
 texture = ExtResource("13_0xqs2")
 
-[node name="Triangulo" type="StaticBody2D" parent="." groups=["pickable"]]
-position = Vector2(342, -592)
+[node name="RigidBody2D" type="RigidBody2D" parent="." groups=["pickable"]]
+position = Vector2(314, -536)
 
-[node name="Sprite2D" type="Sprite2D" parent="Triangulo"]
-rotation = -1.5787
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+position = Vector2(-3, 3)
 texture = ExtResource("7_2meft")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Triangulo" groups=["pickable"]]
-position = Vector2(9, -14)
-shape = SubResource("RectangleShape2D_jxjwb")
-
-[node name="Bola" type="StaticBody2D" parent="." groups=["pickable"]]
-position = Vector2(1284, -1883)
-
-[node name="Sprite2D" type="Sprite2D" parent="Bola"]
-texture = ExtResource("6_jxjwb")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bola"]
-shape = SubResource("CircleShape2D_2meft")
-
-[node name="Quadrado" type="StaticBody2D" parent="." groups=["pickable"]]
-position = Vector2(2340, -1930)
-
-[node name="Sprite2D" type="Sprite2D" parent="Quadrado"]
-texture = ExtResource("8_0xqs2")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Quadrado"]
-position = Vector2(-2.5, -1.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+position = Vector2(-6, 4)
 shape = SubResource("RectangleShape2D_2meft")
-
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(-28, 606)
-script = SubResource("GDScript_2meft")
-
-[node name="Formas" type="Sprite2D" parent="Area2D"]
-position = Vector2(262, -1936)
-rotation = -1.56796
-scale = Vector2(0.97124, 1.2871)
-texture = ExtResource("5_4dyl1")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Area2D/Formas"]
-
-[node name="Numero1" type="StaticBody2D" parent="." groups=["pickable"]]
-position = Vector2(3141, -1021)
-
-[node name="Sprite2D" type="Sprite2D" parent="Numero1"]
-texture = ExtResource("9_ipmer")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Numero1"]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_4dyl1")
-
-[node name="Numero2" type="StaticBody2D" parent="." groups=["pickable"]]
-position = Vector2(3381, -1019)
-
-[node name="Sprite2D" type="Sprite2D" parent="Numero2"]
-texture = ExtResource("10_av1gt")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Numero2"]
-position = Vector2(-0.5, -1.5)
-shape = SubResource("RectangleShape2D_0xqs2")
-
-[node name="Numero3" type="StaticBody2D" parent="." groups=["pickable"]]
-position = Vector2(2874, -1021)
-
-[node name="Sprite2D" type="Sprite2D" parent="Numero3"]
-texture = ExtResource("11_r7dij")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Numero3"]
-position = Vector2(0, -2)
-shape = SubResource("RectangleShape2D_ipmer")
 
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]
