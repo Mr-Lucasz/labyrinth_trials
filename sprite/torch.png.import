@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwfefccr5v3ir"
-path="res://.godot/imported/buttons.png-c4ccae8792cea773c901c48640778720.ctex"
+uid="uid://cpqfgovpchrwu"
+path="res://.godot/imported/torch.png-6ab738930cde7da0d3ef86627a680519.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprite/buttons.png"
-dest_files=["res://.godot/imported/buttons.png-c4ccae8792cea773c901c48640778720.ctex"]
+source_file="res://sprite/torch.png"
+dest_files=["res://.godot/imported/torch.png-6ab738930cde7da0d3ef86627a680519.ctex"]
 
 [params]
 

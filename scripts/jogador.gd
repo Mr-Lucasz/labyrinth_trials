@@ -117,3 +117,7 @@ func _check_number_complete() -> bool:
 func _on_number_completed() -> void:
 	number_completed = true
 	print("🎉 Puzzle de números concluído!")
+
+
+func _on_button_novo_pressed() -> void:
+	pass # Replace with function body.
