@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://jrs6o00o7w05"]
+[gd_scene load_steps=18 format=3 uid="uid://jrs6o00o7w05"]
 
 [ext_resource type="Texture2D" uid="uid://b3ih2y24eab0a" path="res://assets/background.png" id="1_l6cm7"]
+[ext_resource type="Script" uid="uid://b6xqad7cy8uce" path="res://main_menu.gd" id="1_rtw2f"]
 [ext_resource type="FontFile" uid="uid://dreeeemt8l4yx" path="res://fonts/PixelifySans-VariableFont_wght.ttf" id="2_ekxnf"]
 [ext_resource type="Theme" uid="uid://ubfk6rjwkxuj" path="res://button_theme.tres" id="3_8ln24"]
 [ext_resource type="Texture2D" uid="uid://cpqfgovpchrwu" path="res://sprite/torch.png" id="4_rtw2f"]
@@ -88,6 +89,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_rtw2f")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
@@ -216,3 +218,8 @@ frame_progress = 0.0980394
 
 [node name="Jogador" parent="." instance=ExtResource("5_oa1go")]
 position = Vector2(-26, 766)
+
+[connection signal="pressed" from="VBoxContainer/ButtonNovo" to="." method="_on_button_novo_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonCarregar" to="." method="_on_button_carregar_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonRanking" to="." method="_on_button_ranking_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonSobre" to="." method="_on_button_sobre_pressed"]
