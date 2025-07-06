@@ -74,18 +74,19 @@ func check_puzzle_1():
 		complete_puzzle(1)
 
 func check_puzzle_2():
+	print("[PuzzleManager] check_puzzle_2 chamado")
 	# Puzzle 2: Rotação
 	# Verifica se formas estão nos slots corretos
 	var shapes_in_correct_slots = 0
 	var total_shape_slots = 0
-	
 	for slot in slots:
 		if slot.slot_type in ["Triangulo", "Circulo", "Quadrado"]:
 			total_shape_slots += 1
 			if slot.filled:
 				shapes_in_correct_slots += 1
-	
+	print("[PuzzleManager] total_shape_slots=", total_shape_slots, ", shapes_in_correct_slots=", shapes_in_correct_slots)
 	if total_shape_slots > 0 and shapes_in_correct_slots >= total_shape_slots:
+		print("[PuzzleManager] Todos os slots de forma preenchidos. Chamando complete_puzzle(2)")
 		complete_puzzle(2)
 
 func check_puzzle_3():
@@ -119,8 +120,7 @@ func is_correct_number_in_slot(slot: Area2D, _expected: String) -> bool:
 	return slot.filled  # Simplificado por enquanto
 
 func complete_puzzle(puzzle_number: int):
-	print("=== PUZZLE ", puzzle_number, " COMPLETADO! ===")
-	
+	print("=== PUZZLE ", puzzle_number, " COMPLETADO! === (complete_puzzle)")
 	match puzzle_number:
 		1:
 			puzzle_1_completed = true
@@ -128,7 +128,7 @@ func complete_puzzle(puzzle_number: int):
 			puzzle_2_completed = true
 		3:
 			puzzle_3_completed = true
-	
+	print("[PuzzleManager] Emitindo sinal puzzle_completed para puzzle ", puzzle_number)
 	# Emite o sinal para o Level1Manager
 	puzzle_completed.emit(puzzle_number)
 

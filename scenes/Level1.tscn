@@ -215,6 +215,7 @@ polygon = PackedVector2Array(-3110.3, 336.349, -1791.14, 382.467, -1816.13, -10.
 
 [node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
 position = Vector2(2253, -106)
+speed = 500.0
 
 [node name="Area2D (Portal saída)" type="Area2D" parent="."]
 position = Vector2(1837, -1146)
