@@ -15,9 +15,10 @@ var puzzle_manager: Node
 func _ready():
 	print("Fase 1 iniciada!")
 	
-	# Conecta o botão de sair apenas se existir
-	if sair_button:
-		sair_button.pressed.connect(_on_sair_button_pressed)
+	# A conexão do sinal 'pressed' do ButtonSair já é feita pela cena (Level1.tscn)
+	# Não conecte novamente por código para evitar erro de conexão duplicada
+	# if sair_button:
+	#     sair_button.pressed.connect(_on_sair_button_pressed)
 	
 	# Cria e adiciona o PuzzleManager
 	puzzle_manager = preload("res://scripts/PuzzleManager.gd").new()

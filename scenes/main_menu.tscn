@@ -1,11 +1,14 @@
-[gd_scene load_steps=20 format=3 uid="uid://jrs6o00o7w05"]
+[gd_scene load_steps=23 format=3 uid="uid://jrs6o00o7w05"]
 
 [ext_resource type="Texture2D" uid="uid://b3ih2y24eab0a" path="res://assets/background.png" id="1_l6cm7"]
 [ext_resource type="Script" uid="uid://b6xqad7cy8uce" path="res://main_menu.gd" id="1_rtw2f"]
 [ext_resource type="FontFile" uid="uid://dreeeemt8l4yx" path="res://fonts/PixelifySans-VariableFont_wght.ttf" id="2_ekxnf"]
 [ext_resource type="Theme" uid="uid://ubfk6rjwkxuj" path="res://button_theme.tres" id="3_8ln24"]
 [ext_resource type="Texture2D" uid="uid://cpqfgovpchrwu" path="res://sprite/torch.png" id="4_rtw2f"]
+[ext_resource type="StyleBox" uid="uid://7tluksgvg1l0" path="res://theme/StyleBoxFlat_Hover.tres" id="5_jk1qb"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="5_oa1go"]
+[ext_resource type="StyleBox" uid="uid://dtblpbm87bov4" path="res://theme/StyleBoxFlat_Normal.tres" id="5_tbmy8"]
+[ext_resource type="StyleBox" uid="uid://gri4msu0uest" path="res://theme/StyleBoxFlat_Pressed.tres" id="6_jk1qb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tbmy8"]
 line_spacing = 1.0
@@ -167,9 +170,9 @@ theme_override_constants/align_to_largest_stylebox = 0
 theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
 theme_override_font_sizes/font_size = 115
-theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
-theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/hover = ExtResource("5_jk1qb")
+theme_override_styles/pressed = ExtResource("6_jk1qb")
+theme_override_styles/normal = ExtResource("5_tbmy8")
 text = "NOVO"
 
 [node name="ButtonCarregar" type="Button" parent="VBoxContainer"]

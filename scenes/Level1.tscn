@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cyqqyiphxnnc1"]
+[gd_scene load_steps=32 format=3 uid="uid://cyqqyiphxnnc1"]
 
 [ext_resource type="Texture2D" uid="uid://etach0bxs0c" path="res://maps/mapafase1.png" id="1_odhdn"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_dw26h"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://d4lfd2pe5ltfd" path="res://assets/setas.png" id="12_2meft"]
 [ext_resource type="Texture2D" uid="uid://dm23r0k7idper" path="res://assets/setaRedonda.png" id="13_0xqs2"]
 [ext_resource type="Script" uid="uid://d3s7r2mnh3bbn" path="res://scripts/Slot.gd" id="14_0xqs2"]
+[ext_resource type="FontFile" uid="uid://dreeeemt8l4yx" path="res://fonts/PixelifySans-VariableFont_wght.ttf" id="17_2ouud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(141.353, 148.75)
@@ -69,7 +70,6 @@ size = Vector2(206, 237)
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("4_level_manager")
-puzzle_atual = null
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1837, -1146)
@@ -388,4 +388,23 @@ slot_type = "Numero1"
 position = Vector2(-2, 3)
 shape = SubResource("RectangleShape2D_t46sy")
 
+[node name="ButtonSair" type="Button" parent="."]
+offset_left = 3331.0
+offset_top = -184.0
+offset_right = 3606.0
+offset_bottom = -35.0
+theme_override_colors/font_hover_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_focus_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_constants/h_separation = 2
+theme_override_constants/icon_max_width = 2
+theme_override_constants/align_to_largest_stylebox = 0
+theme_override_constants/line_spacing = 5
+theme_override_fonts/font = ExtResource("17_2ouud")
+theme_override_font_sizes/font_size = 80
+text = "SAIR"
+
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]
+[connection signal="pressed" from="ButtonSair" to="." method="_on_sair_button_pressed"]
