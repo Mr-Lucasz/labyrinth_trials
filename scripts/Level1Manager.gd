@@ -6,6 +6,7 @@ var puzzles_completados: int = 0
 var checkpoint_salvo: bool = false
 
 # Referências para gerenciar o jogador (ajuste conforme sua estrutura)
+@onready var sair_button = $ButtonSair  
 @onready var jogador = get_node_or_null("Jogador")
 
 # PuzzleManager para detectar conclusão dos puzzles
@@ -13,6 +14,9 @@ var puzzle_manager: Node
 
 func _ready():
 	print("Fase 1 iniciada!")
+	
+	# Conecta o botão de sair
+	sair_button.pressed.connect(_on_sair_button_pressed)
 	
 	# Cria e adiciona o PuzzleManager
 	puzzle_manager = preload("res://scripts/PuzzleManager.gd").new()
@@ -26,8 +30,6 @@ func _ready():
 		start_new_game()
 		
 
-
-	
 	# Conecta sinais se necessário
 	connect_puzzle_signals()
 
@@ -167,3 +169,7 @@ func get_puzzles_completed() -> int:
 
 func is_checkpoint_reached() -> bool:
 	return checkpoint_salvo
+
+func _on_sair_button_pressed() -> void:
+	print("Voltando ao menu principal...")
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

@@ -19,6 +19,14 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
 	
+	# Debug: mostra qual número está esperando
+	if not number_completed:
+		print("Próximo número esperado: ", number_sequence[next_number_index], " (índice: ", next_number_index, ")")
+	
+	# Botão para voltar ao menu principal (tecla ESC)
+	if Input.is_action_just_pressed("ui_cancel"):
+		return_to_main_menu()
+	
 	if shape_completed and number_completed:
 		return
 
@@ -117,3 +125,7 @@ func _check_number_complete() -> bool:
 func _on_number_completed() -> void:
 	number_completed = true
 	print("🎉 Puzzle de números concluído!")
+
+func return_to_main_menu() -> void:
+	print("Voltando ao menu principal...")
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
