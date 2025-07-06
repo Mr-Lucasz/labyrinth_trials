@@ -1,11 +1,10 @@
-
-[gd_scene load_steps=34 format=3 uid="uid://cyqqyiphxnnc1"]
+[gd_scene load_steps=36 format=3 uid="uid://cyqqyiphxnnc1"]
 
 [ext_resource type="Texture2D" uid="uid://etach0bxs0c" path="res://maps/mapafase1.png" id="1_odhdn"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_dw26h"]
 [ext_resource type="Script" uid="uid://beudoyp7syxxc" path="res://scripts/area_2d_(portal_saída).gd" id="3_lrl65"]
 [ext_resource type="Script" uid="uid://cv1h56d5mi14p" path="res://scripts/camera_2d.gd" id="4_camera"]
-[ext_resource type="Script" uid="uid://ml5hng0ot0ag" path="res://scripts/Level1Manager.gd" id="4_level_manager"]
+[ext_resource type="Script" path="res://scripts/Level1Manager.gd" id="4_level_manager"]
 [ext_resource type="Texture2D" uid="uid://b8pdl4hoip2rn" path="res://assets/campo_formula.png" id="5_4dyl1"]
 [ext_resource type="Texture2D" uid="uid://dxow6gi1fo24j" path="res://assets/bola.png" id="6_jxjwb"]
 [ext_resource type="Texture2D" uid="uid://dl6bb5tf5ener" path="res://assets/triangulo.png" id="7_2meft"]
@@ -547,8 +546,10 @@ offset_bottom = -1616.0
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_font_sizes/font_size = 60
 
-[node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
+[node name="Jogador2" parent="." instance=ExtResource("2_dw26h")]
+visible = false
 position = Vector2(2253, -106)
+speed = 500.0
 
 [node name="ButtonSair" type="Button" parent="."]
 offset_left = 3331.0
@@ -567,7 +568,6 @@ theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("17_2ouud")
 theme_override_font_sizes/font_size = 80
 text = "SAIR"
-
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("16_av1gt")

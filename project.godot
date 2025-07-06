@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="labyrinth_trials"
-run/main_scene="uid://jrs6o00o7w05"
+run/main_scene="uid://bu5i0yxdab53f"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]

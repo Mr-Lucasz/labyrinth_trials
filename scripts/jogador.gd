@@ -39,15 +39,19 @@ func _ready() -> void:
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
 
-	message_label       = get_tree().current_scene.get_node("CanvasLayer/MessageLabel") as Label
-	message_label_forma = get_tree().current_scene.get_node("CanvasLayerForma/MessageLabel") as Label
-	message_label_seta  = get_tree().current_scene.get_node("CanvasLayerSetas/MessageLabel") as Label
-	message_label_finish = get_tree().current_scene.get_node("CanvasLayerFinish/MessageLabel") as Label
+	message_label       = get_tree().current_scene.get_node_or_null("CanvasLayer/MessageLabel") as Label
+	message_label_forma = get_tree().current_scene.get_node_or_null("CanvasLayerForma/MessageLabel") as Label
+	message_label_seta  = get_tree().current_scene.get_node_or_null("CanvasLayerSetas/MessageLabel") as Label
+	message_label_finish = get_tree().current_scene.get_node_or_null("CanvasLayerFinish/MessageLabel") as Label
 
-	message_label.visible       = false
-	message_label_forma.visible = false
-	message_label_seta.visible  = false
-	message_label_finish.visible = false
+	if message_label:
+		message_label.visible = false
+	if message_label_forma:
+		message_label_forma.visible = false
+	if message_label_seta:
+		message_label_seta.visible = false
+	if message_label_finish:
+		message_label_finish.visible = false
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://jrs6o00o7w05"]
+[gd_scene load_steps=23 format=3 uid="uid://bu5i0yxdab53f"]
 
 [ext_resource type="Texture2D" uid="uid://b3ih2y24eab0a" path="res://assets/background.png" id="1_l6cm7"]
 [ext_resource type="Script" uid="uid://b6xqad7cy8uce" path="res://main_menu.gd" id="1_rtw2f"]
@@ -276,6 +276,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_5dd4i")
 [node name="Jogador" parent="." instance=ExtResource("5_oa1go")]
 position = Vector2(478, 2074)
 scale = Vector2(2, 2)
+speed = 500.0
 
 [connection signal="pressed" from="VBoxContainer/ButtonNovo" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonCarregar" to="." method="_on_button_carregar_pressed"]
