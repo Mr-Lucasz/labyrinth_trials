@@ -18,10 +18,20 @@ var message_label_forma: Label
 func _ready() -> void:
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
-	message_label = get_tree().current_scene.get_node("CanvasLayer/MessageLabel") as Label
-	message_label_forma = get_tree().current_scene.get_node("CanvasLayerForma/MessageLabel") as Label
-	message_label.visible = false
-	message_label_forma.visible = false
+
+	# Busca os labels apenas se existirem na cena
+	var canvas_layer = get_tree().current_scene.get_node_or_null("CanvasLayer")
+	var canvas_layer_forma = get_tree().current_scene.get_node_or_null("CanvasLayerForma")
+
+	if canvas_layer:
+		message_label = canvas_layer.get_node_or_null("MessageLabel") as Label
+		if message_label:
+			message_label.visible = false
+
+	if canvas_layer_forma:
+		message_label_forma = canvas_layer_forma.get_node_or_null("MessageLabel") as Label
+		if message_label_forma:
+			message_label_forma.visible = false
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
@@ -124,16 +134,18 @@ func _check_shape_complete() -> bool:
 
 func _on_shape_completed() -> void:
 	shape_completed = true
-	message_label_forma.text    = "Puzzle de formas concluído!"
-	message_label_forma.visible = true
+	if message_label_forma:
+		message_label_forma.text    = "Puzzle de formas concluído!"
+		message_label_forma.visible = true
 
 func _check_number_complete() -> bool:
 	return next_number_index >= number_sequence.size()
 
 func _on_number_completed() -> void:
 	number_completed = true
-	message_label.text    = "Puzzle de Numeros concluído!"
-	message_label.visible = true
+	if message_label:
+		message_label.text    = "Puzzle de Numeros concluído!"
+		message_label.visible = true
 
 func return_to_main_menu() -> void:
 	print("Voltando ao menu principal...")

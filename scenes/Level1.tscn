@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cyqqyiphxnnc1"]
+[gd_scene load_steps=31 format=3 uid="uid://cyqqyiphxnnc1"]
 
 [ext_resource type="Texture2D" uid="uid://etach0bxs0c" path="res://maps/mapafase1.png" id="1_odhdn"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_dw26h"]
@@ -16,8 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://d4lfd2pe5ltfd" path="res://assets/setas.png" id="12_2meft"]
 [ext_resource type="Texture2D" uid="uid://dm23r0k7idper" path="res://assets/setaRedonda.png" id="13_0xqs2"]
 [ext_resource type="Script" uid="uid://d3s7r2mnh3bbn" path="res://scripts/Slot.gd" id="14_0xqs2"]
-[ext_resource type="Theme" uid="uid://ubfk6rjwkxuj" path="res://button_theme.tres" id="17_2ouud"]
-[ext_resource type="FontFile" uid="uid://dreeeemt8l4yx" path="res://fonts/PixelifySans-VariableFont_wght.ttf" id="18_i2gr7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(141.353, 148.75)
@@ -68,25 +66,6 @@ size = Vector2(196, 243)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t46sy"]
 size = Vector2(206, 237)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t46sy"]
-bg_color = Color(0.878431, 0.960784, 0.647059, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thv4y"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u4kti"]
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.937255, 0, 0.0196078, 1)
-border_width_left = 5
-border_width_right = 5
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-expand_margin_top = 7.0
-expand_margin_bottom = 7.0
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("4_level_manager")
@@ -410,4 +389,3 @@ position = Vector2(-2, 3)
 shape = SubResource("RectangleShape2D_t46sy")
 
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]
-[connection signal="pressed" from="ButtonSair" to="." method="_on_sair_button_pressed"]
