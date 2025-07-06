@@ -6,8 +6,10 @@ const HOLD_OFFSET: Vector2 = Vector2(0, -24)
 var shape_completed: bool = false
 var number_completed: bool = false
 
+
 var number_sequence := ["Numero2", "Numero3", "Numero1"]
 var next_number_index := 0
+var _last_number_index := -1
 
 var nearby_item: Node2D = null
 var carried: Node2D = null
@@ -36,9 +38,11 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
 	
-	# Debug: mostra qual número está esperando
+	# Debug: mostra qual número está esperando (apenas quando muda)
 	if not number_completed:
-		print("Próximo número esperado: ", number_sequence[next_number_index], " (índice: ", next_number_index, ")")
+		if _last_number_index != next_number_index:
+			print("[PuzzleNum] Esperado: ", number_sequence[next_number_index], " (índice: ", next_number_index, ")")
+			_last_number_index = next_number_index
 	
 	# Botão para voltar ao menu principal (tecla ESC)
 	if Input.is_action_just_pressed("ui_cancel"):

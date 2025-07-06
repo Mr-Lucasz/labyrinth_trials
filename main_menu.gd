@@ -13,11 +13,12 @@ func _on_button_novo_pressed():
 
 # Esta função será chamada pelo botão "Carregar Jogo".
 func _on_button_carregar_pressed():
-	if not Global.has_save_file():
+	if not Global.has_save_file(Global.player_nickname):
 		print("Nenhum jogo salvo encontrado.")
 		return
-	
-	var save_data = Global.load_game_data()
+
+	var save_data = Global.load_game_data(Global.player_nickname)
+
 	if save_data:
 		# Restaura os dados do jogador
 		Global.player_nickname = save_data["nickname"]
@@ -74,7 +75,7 @@ func find_button_recursive(node: Node, button_name: String) -> Button:
 func update_carregar_button_state():
 	# Verifica se o botão carregar existe na cena
 	if carregar_button:
-		if Global.has_save_file():
+		if Global.has_save_file(Global.player_nickname):
 			carregar_button.disabled = false
 			carregar_button.modulate = Color.WHITE
 			print("Save encontrado! Botão Carregar habilitado.")
