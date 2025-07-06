@@ -219,7 +219,57 @@ frame_progress = 0.0980394
 [node name="Jogador" parent="." instance=ExtResource("5_oa1go")]
 position = Vector2(-26, 766)
 
+[node name="NicknamePopup" type="Panel" parent="."]
+layout_mode = 2
+offset_left = 376.0
+offset_top = 650.0
+offset_right = 776.0
+offset_bottom = 650.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NicknamePopup"]
+layout_mode = 2
+offset_left = 376.0
+offset_top = 615.0
+offset_right = 776.0
+offset_bottom = 685.0
+
+[node name="Label" type="Label" parent="NicknamePopup/VBoxContainer"]
+layout_mode = 2
+text = "Digite seu apelido:"
+
+[node name="NicknameEdit" type="LineEdit" parent="NicknamePopup/VBoxContainer"]
+layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="NicknamePopup/VBoxContainer"]
+layout_mode = 2
+
+[node name="NicknamePopup2" type="Panel" parent="."]
+layout_mode = 2
+offset_left = 376.0
+offset_top = 650.0
+offset_right = 776.0
+offset_bottom = 650.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NicknamePopup2"]
+layout_mode = 2
+offset_left = 376.0
+offset_top = 615.0
+offset_right = 776.0
+offset_bottom = 685.0
+
+[node name="Label" type="Label" parent="NicknamePopup2/VBoxContainer"]
+layout_mode = 2
+text = "Digite seu apelido:"
+
+[node name="NicknameEdit" type="LineEdit" parent="NicknamePopup2/VBoxContainer"]
+layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="NicknamePopup2/VBoxContainer"]
+layout_mode = 2
+
 [connection signal="pressed" from="VBoxContainer/ButtonNovo" to="." method="_on_button_novo_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonCarregar" to="." method="_on_button_carregar_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonRanking" to="." method="_on_button_ranking_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonSobre" to="." method="_on_button_sobre_pressed"]
+[connection signal="pressed" from="NicknamePopup/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="NicknamePopup2/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
