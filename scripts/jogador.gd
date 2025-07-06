@@ -10,9 +10,12 @@ var number_completed: bool   = false
 var arrow_completed: bool    = false
 var all_completed_printed: bool = false
 
+
 # ——— Puzzle numérico ———
+
 var number_sequence := ["Numero2", "Numero3", "Numero1"]
 var next_number_index := 0
+var _last_number_index := -1
 
 # ——— Proximidade e transportes ———
 var nearby_item:  Node2D = null
@@ -36,20 +39,43 @@ func _ready() -> void:
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
 
-	message_label       = get_tree().current_scene.get_node("CanvasLayer/MessageLabel")       as Label
+	message_label       = get_tree().current_scene.get_node("CanvasLayer/MessageLabel") as Label
 	message_label_forma = get_tree().current_scene.get_node("CanvasLayerForma/MessageLabel") as Label
 	message_label_seta  = get_tree().current_scene.get_node("CanvasLayerSetas/MessageLabel") as Label
-	message_label_finish  = get_tree().current_scene.get_node("CanvasLayerFinish/MessageLabel") as Label
+	message_label_finish = get_tree().current_scene.get_node("CanvasLayerFinish/MessageLabel") as Label
 
 	message_label.visible       = false
 	message_label_forma.visible = false
 	message_label_seta.visible  = false
-	message_label_finish.visible  = false
+	message_label_finish.visible = false
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
+
+	# Debug: mostra qual número está esperando (apenas quando muda)
+	if not number_completed:
+		if _last_number_index != next_number_index:
+			print("[PuzzleNum] Esperado: ", number_sequence[next_number_index], " (índice: ", next_number_index, ")")
+			_last_number_index = next_number_index
+
+	# Botão para voltar ao menu principal (tecla ESC)
+	if Input.is_action_just_pressed("ui_cancel"):
+		return_to_main_menu()
+
+	# Verificação de conclusão dos puzzles
 	if shape_completed and number_completed and arrow_completed:
-		return
+		# Garante que labels antigos são escondidos
+		var canvas_layer = get_tree().current_scene.get_node_or_null("CanvasLayer")
+		var canvas_layer_forma = get_tree().current_scene.get_node_or_null("CanvasLayerForma")
+		if canvas_layer:
+			message_label = canvas_layer.get_node_or_null("MessageLabel") as Label
+			if message_label:
+				message_label.visible = false
+		if canvas_layer_forma:
+			message_label_forma = canvas_layer_forma.get_node_or_null("MessageLabel") as Label
+			if message_label_forma:
+				message_label_forma.visible = false
+
 
 	if Input.is_action_just_pressed("ui_select"):
 		if carried:
@@ -159,6 +185,7 @@ func _check_shape_complete() -> bool:
 
 func _on_shape_completed() -> void:
 	shape_completed = true
+
 	message_label_forma.text    = "Puzzle de formas concluído!"
 	message_label_forma.visible = true
 	_check_all_puzzles()
@@ -168,6 +195,7 @@ func _check_number_complete() -> bool:
 
 func _on_number_completed() -> void:
 	number_completed = true
+
 	message_label.text    = "Puzzle de números concluído!"
 	message_label.visible = true
 	_check_all_puzzles()
@@ -177,3 +205,7 @@ func _check_all_puzzles() -> void:
 		message_label_finish.text = "Parabéns! 🎉 Você concluiu os puzzles\ndessa fase, vá para os próximos\ndesafios por aqui"
 		message_label_finish.visible = true
 		all_completed_printed = true
+
+func return_to_main_menu() -> void:
+	print("Voltando ao menu principal...")
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

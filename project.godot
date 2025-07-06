@@ -11,8 +11,17 @@ config_version=5
 [application]
 
 config/name="labyrinth_trials"
-run/main_scene="uid://cyqqyiphxnnc1"
+run/main_scene="uid://jrs6o00o7w05"
 config/features=PackedStringArray("4.4", "Forward Plus")
+
+[autoload]
+
+PlayerData="*res://scripts/PlayerData.gd"
+Global="*res://scripts/Global.gd"
+
+[display]
+
+window/stretch/mode="viewport"
 
 [input]
 
