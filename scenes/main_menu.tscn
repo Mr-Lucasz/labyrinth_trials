@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://jrs6o00o7w05"]
+[gd_scene load_steps=17 format=3 uid="uid://jrs6o00o7w05"]
 
 [ext_resource type="Texture2D" uid="uid://b3ih2y24eab0a" path="res://assets/background.png" id="1_l6cm7"]
 [ext_resource type="FontFile" uid="uid://dreeeemt8l4yx" path="res://fonts/PixelifySans-VariableFont_wght.ttf" id="2_ekxnf"]
+[ext_resource type="Theme" uid="uid://ubfk6rjwkxuj" path="res://button_theme.tres" id="3_8ln24"]
 [ext_resource type="Texture2D" uid="uid://cpqfgovpchrwu" path="res://sprite/torch.png" id="4_rtw2f"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="5_oa1go"]
 
@@ -9,7 +10,26 @@
 line_spacing = 1.0
 font = ExtResource("2_ekxnf")
 font_size = 105
-font_color = Color(0.937255, 0.619608, 0.141176, 1)
+font_color = Color(0.937255, 0.988235, 0.929412, 1)
+outline_size = 9
+outline_color = Color(0.937255, 0.988235, 0.929412, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtw2f"]
+bg_color = Color(0.878431, 0.960784, 0.647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa1go"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbmy8"]
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.937255, 0.988235, 0.741176, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_top = 7.0
+expand_margin_bottom = 7.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jk1qb"]
 atlas = ExtResource("4_rtw2f")
@@ -69,13 +89,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -171.0
+offset_top = -123.0
+offset_right = 1365.0
+offset_bottom = 901.0
 texture = ExtResource("1_l6cm7")
 
 [node name="Label" type="Label" parent="."]
@@ -105,48 +124,85 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -200.0
-offset_top = -150.0
+offset_top = -92.0
 offset_right = 200.0
-offset_bottom = 350.0
+offset_bottom = 408.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 25
 alignment = 1
 
 [node name="ButtonNovo" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("3_8ln24")
+theme_override_colors/font_hover_color = Color(0.105882, 0.14902, 0.0627451, 1)
 theme_override_colors/font_color = Color(0.105882, 0.14902, 0.0627451, 1)
-theme_override_colors/font_pressed_color = Color(0.431373, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 7
+theme_override_constants/h_separation = 2
+theme_override_constants/icon_max_width = 2
+theme_override_constants/align_to_largest_stylebox = 0
+theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
 theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
 text = "NOVO"
 
 [node name="ButtonCarregar" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.105882, 0.14902, 0.0627451, 1)
 theme_override_colors/font_color = Color(0.105882, 0.14902, 0.0627451, 1)
-theme_override_colors/font_pressed_color = Color(0.431373, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 7
+theme_override_constants/h_separation = 2
+theme_override_constants/icon_max_width = 2
+theme_override_constants/align_to_largest_stylebox = 0
+theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
 theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
 text = "CARREGAR"
 
 [node name="ButtonRanking" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.105882, 0.14902, 0.0627451, 1)
 theme_override_colors/font_color = Color(0.105882, 0.14902, 0.0627451, 1)
-theme_override_colors/font_pressed_color = Color(0.431373, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 7
+theme_override_constants/h_separation = 2
+theme_override_constants/icon_max_width = 2
+theme_override_constants/align_to_largest_stylebox = 0
+theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
 theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
 text = "RANKING"
 
 [node name="ButtonSobre" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.105882, 0.14902, 0.0627451, 1)
 theme_override_colors/font_color = Color(0.105882, 0.14902, 0.0627451, 1)
-theme_override_colors/font_pressed_color = Color(0.431373, 0, 0, 1)
-theme_override_constants/outline_size = 7
+theme_override_colors/font_focus_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/h_separation = 2
+theme_override_constants/icon_max_width = 2
+theme_override_constants/align_to_largest_stylebox = 0
+theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
 theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
 text = "SOBRE"
 
 [node name="Torch" type="Sprite2D" parent="."]
@@ -156,7 +212,7 @@ position = Vector2(1067, 281)
 scale = Vector2(3.58496, 3.66726)
 sprite_frames = SubResource("SpriteFrames_7b55j")
 animation = &"fire"
-frame_progress = 0.623205
+frame_progress = 0.0980394
 
 [node name="Jogador" parent="." instance=ExtResource("5_oa1go")]
 position = Vector2(-26, 766)
