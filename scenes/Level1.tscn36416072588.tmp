@@ -374,7 +374,7 @@ position = Vector2(-1, -4)
 shape = SubResource("RectangleShape2D_2ouud")
 
 [node name="Slot_2" type="Area2D" parent="SlotsNumbers" groups=["drop_zone_number"]]
-position = Vector2(-53, -1)
+position = Vector2(-52, 12)
 script = ExtResource("14_0xqs2")
 slot_type = "Numero3"
 
@@ -382,12 +382,12 @@ slot_type = "Numero3"
 shape = SubResource("RectangleShape2D_i2gr7")
 
 [node name="Slot_3" type="Area2D" parent="SlotsNumbers" groups=["drop_zone_number"]]
-position = Vector2(179, 2)
+position = Vector2(271, 19)
 script = ExtResource("14_0xqs2")
 slot_type = "Numero1"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlotsNumbers/Slot_3"]
-position = Vector2(-2, 3)
+position = Vector2(-91, -7)
 shape = SubResource("RectangleShape2D_t46sy")
 
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]
