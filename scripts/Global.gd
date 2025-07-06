@@ -7,6 +7,19 @@ var checkpoint_alcancado: bool = false
 var puzzle_atual: int = 1
 var puzzles_completados: int = 0
 
+# Função para verificar se existe um arquivo de save para o nickname
+func has_save_file(nickname: String) -> bool:
+	if nickname.strip_edges().is_empty():
+		return false
+		
+	# Verificar o formato antigo (do jogador.gd)
+	var old_path = "user://savegame_%s.save" % nickname
+	if FileAccess.file_exists(old_path):
+		return true
+		
+	# Verificar o formato Global
+	var global_path = get_save_file_path(nickname)
+	return FileAccess.file_exists(global_path)
 
 # Utilitário para múltiplos saves por nickname
 func get_save_file_path(nickname: String) -> String:
@@ -49,9 +62,6 @@ func load_game_data(nickname: String):
 		print("Erro ao abrir arquivo de save")
 		return null
 
-func has_save_file(nickname: String) -> bool:
-	return FileAccess.file_exists(get_save_file_path(nickname))
-
 func delete_save_file(nickname: String):
 	var file_path = get_save_file_path(nickname)
 	if FileAccess.file_exists(file_path):
@@ -77,9 +87,11 @@ func apply_loaded_data(data: Dictionary) -> void:
 	puzzle_atual = data.get("puzzle_atual", 1)
 	puzzles_completados = data.get("puzzles_completados", 0)
 
+# Função para resetar os dados do jogo para um novo jogo
 func reset_game_data():
-	player_nickname = ""
 	fase_atual = 1
 	checkpoint_alcancado = false
 	puzzle_atual = 1
 	puzzles_completados = 0
+	# Não resetamos o nickname, pois ele é importante para identificação
+	print("Dados de jogo resetados para novo jogo")

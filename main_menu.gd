@@ -13,12 +13,20 @@ func _on_button_novo_pressed():
 
 # Esta função será chamada pelo botão "Carregar Jogo".
 func _on_button_carregar_pressed():
+	# Verifica se há nickname definido
+	if Global.player_nickname == "":
+		# Se não há nickname definido, mostra o prompt para inserir
+		nickname_window.popup_centered()
+		nickname_edit.placeholder_text = "Digite seu apelido para carregar o jogo"
+		return
+		
 	if not Global.has_save_file(Global.player_nickname):
-		print("Nenhum jogo salvo encontrado.")
+		print("Nenhum jogo salvo encontrado para: " + Global.player_nickname)
 		return
 
+	# Primeiro tenta carregar do sistema Global
 	var save_data = Global.load_game_data(Global.player_nickname)
-
+	
 	if save_data:
 		# Restaura os dados do jogador
 		Global.player_nickname = save_data["nickname"]
@@ -29,12 +37,14 @@ func _on_button_carregar_pressed():
 		
 		# Também atualiza o PlayerData para compatibilidade
 		PlayerData.nickname = Global.player_nickname
-		
-		print("Jogo carregado! Retornando ao checkpoint...")
-		# Carrega a fase do jogo no ponto do checkpoint
-		get_tree().change_scene_to_file("res://scenes/Level1.tscn")
 	else:
-		print("Erro ao carregar o jogo.")
+		# Se falhou, pode haver um save no formato antigo (jogador.gd)
+		print("Tentando carregar no formato antigo...")
+		# Vamos tentar carregar via Level1.tscn e deixar o jogador.gd lidar com isso
+		PlayerData.nickname = Global.player_nickname
+	
+	print("Carregando jogo para: " + Global.player_nickname)
+	get_tree().change_scene_to_file("res://scenes/Level1.tscn")
 
 # Esta função será chamada pelo botão "Ranking".
 func _on_button_ranking_pressed():
@@ -101,12 +111,25 @@ func _on_confirm_button_pressed():
 	# Atualiza ambos os sistemas de dados
 	PlayerData.nickname = player_nickname
 	Global.player_nickname = player_nickname
-	Global.reset_game_data() # Reseta os dados para um novo jogo
-	Global.player_nickname = player_nickname # Mantém o nickname
 	
-	nickname_window.hide()
-	get_tree().change_scene_to_file("res://scenes/Level1.tscn")
-	print("Novo jogo iniciado com apelido: ", player_nickname)
+	# Verifica se estamos carregando ou iniciando novo jogo
+	if nickname_edit.placeholder_text.contains("carregar"):
+		# Estamos tentando carregar um jogo
+		if Global.has_save_file(player_nickname):
+			nickname_window.hide()
+			print("Carregando jogo para: ", player_nickname)
+			get_tree().change_scene_to_file("res://scenes/Level1.tscn")
+		else:
+			print("Nenhum save encontrado para: ", player_nickname)
+			# Pode mostrar mensagem de erro aqui
+	else:
+		# Novo jogo
+		Global.reset_game_data() # Reseta os dados para um novo jogo
+		Global.player_nickname = player_nickname # Mantém o nickname
+		
+		nickname_window.hide()
+		get_tree().change_scene_to_file("res://scenes/Level1.tscn")
+		print("Novo jogo iniciado com apelido: ", player_nickname)
 
 func _on_nickname_window_close_requested() -> void:
 	nickname_window.hide()

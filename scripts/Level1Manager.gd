@@ -15,14 +15,41 @@ var puzzle_manager: Node
 func _ready():
 	print("Fase 1 iniciada!")
 	
-	# A conexão do sinal 'pressed' do ButtonSair já é feita pela cena (Level1.tscn)
-	# Não conecte novamente por código para evitar erro de conexão duplicada
-	# if sair_button:
-	#     sair_button.pressed.connect(_on_sair_button_pressed)
+	# Tentar localizar o jogador na cena
+	jogador = get_node_or_null("Jogador")
+	if not jogador:
+		jogador = get_node_or_null("Player")
 	
-	# Cria e adiciona o PuzzleManager
-	puzzle_manager = preload("res://scripts/PuzzleManager.gd").new()
-	add_child(puzzle_manager)
+	# Inicializar dados do jogador se encontrado
+	if jogador:
+		print("Jogador encontrado na cena")
+		
+		# Verificar se estamos carregando um save ou começando novo jogo
+		if Global.player_nickname != "":
+			# Tentar carregar dados de save
+			if Global.checkpoint_alcancado:
+				print("Checkpoint alcançado, carregando estado...")
+				jogador.player_name = Global.player_nickname
+				jogador.load_game(Global.player_nickname)
+				
+				# Restaurar estado visual (checkpoints, mensagens, etc.)
+				_update_visual_state_from_save()
+			else:
+				# Novo jogo com nickname definido
+				jogador.player_name = Global.player_nickname
+				print("Novo jogo iniciado para: " + Global.player_nickname)
+		else:
+			print("Aviso: Jogador sem nickname definido")
+	else:
+		print("Aviso: Jogador não encontrado na cena")
+		
+	# Inicializar gerenciadores de puzzles
+	puzzle_manager = get_node_or_null("PuzzleManager")
+	
+	# Cria e adiciona o PuzzleManager se não existir na cena
+	if not puzzle_manager:
+		puzzle_manager = preload("res://scripts/PuzzleManager.gd").new()
+		add_child(puzzle_manager)
 	
 	# Verifica se o jogo foi carregado de um checkpoint
 	
@@ -175,3 +202,26 @@ func is_checkpoint_reached() -> bool:
 func _on_sair_button_pressed() -> void:
 	print("Voltando ao menu principal...")
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+# A conexão do sinal 'pressed' do ButtonSair já é feita pela cena (Level1.tscn)
+# Não conecte novamente por código para evitar erro de conexão duplicada
+# if sair_button:
+
+# Atualiza o estado visual da cena baseado nos dados carregados
+func _update_visual_state_from_save() -> void:
+	# Atualizar estado dos puzzles baseado nos valores carregados
+	if jogador:
+		# Atualizar contagem de puzzles completados
+		puzzles_completados = int(jogador.shape_completed) + int(jogador.number_completed) + int(jogador.arrow_completed)
+		
+		# Atualizar estado de checkpoint
+		checkpoint_salvo = jogador.checkpoint_reached
+		
+		print("Estado visual atualizado: %d puzzles completados, checkpoint: %s" % 
+			[puzzles_completados, "Sim" if checkpoint_salvo else "Não"])
+		
+		# Aqui você pode adicionar atualizações visuais adicionais:
+		# - Desativar puzzles já completados
+		# - Mover objetos para suas posições corretas
+		# - Atualizar mensagens de UI
+		# etc.

@@ -8,7 +8,14 @@ const HOLD_OFFSET: Vector2 = Vector2(0, -24)
 var shape_completed: bool    = false
 var number_completed: bool   = false
 var arrow_completed: bool    = false
+
 var all_completed_printed: bool = false
+
+# --- Checkpoint ---
+var checkpoint_reached: bool = false
+
+# Nome do jogador para save por usuário
+var player_name: String = ""
 
 
 # ——— Puzzle numérico ———
@@ -80,7 +87,6 @@ func _physics_process(delta: float) -> void:
 			if message_label_forma:
 				message_label_forma.visible = false
 
-
 	if Input.is_action_just_pressed("ui_select"):
 		if carried:
 			_drop_item()
@@ -89,7 +95,109 @@ func _physics_process(delta: float) -> void:
 		elif nearby_arrow and not arrow_completed:
 			_rotate_arrow(nearby_arrow)
 
-func _handle_movement(delta: float) -> void:
+
+func get_save_path() -> String:
+	if player_name == "":
+		return "user://savegame.save"
+	return "user://savegame_%s.save" % player_name
+
+func save_game() -> void:
+	var save_data = {
+		"player_name": player_name,
+		"shape_completed": shape_completed,
+		"number_completed": number_completed,
+		"arrow_completed": arrow_completed,
+		"next_number_index": next_number_index,
+		"checkpoint_reached": checkpoint_reached,
+		"all_completed_printed": all_completed_printed,
+		"position": {"x": position.x, "y": position.y},
+		"timestamp": Time.get_unix_time_from_system()
+	}
+	
+	# Salvar o arquivo local
+	var file = FileAccess.open(get_save_path(), FileAccess.WRITE)
+	file.store_var(save_data)
+	file.close()
+	
+	# Sincronizar com o sistema Global de save
+	Global.player_nickname = player_name
+	Global.checkpoint_alcancado = checkpoint_reached
+	Global.puzzles_completados = int(shape_completed) + int(number_completed) + int(arrow_completed)
+	Global.save_game_at_checkpoint()
+	
+	print("Jogo salvo para ", player_name)
+
+func load_game(nome: String = "") -> void:
+	if nome != "":
+		player_name = nome
+	var path = get_save_path()
+	if not FileAccess.file_exists(path):
+		print("Nenhum save encontrado para ", player_name)
+		return
+	var file = FileAccess.open(path, FileAccess.READ)
+	var save_data = file.get_var()
+	file.close()
+
+	player_name = save_data.get("player_name", player_name)
+	shape_completed = save_data.get("shape_completed", false)
+	number_completed = save_data.get("number_completed", false)
+	arrow_completed = save_data.get("arrow_completed", false)
+	next_number_index = save_data.get("next_number_index", 0)
+	checkpoint_reached = save_data.get("checkpoint_reached", false)
+	all_completed_printed = save_data.get("all_completed_printed", false)
+	
+	# Restaurar a posição do jogador, se disponível
+	if save_data.has("position"):
+		position.x = save_data["position"]["x"]
+		position.y = save_data["position"]["y"]
+	
+	# Atualizar estado visual dos puzzles
+	_update_puzzle_visuals()
+	
+	# Sincronizar com o Global
+	Global.player_nickname = player_name
+	Global.checkpoint_alcancado = checkpoint_reached
+	Global.puzzles_completados = int(shape_completed) + int(number_completed) + int(arrow_completed)
+	
+	print("Jogo carregado para ", player_name)
+
+# Atualiza o estado visual dos puzzles baseado nos valores carregados
+func _update_puzzle_visuals() -> void:
+	# Atualizar o estado visual do puzzle de formas se estiver completo
+	if shape_completed and message_label_forma:
+		message_label_forma.text = "Puzzle de formas concluído!"
+		message_label_forma.visible = true
+	
+	# Atualizar o estado visual do puzzle de números se estiver completo
+	if number_completed and message_label:
+		message_label.text = "Puzzle de números concluído!"
+		message_label.visible = true
+	
+	# Atualizar o estado visual do puzzle de setas se estiver completo
+	if arrow_completed and message_label_seta:
+		message_label_seta.text = "Puzzle de setas concluído!"
+		message_label_seta.visible = true
+		
+	# Verificar se todos os puzzles estão concluídos
+	if shape_completed and number_completed and arrow_completed and message_label_finish:
+		message_label_finish.text = "Parabéns! 🎉 Você concluiu os puzzles\ndessa fase, vá para os próximos\ndesafios por aqui"
+		message_label_finish.visible = true
+		
+	# Atualizar os itens físicos nos puzzles, isso precisa ser implementado
+	# conforme o design específico da sua cena
+
+# Função para criar um save de teste já com dois puzzles concluídos
+func criar_save_teste(nome: String) -> void:
+	player_name = nome
+	shape_completed = true
+	number_completed = true
+	arrow_completed = false
+	next_number_index = number_sequence.size()
+	checkpoint_reached = true
+	save_game()
+	print("Save de teste criado para ", nome)
+
+func _handle_movement(_delta: float) -> void:
 	var iv = Vector2(
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
 		Input.get_action_strength("ui_down")  - Input.get_action_strength("ui_up")
@@ -175,9 +283,9 @@ func _rotate_arrow(arrow: Node2D) -> void:
 		_check_all_puzzles()
 
 func _check_arrows_complete() -> bool:
-	for name in arrow_targets.keys():
-		var a = get_tree().current_scene.get_node("ArrowSlots/" + name) as Node2D
-		if int(a.rotation_degrees) != arrow_targets[name]:
+	for arrow_name in arrow_targets.keys():
+		var a = get_tree().current_scene.get_node("ArrowSlots/" + arrow_name) as Node2D
+		if int(a.rotation_degrees) != arrow_targets[arrow_name]:
 			return false
 	return true
 
@@ -205,10 +313,20 @@ func _on_number_completed() -> void:
 	_check_all_puzzles()
 
 func _check_all_puzzles() -> void:
-	if shape_completed and number_completed and arrow_completed and not all_completed_printed:		
+	var completed_count = int(shape_completed) + int(number_completed) + int(arrow_completed)
+	if completed_count == 2 and not checkpoint_reached:
+		_on_checkpoint_reached()
+	if shape_completed and number_completed and arrow_completed and not all_completed_printed:
 		message_label_finish.text = "Parabéns! 🎉 Você concluiu os puzzles\ndessa fase, vá para os próximos\ndesafios por aqui"
 		message_label_finish.visible = true
 		all_completed_printed = true
+
+func _on_checkpoint_reached() -> void:
+	checkpoint_reached = true
+	if message_label:
+		message_label.text = "Checkpoint alcançado! Progresso salvo."
+		message_label.visible = true
+	save_game()
 
 func return_to_main_menu() -> void:
 	print("Voltando ao menu principal...")
