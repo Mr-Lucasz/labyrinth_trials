@@ -12,9 +12,16 @@ var next_number_index := 0
 var nearby_item: Node2D = null
 var carried: Node2D = null
 
+var message_label: Label
+var message_label_forma: Label
+
 func _ready() -> void:
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
+	message_label = get_tree().current_scene.get_node("CanvasLayer/MessageLabel") as Label
+	message_label_forma = get_tree().current_scene.get_node("CanvasLayerForma/MessageLabel") as Label
+	message_label.visible = false
+	message_label_forma.visible = false
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
@@ -117,14 +124,16 @@ func _check_shape_complete() -> bool:
 
 func _on_shape_completed() -> void:
 	shape_completed = true
-	print("🎉 Puzzle de formas concluído!")
+	message_label_forma.text    = "Puzzle de formas concluído!"
+	message_label_forma.visible = true
 
 func _check_number_complete() -> bool:
 	return next_number_index >= number_sequence.size()
 
 func _on_number_completed() -> void:
 	number_completed = true
-	print("🎉 Puzzle de números concluído!")
+	message_label.text    = "Puzzle de Numeros concluído!"
+	message_label.visible = true
 
 func return_to_main_menu() -> void:
 	print("Voltando ao menu principal...")

@@ -22,15 +22,6 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(141.353, 148.75)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jxjwb"]
-size = Vector2(86, 108)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_2meft"]
-radius = 46.6905
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2meft"]
-size = Vector2(83, 85)
-
 [sub_resource type="GDScript" id="GDScript_2meft"]
 script/source = "extends Area2D
 
@@ -41,6 +32,15 @@ func _on_body_entered(body):
 		print(\"Forma correta no local!\")
 		# Opcional: marcar como resolvido, travar forma, dar ponto etc.
 "
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jxjwb"]
+size = Vector2(86, 108)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2meft"]
+radius = 46.6905
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2meft"]
+size = Vector2(83, 85)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4dyl1"]
 size = Vector2(183, 210)
@@ -136,11 +136,6 @@ polygon = PackedVector2Array(-448, -1958.72, -44.1968, -1953.4, -44.1968, -1880.
 
 [node name="CollisionPolygon2D26" type="CollisionPolygon2D" parent="Paredes"]
 position = Vector2(3606, 1590)
-scale = Vector2(0.588278, 1.13853)
-polygon = PackedVector2Array(-448, -1958.72, -44.1968, -1953.4, -44.1968, -1880.5, -277.259, -1878.59, -448, -1877.19)
-
-[node name="CollisionPolygon2D26" type="CollisionPolygon2D" parent="Paredes/CollisionPolygon2D26"]
-position = Vector2(2996, 1598)
 scale = Vector2(0.588278, 1.13853)
 polygon = PackedVector2Array(-448, -1958.72, -44.1968, -1953.4, -44.1968, -1880.5, -277.259, -1878.59, -448, -1877.19)
 
@@ -240,7 +235,7 @@ scale = Vector2(0.529296, 0.213647)
 polygon = PackedVector2Array(-3110.3, 336.349, -1791.14, 382.467, -1816.13, -10.0161, -3104.63, -131.712)
 
 [node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
-position = Vector2(2238, -77)
+position = Vector2(2253, -106)
 
 [node name="Area2D (Portal saída)" type="Area2D" parent="."]
 position = Vector2(1837, -1146)
@@ -271,6 +266,18 @@ texture = ExtResource("13_0xqs2")
 position = Vector2(2528, -1758)
 scale = Vector2(0.197754, 0.159668)
 texture = ExtResource("13_0xqs2")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(-28, 606)
+script = SubResource("GDScript_2meft")
+
+[node name="Formas" type="Sprite2D" parent="Area2D"]
+position = Vector2(269, -1875)
+rotation = -1.56796
+scale = Vector2(0.97124, 1.2871)
+texture = ExtResource("5_4dyl1")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Area2D/Formas"]
 
 [node name="Triangulo" type="StaticBody2D" parent="." groups=["pickable"]]
 position = Vector2(342, -592)
@@ -307,18 +314,6 @@ texture = ExtResource("8_0xqs2")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Quadrado"]
 position = Vector2(-2.5, -1.5)
 shape = SubResource("RectangleShape2D_2meft")
-
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(-28, 606)
-script = SubResource("GDScript_2meft")
-
-[node name="Formas" type="Sprite2D" parent="Area2D"]
-position = Vector2(269, -1875)
-rotation = -1.56796
-scale = Vector2(0.97124, 1.2871)
-texture = ExtResource("5_4dyl1")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Area2D/Formas"]
 
 [node name="Numero1" type="StaticBody2D" parent="." groups=["pickable"]]
 position = Vector2(3141, -1021)
@@ -413,28 +408,6 @@ slot_type = "Numero1"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlotsNumbers/Slot_3"]
 position = Vector2(-2, 3)
 shape = SubResource("RectangleShape2D_t46sy")
-
-[node name="ButtonSair" type="Button" parent="."]
-offset_left = 3331.0
-offset_top = -184.0
-offset_right = 3606.0
-offset_bottom = -35.0
-theme = ExtResource("17_2ouud")
-theme_override_colors/font_hover_color = Color(0.105882, 0.14902, 0.0627451, 1)
-theme_override_colors/font_color = Color(0.105882, 0.14902, 0.0627451, 1)
-theme_override_colors/font_focus_color = Color(0.105882, 0.14902, 0.0627451, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 7
-theme_override_constants/h_separation = 2
-theme_override_constants/icon_max_width = 2
-theme_override_constants/align_to_largest_stylebox = 0
-theme_override_constants/line_spacing = 5
-theme_override_fonts/font = ExtResource("18_i2gr7")
-theme_override_font_sizes/font_size = 80
-theme_override_styles/hover = SubResource("StyleBoxFlat_t46sy")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_thv4y")
-theme_override_styles/normal = SubResource("StyleBoxFlat_u4kti")
-text = "SAIR"
 
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]
 [connection signal="pressed" from="ButtonSair" to="." method="_on_sair_button_pressed"]
