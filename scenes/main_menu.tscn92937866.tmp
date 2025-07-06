@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://jrs6o00o7w05"]
+[gd_scene load_steps=18 format=3 uid="uid://jrs6o00o7w05"]
 
 [ext_resource type="Texture2D" uid="uid://b3ih2y24eab0a" path="res://assets/background.png" id="1_l6cm7"]
 [ext_resource type="Script" uid="uid://b6xqad7cy8uce" path="res://main_menu.gd" id="1_rtw2f"]
@@ -10,9 +10,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_tbmy8"]
 line_spacing = 1.0
 font = ExtResource("2_ekxnf")
-font_size = 180
+font_size = 105
 font_color = Color(0.937255, 0.988235, 0.929412, 1)
-outline_size = 10
+outline_size = 9
 outline_color = Color(0.937255, 0.988235, 0.929412, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtw2f"]
@@ -82,50 +82,31 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jk1qb"]
-bg_color = Color(0.710261, 0.580906, 0.314426, 1)
-border_color = Color(0.957119, 0.781735, 0, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-expand_margin_left = 15.0
-expand_margin_top = 15.0
-expand_margin_right = 15.0
-expand_margin_bottom = 15.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5dd4i"]
-
 [node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 2254.5
-offset_bottom = 1623.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 script = ExtResource("1_rtw2f")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+layout_mode = 0
+offset_left = -171.0
+offset_top = -123.0
+offset_right = 1365.0
+offset_bottom = 901.0
 texture = ExtResource("1_l6cm7")
-expand_mode = 3
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_right = 0.5
-offset_bottom = 673.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -260.5
+offset_right = 260.5
+offset_bottom = 255.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.819608, 0.690196, 0, 1)
 theme_override_fonts/font = ExtResource("2_ekxnf")
@@ -144,10 +125,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -582.0
-offset_top = -378.5
-offset_right = 582.0
-offset_bottom = 378.5
+offset_left = -200.0
+offset_top = -92.0
+offset_right = 200.0
+offset_bottom = 408.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 25
@@ -166,7 +147,7 @@ theme_override_constants/icon_max_width = 2
 theme_override_constants/align_to_largest_stylebox = 0
 theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
-theme_override_font_sizes/font_size = 115
+theme_override_font_sizes/font_size = 40
 theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
 theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
@@ -184,7 +165,7 @@ theme_override_constants/icon_max_width = 2
 theme_override_constants/align_to_largest_stylebox = 0
 theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
-theme_override_font_sizes/font_size = 115
+theme_override_font_sizes/font_size = 40
 theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
 theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
@@ -202,7 +183,7 @@ theme_override_constants/icon_max_width = 2
 theme_override_constants/align_to_largest_stylebox = 0
 theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
-theme_override_font_sizes/font_size = 115
+theme_override_font_sizes/font_size = 40
 theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
 theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
@@ -220,7 +201,7 @@ theme_override_constants/icon_max_width = 2
 theme_override_constants/align_to_largest_stylebox = 0
 theme_override_constants/line_spacing = 5
 theme_override_fonts/font = ExtResource("2_ekxnf")
-theme_override_font_sizes/font_size = 115
+theme_override_font_sizes/font_size = 40
 theme_override_styles/hover = SubResource("StyleBoxFlat_rtw2f")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
 theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
@@ -229,54 +210,66 @@ text = "SOBRE"
 [node name="Torch" type="Sprite2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Torch"]
-position = Vector2(2948, 941)
-scale = Vector2(8.83935, 9.20863)
+position = Vector2(1067, 281)
+scale = Vector2(3.58496, 3.66726)
 sprite_frames = SubResource("SpriteFrames_7b55j")
 animation = &"fire"
 frame_progress = 0.0980394
 
-[node name="NicknameWindow" type="Window" parent="."]
-position = Vector2i(0, 36)
-size = Vector2i(300, 150)
-theme_override_styles/embedded_border = SubResource("StyleBoxFlat_jk1qb")
+[node name="Jogador" parent="." instance=ExtResource("5_oa1go")]
+position = Vector2(-26, 766)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NicknameWindow"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -71.5
-offset_top = -35.0
-offset_right = 71.5
-offset_bottom = 35.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
+[node name="NicknamePopup" type="Panel" parent="."]
+layout_mode = 2
+offset_left = 376.0
+offset_top = 650.0
+offset_right = 776.0
+offset_bottom = 650.0
 
-[node name="Label" type="Label" parent="NicknameWindow/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="NicknamePopup"]
+layout_mode = 2
+offset_left = 376.0
+offset_top = 615.0
+offset_right = 776.0
+offset_bottom = 685.0
+
+[node name="Label" type="Label" parent="NicknamePopup/VBoxContainer"]
 layout_mode = 2
 text = "Digite seu apelido:"
 
-[node name="NicknameEdit" type="LineEdit" parent="NicknameWindow/VBoxContainer"]
+[node name="NicknameEdit" type="LineEdit" parent="NicknamePopup/VBoxContainer"]
 layout_mode = 2
 
-[node name="ConfirmButton" type="Button" parent="NicknameWindow/VBoxContainer"]
+[node name="ConfirmButton" type="Button" parent="NicknamePopup/VBoxContainer"]
 layout_mode = 2
-text = "CONFIRMAR"
 
-[node name="Panel" type="Panel" parent="NicknameWindow"]
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_5dd4i")
+[node name="NicknamePopup2" type="Panel" parent="."]
+layout_mode = 2
+offset_left = 376.0
+offset_top = 650.0
+offset_right = 776.0
+offset_bottom = 650.0
 
-[node name="Jogador" parent="." instance=ExtResource("5_oa1go")]
-position = Vector2(478, 2074)
-scale = Vector2(2, 2)
+[node name="VBoxContainer" type="VBoxContainer" parent="NicknamePopup2"]
+layout_mode = 2
+offset_left = 376.0
+offset_top = 615.0
+offset_right = 776.0
+offset_bottom = 685.0
 
-[connection signal="pressed" from="VBoxContainer/ButtonNovo" to="." method="_on_new_game_button_pressed"]
+[node name="Label" type="Label" parent="NicknamePopup2/VBoxContainer"]
+layout_mode = 2
+text = "Digite seu apelido:"
+
+[node name="NicknameEdit" type="LineEdit" parent="NicknamePopup2/VBoxContainer"]
+layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="NicknamePopup2/VBoxContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/ButtonNovo" to="." method="_on_button_novo_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonCarregar" to="." method="_on_button_carregar_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonRanking" to="." method="_on_button_ranking_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonSobre" to="." method="_on_button_sobre_pressed"]
-[connection signal="close_requested" from="NicknameWindow" to="." method="_on_nickname_window_close_requested"]
-[connection signal="pressed" from="NicknameWindow/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="NicknamePopup/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="NicknamePopup2/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
