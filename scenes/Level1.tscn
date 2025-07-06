@@ -19,15 +19,6 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(141.353, 148.75)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jxjwb"]
-size = Vector2(86, 108)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_2meft"]
-radius = 46.6905
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2meft"]
-size = Vector2(83, 85)
-
 [sub_resource type="GDScript" id="GDScript_2meft"]
 script/source = "extends Area2D
 
@@ -38,6 +29,15 @@ func _on_body_entered(body):
 		print(\"Forma correta no local!\")
 		# Opcional: marcar como resolvido, travar forma, dar ponto etc.
 "
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jxjwb"]
+size = Vector2(86, 108)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2meft"]
+radius = 46.6905
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2meft"]
+size = Vector2(83, 85)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4dyl1"]
 size = Vector2(183, 210)
@@ -215,9 +215,6 @@ position = Vector2(3585.27, -1210.86)
 scale = Vector2(0.529296, 0.213647)
 polygon = PackedVector2Array(-3110.3, 336.349, -1791.14, 382.467, -1816.13, -10.0161, -3104.63, -131.712)
 
-[node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
-position = Vector2(2253, -106)
-
 [node name="Area2D (Portal saída)" type="Area2D" parent="."]
 position = Vector2(1837, -1146)
 scale = Vector2(2.37662, 2.24)
@@ -247,6 +244,18 @@ texture = ExtResource("13_0xqs2")
 position = Vector2(2528, -1758)
 scale = Vector2(0.197754, 0.159668)
 texture = ExtResource("13_0xqs2")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(-28, 606)
+script = SubResource("GDScript_2meft")
+
+[node name="Formas" type="Sprite2D" parent="Area2D"]
+position = Vector2(269, -1875)
+rotation = -1.56796
+scale = Vector2(0.97124, 1.2871)
+texture = ExtResource("5_4dyl1")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Area2D/Formas"]
 
 [node name="Triangulo" type="StaticBody2D" parent="." groups=["pickable"]]
 position = Vector2(342, -592)
@@ -283,18 +292,6 @@ texture = ExtResource("8_0xqs2")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Quadrado"]
 position = Vector2(-2.5, -1.5)
 shape = SubResource("RectangleShape2D_2meft")
-
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(-28, 606)
-script = SubResource("GDScript_2meft")
-
-[node name="Formas" type="Sprite2D" parent="Area2D"]
-position = Vector2(269, -1875)
-rotation = -1.56796
-scale = Vector2(0.97124, 1.2871)
-texture = ExtResource("5_4dyl1")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Area2D/Formas"]
 
 [node name="Numero1" type="StaticBody2D" parent="." groups=["pickable"]]
 position = Vector2(3141, -1021)
@@ -389,5 +386,95 @@ slot_type = "Numero1"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlotsNumbers/Slot_3"]
 position = Vector2(-2, 3)
 shape = SubResource("RectangleShape2D_t46sy")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(100, -1232)
+
+[node name="Label" type="Label" parent="Node2D"]
+offset_left = -92.0
+offset_top = 296.0
+offset_right = 1463.0
+offset_bottom = 437.0
+rotation = -1.56348
+theme_override_font_sizes/font_size = 55
+text = "Procure as formas pelo mapa 
+e coloque em seus devidos lugares"
+
+[node name="Node2D2" type="Node2D" parent="."]
+position = Vector2(3133, -1295)
+
+[node name="Label" type="Label" parent="Node2D2"]
+offset_left = -391.0
+offset_top = -66.0
+offset_right = 1164.0
+offset_bottom = 75.0
+rotation = -0.00273077
+theme_override_font_sizes/font_size = 50
+text = "Veja as Pistas e bote os numeros
+na ordem correta"
+
+[node name="Node2D4" type="Node2D" parent="."]
+position = Vector2(1248, -1516)
+scale = Vector2(1, 1)
+
+[node name="Label" type="Label" parent="Node2D4"]
+offset_left = -35.9999
+offset_top = -76.0001
+offset_right = 21.0001
+offset_bottom = 64.9999
+rotation = -0.0140892
+theme_override_font_sizes/font_size = 100
+text = "3"
+
+[node name="Node2D5" type="Node2D" parent="."]
+position = Vector2(2944, -2055)
+
+[node name="Label" type="Label" parent="Node2D5"]
+offset_left = -35.9999
+offset_top = -76.0001
+offset_right = 21.0001
+offset_bottom = 64.9999
+rotation = -0.0140892
+theme_override_font_sizes/font_size = 100
+text = "1"
+
+[node name="Node2D3" type="Node2D" parent="."]
+position = Vector2(1587, -564)
+
+[node name="Label" type="Label" parent="Node2D3"]
+offset_left = -35.9999
+offset_top = -76.0001
+offset_right = 21.0001
+offset_bottom = 64.9999
+rotation = -0.0140892
+theme_override_font_sizes/font_size = 100
+text = "2"
+
+[node name="CanvasLayerForma" type="Node2D" parent="."]
+
+[node name="MessageLabel" type="Label" parent="CanvasLayerForma"]
+visible = false
+offset_left = 562.0
+offset_top = -863.0
+offset_right = 1430.0
+offset_bottom = -726.0
+rotation = -1.57853
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 60
+
+[node name="CanvasLayer" type="Node2D" parent="."]
+
+[node name="MessageLabel" type="Label" parent="CanvasLayer"]
+visible = false
+offset_left = 2739.0
+offset_top = -888.0
+offset_right = 4185.0
+offset_bottom = -751.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "Puzzle de Numeros concluído!"
+
+[node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
+position = Vector2(2253, -106)
 
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]
