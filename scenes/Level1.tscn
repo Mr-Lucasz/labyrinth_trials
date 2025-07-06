@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cyqqyiphxnnc1"]
+[gd_scene load_steps=34 format=3 uid="uid://cyqqyiphxnnc1"]
 
 [ext_resource type="Texture2D" uid="uid://etach0bxs0c" path="res://maps/mapafase1.png" id="1_odhdn"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_dw26h"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://d4lfd2pe5ltfd" path="res://assets/setas.png" id="12_2meft"]
 [ext_resource type="Texture2D" uid="uid://dm23r0k7idper" path="res://assets/setaRedonda.png" id="13_0xqs2"]
 [ext_resource type="Script" uid="uid://d3s7r2mnh3bbn" path="res://scripts/Slot.gd" id="14_0xqs2"]
+[ext_resource type="AudioStream" uid="uid://cctorjg8t3ksr" path="res://sons/GarnaVutka - Moment of Inspiration (Full version).wav" id="16_av1gt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(141.353, 148.75)
@@ -65,6 +66,15 @@ size = Vector2(196, 243)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t46sy"]
 size = Vector2(206, 237)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_av1gt"]
+radius = 89.1403
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r7dij"]
+radius = 90.0056
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2ouud"]
+radius = 90.3549
 
 [node name="Level1" type="Node2D"]
 
@@ -230,21 +240,6 @@ rotation = -0.0116042
 scale = Vector2(2.4708, 2.53008)
 texture = ExtResource("12_2meft")
 
-[node name="SetaMuda1" type="Sprite2D" parent="."]
-position = Vector2(2143, -1764)
-scale = Vector2(0.206055, 0.165527)
-texture = ExtResource("13_0xqs2")
-
-[node name="SetaMuda2" type="Sprite2D" parent="."]
-position = Vector2(2330, -1765)
-scale = Vector2(0.208496, 0.166504)
-texture = ExtResource("13_0xqs2")
-
-[node name="SetaMuda3" type="Sprite2D" parent="."]
-position = Vector2(2528, -1758)
-scale = Vector2(0.197754, 0.159668)
-texture = ExtResource("13_0xqs2")
-
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(-28, 606)
 script = SubResource("GDScript_2meft")
@@ -387,6 +382,61 @@ slot_type = "Numero1"
 position = Vector2(-2, 3)
 shape = SubResource("RectangleShape2D_t46sy")
 
+[node name="ArrowSlots" type="Node2D" parent="."]
+
+[node name="Seta1" type="StaticBody2D" parent="ArrowSlots" groups=["arrow"]]
+position = Vector2(2135, -1791)
+rotation = 6.29323
+
+[node name="Sprite2D" type="Sprite2D" parent="ArrowSlots/Seta1"]
+position = Vector2(1, 6)
+scale = Vector2(0.203125, 0.172852)
+texture = ExtResource("13_0xqs2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArrowSlots/Seta1"]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_av1gt")
+
+[node name="Seta2" type="StaticBody2D" parent="ArrowSlots" groups=["arrow"]]
+position = Vector2(2321, -1791)
+rotation = 1.57656
+
+[node name="Sprite2D" type="Sprite2D" parent="ArrowSlots/Seta2"]
+position = Vector2(0.0253105, -0.999655)
+scale = Vector2(0.205322, 0.177734)
+texture = ExtResource("13_0xqs2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArrowSlots/Seta2"]
+position = Vector2(3.04971, -1.92341)
+shape = SubResource("CircleShape2D_r7dij")
+
+[node name="Seta3" type="StaticBody2D" parent="ArrowSlots" groups=["arrow"]]
+position = Vector2(2516, -1798)
+rotation = -1.56899
+
+[node name="Sprite2D" type="Sprite2D" parent="ArrowSlots/Seta3"]
+position = Vector2(0.249982, 1.75008)
+scale = Vector2(0.200683, 0.185059)
+texture = ExtResource("13_0xqs2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArrowSlots/Seta3"]
+rotation = -0.00402586
+shape = SubResource("CircleShape2D_2ouud")
+
+[node name="Node2D6" type="Node2D" parent="."]
+position = Vector2(2224, -2183)
+rotation = 1.56021
+
+[node name="Label" type="Label" parent="Node2D6"]
+offset_left = -98.7104
+offset_top = 538.985
+offset_right = 1456.29
+offset_bottom = 693.985
+rotation = -1.56348
+theme_override_font_sizes/font_size = 55
+text = "Ajuste as setas abaixo conforme o gabarito
+ para mudar a posição das setas clique E nelas"
+
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(100, -1232)
 
@@ -415,7 +465,6 @@ na ordem correta"
 
 [node name="Node2D4" type="Node2D" parent="."]
 position = Vector2(1248, -1516)
-scale = Vector2(1, 1)
 
 [node name="Label" type="Label" parent="Node2D4"]
 offset_left = -35.9999
@@ -474,7 +523,33 @@ theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_font_sizes/font_size = 60
 text = "Puzzle de Numeros concluído!"
 
+[node name="CanvasLayerFinish" type="Node2D" parent="."]
+
+[node name="MessageLabel" type="Label" parent="CanvasLayerFinish"]
+visible = false
+offset_left = 2543.0
+offset_top = -263.0
+offset_right = 3641.0
+offset_bottom = -8.0
+theme_override_colors/font_color = Color(0, 1, 0.882353, 1)
+theme_override_font_sizes/font_size = 60
+
+[node name="CanvasLayerSetas" type="Node2D" parent="."]
+
+[node name="MessageLabel" type="Label" parent="CanvasLayerSetas"]
+offset_left = 1965.0
+offset_top = -1699.0
+offset_right = 2748.0
+offset_bottom = -1616.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 60
+
 [node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
 position = Vector2(2253, -106)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_av1gt")
+volume_db = -43.187
+autoplay = true
 
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]
