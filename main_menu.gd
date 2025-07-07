@@ -56,8 +56,10 @@ func _on_button_carregar_pressed():
 
 # Esta função será chamada pelo botão "Ranking".
 func _on_button_ranking_pressed():
+	print("score_list:", score_list) # Debugging line to check the score_list
 	_populate_ranking_window()
 	ranking_window.popup_centered()
+
 
 # Esta função será chamada pelo botão "Sobre".
 func _on_button_sobre_pressed():
@@ -155,27 +157,34 @@ func _on_nickname_window_close_requested() -> void:
 
 func _populate_ranking_window():
 	score_list.clear() # Limpa a lista antes de adicionar novos itens
-	
+
 	var scores = Global.load_ranking()
-	
+	print("DEBUG: Scores carregados do arquivo:", scores)
+
 	if scores.is_empty():
 		score_list.add_item("Nenhuma pontuação registrada ainda.")
+		# Garante que a ItemList tenha tamanho mínimo visível
+		score_list.custom_minimum_size = Vector2(300, 150)
 		return
 
 	# Ordena os scores pelo tempo (menor primeiro)
-	scores.sort_custom(func(a, b): return a.time < b.time)
-	
+	scores.sort_custom(func(a, b): return a["time"] < b["time"])
+
 	# Exibe os 5 melhores scores
 	var num_scores_to_show = min(5, scores.size())
 	for i in range(num_scores_to_show):
 		var score_data = scores[i]
-		var nickname = score_data.get("nickname", "???")
-		var time_in_seconds = score_data.get("time", 0.0)
-		
-		var time_str = _format_time(time_in_seconds)
-		
-		var entry_text = "%d. %s - %s" % [i + 1, nickname.to_upper(), time_str]
-		score_list.add_item(entry_text)
+		if typeof(score_data) == TYPE_DICTIONARY:
+			var nickname = score_data.get("nickname", "???")
+			var time_in_seconds = score_data.get("time", 0.0)
+			var time_str = _format_time(time_in_seconds)
+			var entry_text = "%d. %s - %s" % [i + 1, nickname.to_upper(), time_str]
+			score_list.add_item(entry_text)
+		else:
+			score_list.add_item("%d. Dado inválido" % [i + 1])
+
+	# Garante que a ItemList tenha tamanho mínimo visível
+	score_list.custom_minimum_size = Vector2(300, 150)
 
 func _format_time(total_seconds: float) -> String:
 	var minutes = int(total_seconds) / 60

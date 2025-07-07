@@ -30,8 +30,8 @@ func get_save_file_path(nickname: String) -> String:
 func save_game_at_checkpoint(player_state: Dictionary):
 	# Esta função agora recebe o estado do jogador e o combina com o estado global.
 	var puzzles_completed = int(player_state.get("shape_completed", false)) + \
-	                        int(player_state.get("number_completed", false)) + \
-	                        int(player_state.get("arrow_completed", false))
+							int(player_state.get("number_completed", false)) + \
+							int(player_state.get("arrow_completed", false))
 
 	var save_data = {
 		"nickname": player_nickname,
@@ -109,29 +109,37 @@ func apply_loaded_data(data: Dictionary) -> void:
 func add_score(nickname: String, time_seconds: float) -> void:
 	var ranking = load_ranking()
 	ranking.append({"nickname": nickname, "time": time_seconds})
-	
+
+	# Ordena o ranking antes de salvar
+	ranking.sort_custom(func(a, b): return a["time"] < b["time"])
+
 	# Salva o ranking atualizado
 	var file = FileAccess.open(RANKING_FILE_PATH, FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(ranking))
 		file.close()
 		print("Nova pontuação adicionada ao ranking para %s: %f segundos" % [nickname, time_seconds])
+		print("Ranking salvo em: %s" % ProjectSettings.globalize_path(RANKING_FILE_PATH))
 	else:
 		print("Erro ao salvar o ranking!")
 
 func load_ranking() -> Array:
+# Garante que o ranking sempre será um Array válido, mesmo se o arquivo estiver corrompido
 	if not FileAccess.file_exists(RANKING_FILE_PATH):
 		return []
-	
+
 	var file = FileAccess.open(RANKING_FILE_PATH, FileAccess.READ)
 	if file:
 		var json_text = file.get_as_text()
 		file.close()
 		var json = JSON.new()
 		var parse_result = json.parse(json_text)
-		if parse_result == OK:
+		if parse_result == OK and typeof(json.data) == TYPE_ARRAY:
 			return json.data as Array
-	
+		else:
+			print("Ranking inválido ou corrompido. Resetando ranking.")
+			return []
+
 	print("Erro ao carregar ou analisar o arquivo de ranking.")
 	return []
 # Função para resetar os dados do jogo para um novo jogo

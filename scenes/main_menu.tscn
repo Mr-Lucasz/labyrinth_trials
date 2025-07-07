@@ -279,6 +279,7 @@ scale = Vector2(2, 2)
 speed = 500.0
 
 [node name="SobreWindow" type="AcceptDialog" parent="."]
+title = "SOBREc"
 initial_position = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SobreWindow"]
@@ -317,6 +318,8 @@ layout_mode = 2
 text = "Fechar"
 
 [node name="RankingWindow" type="AcceptDialog" parent="."]
+title = "RANKING"
+initial_position = 2
 
 [node name="ScoreContainer" type="VBoxContainer" parent="RankingWindow"]
 offset_right = 40.0
