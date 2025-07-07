@@ -30,7 +30,7 @@ func _ready():
 			if Global.checkpoint_alcancado:
 				print("Checkpoint alcançado, carregando estado...")
 				jogador.player_name = Global.player_nickname
-				jogador.load_game(Global.player_nickname)
+				jogador._initialize_from_global_state()
 				
 				# Restaurar estado visual (checkpoints, mensagens, etc.)
 				_update_visual_state_from_save()
