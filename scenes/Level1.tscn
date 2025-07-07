@@ -1,9 +1,10 @@
-[gd_scene load_steps=34 format=3 uid="uid://cyqqyiphxnnc1"]
+[gd_scene load_steps=36 format=3 uid="uid://cyqqyiphxnnc1"]
 
 [ext_resource type="Texture2D" uid="uid://etach0bxs0c" path="res://maps/mapafase1.png" id="1_odhdn"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_dw26h"]
 [ext_resource type="Script" uid="uid://beudoyp7syxxc" path="res://scripts/area_2d_(portal_saída).gd" id="3_lrl65"]
 [ext_resource type="Script" uid="uid://cv1h56d5mi14p" path="res://scripts/camera_2d.gd" id="4_camera"]
+[ext_resource type="Script" uid="uid://ml5hng0ot0ag" path="res://scripts/Level1Manager.gd" id="4_level_manager"]
 [ext_resource type="Texture2D" uid="uid://b8pdl4hoip2rn" path="res://assets/campo_formula.png" id="5_4dyl1"]
 [ext_resource type="Texture2D" uid="uid://dxow6gi1fo24j" path="res://assets/bola.png" id="6_jxjwb"]
 [ext_resource type="Texture2D" uid="uid://dl6bb5tf5ener" path="res://assets/triangulo.png" id="7_2meft"]
@@ -16,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://dm23r0k7idper" path="res://assets/setaRedonda.png" id="13_0xqs2"]
 [ext_resource type="Script" uid="uid://d3s7r2mnh3bbn" path="res://scripts/Slot.gd" id="14_0xqs2"]
 [ext_resource type="AudioStream" uid="uid://cctorjg8t3ksr" path="res://sons/GarnaVutka - Moment of Inspiration (Full version).wav" id="16_av1gt"]
+[ext_resource type="FontFile" uid="uid://dreeeemt8l4yx" path="res://fonts/PixelifySans-VariableFont_wght.ttf" id="17_2ouud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(141.353, 148.75)
@@ -77,6 +79,7 @@ radius = 90.0056
 radius = 90.3549
 
 [node name="Level1" type="Node2D"]
+script = ExtResource("4_level_manager")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1837, -1146)
@@ -122,11 +125,6 @@ polygon = PackedVector2Array(-448, -1958.72, -44.1968, -1953.4, -44.1968, -1880.
 
 [node name="CollisionPolygon2D26" type="CollisionPolygon2D" parent="Paredes"]
 position = Vector2(3606, 1590)
-scale = Vector2(0.588278, 1.13853)
-polygon = PackedVector2Array(-448, -1958.72, -44.1968, -1953.4, -44.1968, -1880.5, -277.259, -1878.59, -448, -1877.19)
-
-[node name="CollisionPolygon2D26" type="CollisionPolygon2D" parent="Paredes/CollisionPolygon2D26"]
-position = Vector2(2996, 1598)
 scale = Vector2(0.588278, 1.13853)
 polygon = PackedVector2Array(-448, -1958.72, -44.1968, -1953.4, -44.1968, -1880.5, -277.259, -1878.59, -448, -1877.19)
 
@@ -224,6 +222,10 @@ polygon = PackedVector2Array(-2988.65, -129.917, -2418.84, -129.917, -1854.56, -
 position = Vector2(3585.27, -1210.86)
 scale = Vector2(0.529296, 0.213647)
 polygon = PackedVector2Array(-3110.3, 336.349, -1791.14, 382.467, -1816.13, -10.0161, -3104.63, -131.712)
+
+[node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
+position = Vector2(2253, -106)
+speed = 500.0
 
 [node name="Area2D (Portal saída)" type="Area2D" parent="."]
 position = Vector2(1837, -1146)
@@ -544,8 +546,28 @@ offset_bottom = -1616.0
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_font_sizes/font_size = 60
 
-[node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
+[node name="Jogador2" parent="." instance=ExtResource("2_dw26h")]
+visible = false
 position = Vector2(2253, -106)
+speed = 500.0
+
+[node name="ButtonSair" type="Button" parent="."]
+offset_left = 3331.0
+offset_top = -184.0
+offset_right = 3606.0
+offset_bottom = -35.0
+theme_override_colors/font_hover_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_focus_color = Color(0.105882, 0.14902, 0.0627451, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_constants/h_separation = 2
+theme_override_constants/icon_max_width = 2
+theme_override_constants/align_to_largest_stylebox = 0
+theme_override_constants/line_spacing = 5
+theme_override_fonts/font = ExtResource("17_2ouud")
+theme_override_font_sizes/font_size = 80
+text = "SAIR"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("16_av1gt")
@@ -553,3 +575,4 @@ volume_db = -43.187
 autoplay = true
 
 [connection signal="body_entered" from="Area2D (Portal saída)" to="Area2D (Portal saída)" method="_on_body_entered"]
+[connection signal="pressed" from="ButtonSair" to="." method="_on_sair_button_pressed"]

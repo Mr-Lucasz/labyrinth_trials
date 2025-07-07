@@ -1,18 +1,29 @@
 # jogador.gd
 extends CharacterBody2D
 
-@export var speed: float = 300.0
+@export var speed: float = 300.0 # Player movement speed.
+
 const HOLD_OFFSET: Vector2 = Vector2(0, -24)
 
+var player_name: String = ""
 # ——— Flags dos puzzles ———
-var shape_completed: bool    = false
-var number_completed: bool   = false
-var arrow_completed: bool    = false
-var all_completed_printed: bool = false
+var shape_completed: bool = false
+var number_completed: bool = false
+var arrow_completed: bool = false
+var all_completed_printed: bool = false # Prevents multiple "congrats" messages.
+
+# --- Checkpoint ---
+var checkpoint_reached: bool = false
+
+# --- Cronômetro para Ranking ---
+var start_time: float = 0.0
+
 
 # ——— Puzzle numérico ———
+
 var number_sequence := ["Numero2", "Numero3", "Numero1"]
 var next_number_index := 0
+var _last_number_index := -1
 
 # ——— Proximidade e transportes ———
 var nearby_item:  Node2D = null
@@ -33,23 +44,56 @@ var arrow_targets := {
 }
 
 func _ready() -> void:
+	# --- Setup Inicial ---
+	_initialize_from_global_state()
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
 
-	message_label       = get_tree().current_scene.get_node("CanvasLayer/MessageLabel")       as Label
-	message_label_forma = get_tree().current_scene.get_node("CanvasLayerForma/MessageLabel") as Label
-	message_label_seta  = get_tree().current_scene.get_node("CanvasLayerSetas/MessageLabel") as Label
-	message_label_finish  = get_tree().current_scene.get_node("CanvasLayerFinish/MessageLabel") as Label
+	message_label       = get_tree().current_scene.get_node_or_null("CanvasLayer/MessageLabel") as Label
+	message_label_forma = get_tree().current_scene.get_node_or_null("CanvasLayerForma/MessageLabel") as Label
+	message_label_seta  = get_tree().current_scene.get_node_or_null("CanvasLayerSetas/MessageLabel") as Label
+	message_label_finish = get_tree().current_scene.get_node_or_null("CanvasLayerFinish/MessageLabel") as Label
 
-	message_label.visible       = false
-	message_label_forma.visible = false
-	message_label_seta.visible  = false
-	message_label_finish.visible  = false
+	if message_label:
+		message_label.visible = false
+	if message_label_forma:
+		message_label_forma.visible = false
+	if message_label_seta:
+		message_label_seta.visible = false
+	if message_label_finish:
+		message_label_finish.visible = false
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
+
+	# Debug: mostra qual número está esperando (apenas quando muda)
+	if not number_completed:
+		if _last_number_index != next_number_index:
+			print("[PuzzleNum] Esperado: ", number_sequence[next_number_index], " (índice: ", next_number_index, ")")
+			_last_number_index = next_number_index
+
+	# Botão para voltar ao menu principal (tecla ESC)
+	if Input.is_action_just_pressed("ui_cancel"):
+		return_to_main_menu()
+
+	# --- ATALHO DE DEBUG PARA TESTAR RANKING ---
+	# Pressione '9' para completar a fase instantaneamente
+	if OS.is_debug_build() and Input.is_action_just_pressed("debug_complete"):
+		_force_complete_and_rank()
+
+	# Verificação de conclusão dos puzzles
 	if shape_completed and number_completed and arrow_completed:
-		return
+		# Garante que labels antigos são escondidos
+		var canvas_layer = get_tree().current_scene.get_node_or_null("CanvasLayer")
+		var canvas_layer_forma = get_tree().current_scene.get_node_or_null("CanvasLayerForma")
+		if canvas_layer:
+			message_label = canvas_layer.get_node_or_null("MessageLabel") as Label
+			if message_label:
+				message_label.visible = false
+		if canvas_layer_forma:
+			message_label_forma = canvas_layer_forma.get_node_or_null("MessageLabel") as Label
+			if message_label_forma:
+				message_label_forma.visible = false
 
 	if Input.is_action_just_pressed("ui_select"):
 		if carried:
@@ -59,7 +103,65 @@ func _physics_process(delta: float) -> void:
 		elif nearby_arrow and not arrow_completed:
 			_rotate_arrow(nearby_arrow)
 
-func _handle_movement(delta: float) -> void:
+func _initialize_from_global_state():
+	# Carrega o estado do jogo a partir do singleton Global.
+	# Isso centraliza a lógica de save/load e simplifica o jogador.
+	var data = Global.get_player_state_for_level()
+	
+	shape_completed = data.get("shape_completed", false)
+	number_completed = data.get("number_completed", false)
+	arrow_completed = data.get("arrow_completed", false)
+	next_number_index = data.get("next_number_index", 0)
+	checkpoint_reached = data.get("checkpoint_reached", false)
+	all_completed_printed = data.get("all_completed_printed", false)
+	start_time = data.get("start_time", Time.get_unix_time_from_system())
+	
+	var start_pos = data.get("position", null)
+	if start_pos:
+		position = Vector2(start_pos["x"], start_pos["y"])
+	
+	print("Jogador inicializado para '%s' com %d puzzles completos." % [Global.player_nickname, data.get("puzzles_completados", 0)])
+	_update_puzzle_visuals()
+
+# Atualiza o estado visual dos puzzles baseado nos valores carregados
+func _update_puzzle_visuals() -> void:
+	# Atualizar o estado visual do puzzle de formas se estiver completo
+	if shape_completed and message_label_forma:
+		message_label_forma.text = "Puzzle de formas concluído!"
+		message_label_forma.visible = true
+	
+	# Atualizar o estado visual do puzzle de números se estiver completo
+	if number_completed and message_label:
+		message_label.text = "Puzzle de números concluído!"
+		message_label.visible = true
+	
+	# Atualizar o estado visual do puzzle de setas se estiver completo
+	if arrow_completed and message_label_seta:
+		message_label_seta.text = "Puzzle de setas concluído!"
+		message_label_seta.visible = true
+		
+	# Verificar se todos os puzzles estão concluídos
+	if shape_completed and number_completed and arrow_completed and message_label_finish:
+		message_label_finish.text = "Parabéns! 🎉 Você concluiu os puzzles\ndessa fase, vá para os próximos\ndesafios por aqui"
+		message_label_finish.visible = true
+		
+	# Atualizar os itens físicos nos puzzles, isso precisa ser implementado
+	# conforme o design específico da sua cena
+
+func _get_current_state() -> Dictionary:
+	# Coleta todos os dados relevantes do jogador em um dicionário para salvar.
+	return {
+		"shape_completed": shape_completed,
+		"number_completed": number_completed,
+		"arrow_completed": arrow_completed,
+		"next_number_index": next_number_index,
+		"checkpoint_reached": checkpoint_reached,
+		"all_completed_printed": all_completed_printed,
+		"position": { "x": position.x, "y": position.y },
+		"start_time": start_time
+	}
+
+func _handle_movement(_delta: float) -> void:
 	var iv = Vector2(
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
 		Input.get_action_strength("ui_down")  - Input.get_action_strength("ui_up")
@@ -145,9 +247,9 @@ func _rotate_arrow(arrow: Node2D) -> void:
 		_check_all_puzzles()
 
 func _check_arrows_complete() -> bool:
-	for name in arrow_targets.keys():
-		var a = get_tree().current_scene.get_node("ArrowSlots/" + name) as Node2D
-		if int(a.rotation_degrees) != arrow_targets[name]:
+	for arrow_name in arrow_targets.keys():
+		var a = get_tree().current_scene.get_node("ArrowSlots/" + arrow_name) as Node2D
+		if int(a.rotation_degrees) != arrow_targets[arrow_name]:
 			return false
 	return true
 
@@ -159,6 +261,7 @@ func _check_shape_complete() -> bool:
 
 func _on_shape_completed() -> void:
 	shape_completed = true
+
 	message_label_forma.text    = "Puzzle de formas concluído!"
 	message_label_forma.visible = true
 	_check_all_puzzles()
@@ -168,12 +271,46 @@ func _check_number_complete() -> bool:
 
 func _on_number_completed() -> void:
 	number_completed = true
+
 	message_label.text    = "Puzzle de números concluído!"
 	message_label.visible = true
 	_check_all_puzzles()
 
-func _check_all_puzzles() -> void:
-	if shape_completed and number_completed and arrow_completed and not all_completed_printed:		
+func _check_all_puzzles(return_to_menu := false) -> void:
+	var completed_count = int(shape_completed) + int(number_completed) + int(arrow_completed)
+	if completed_count == 2 and not checkpoint_reached:
+		_on_checkpoint_reached()
+	if shape_completed and number_completed and arrow_completed and not all_completed_printed:
 		message_label_finish.text = "Parabéns! 🎉 Você concluiu os puzzles\ndessa fase, vá para os próximos\ndesafios por aqui"
 		message_label_finish.visible = true
+		# Salva a pontuação no ranking
+		var final_time = Time.get_unix_time_from_system() - start_time
+		Global.add_score(Global.player_nickname, final_time)
 		all_completed_printed = true
+		if return_to_menu:
+			await get_tree().process_frame
+			return_to_main_menu()
+
+func _on_checkpoint_reached() -> void:
+	checkpoint_reached = true
+	if message_label:
+		message_label.text = "Checkpoint alcançado! Progresso salvo."
+		message_label.visible = true
+	# Delega o salvamento para o Global, enviando o estado atual do jogador.
+	Global.save_game_at_checkpoint(_get_current_state())
+	print("Checkpoint salvo para %s" % Global.player_nickname)
+
+func return_to_main_menu() -> void:
+	print("Voltando ao menu principal...")
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/main_menu.tscn")
+
+func _force_complete_and_rank() -> void:
+	# Evita registrar o score múltiplas vezes
+	if all_completed_printed:
+		return
+
+	print("DEBUG: Forçando conclusão da fase para teste de ranking.")
+	shape_completed = true
+	number_completed = true
+	arrow_completed = true
+	_check_all_puzzles(true) # Chama a função que calcula o tempo, salva o score e volta ao menu
