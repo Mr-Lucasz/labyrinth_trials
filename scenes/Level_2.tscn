@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://pdl1ynbuhdvh"]
+
+[ext_resource type="Texture2D" uid="uid://b60nhubagallx" path="res://maps/mapafase2.png" id="1_2d6lq"]
+[ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_vlf2x"]
+[ext_resource type="Script" uid="uid://bit65f3gyagql" path="res://camera_2d.gd" id="3_ci4st"]
+
+[node name="Level2" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(779, -525)
+texture = ExtResource("1_2d6lq")
+
+[node name="Jogador" parent="." instance=ExtResource("2_vlf2x")]
+position = Vector2(577, -73)
+scale = Vector2(0.4, 0.4)
+
+[node name="Paredes" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Paredes"]
+polygon = PackedVector2Array(28, -385, 227, -385, 229, -159, 454, -154, 452, -387, 558, -385, 558, -580, 774, -580, 774, -753, 457, -753, 455, -773, 805, -773, 807, -553, 585, -555, 586, -369, 479, -366, 482, -134, 202, -134, 202, -363, 28, -366)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Paredes"]
+polygon = PackedVector2Array(227, -567, 227, -520, 364, -520, 365, -734, 337, -732, 339, -569)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Paredes"]
+polygon = PackedVector2Array(228, -772, 228, -719, 82, -721, 83, -982, 1468, -986, 1475, -756, 1162, -750, 1162, -557, 924, -554, 928, -373, 800, -357, 804, -159, 1048, -155, 1050, -385, 1468, -384, 1470, -332, 1350, -332, 1346, -368, 1211, -366, 1213, -320, 1079, -318, 1077, -136, 776, -134, 777, -385, 893, -387, 899, -576, 1132, -574, 1132, -774, 1445, -772, 1443, -969, 973, -962, 975, -648, 946, -648, 942, -962, 488, -968, 486, -890, 453, -886, 449, -964, 112, -964, 114, -777)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("3_ci4st")
+target_map = NodePath("../Background")

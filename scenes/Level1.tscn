@@ -85,6 +85,7 @@ script = ExtResource("4_level_manager")
 position = Vector2(1837, -1146)
 zoom = Vector2(0.3, 0.3)
 script = ExtResource("4_camera")
+target_map = NodePath("../Sprite2D (mapafase1)")
 
 [node name="Sprite2D (mapafase1)" type="Sprite2D" parent="."]
 position = Vector2(1837, -1144)

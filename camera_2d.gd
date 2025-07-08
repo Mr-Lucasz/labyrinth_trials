@@ -8,7 +8,7 @@ func _ready():
 	if target_map.is_empty():
 		print("ERRO DE CÂMERA: O mapa alvo (target_map) não foi definido!")
 		return
-	
+	 
 	var map_sprite = get_node_or_null(target_map) as Sprite2D
 	if not map_sprite:
 		print("ERRO DE CÂMERA: O nó alvo não é um Sprite2D.")
