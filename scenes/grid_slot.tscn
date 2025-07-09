@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://be20dxts31kje"]
+
+[ext_resource type="Script" uid="uid://ca08buyd86dyv" path="res://scripts/grid_slot.gd" id="1_va3o0"]
+[ext_resource type="Texture2D" uid="uid://4h2vacooda4j" path="res://assets/feedback_glows.png" id="2_b5pc3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b5pc3"]
+size = Vector2(44, 44)
+
+[node name="grid_slot" type="Area2D"]
+script = ExtResource("1_va3o0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(23, 23)
+shape = SubResource("RectangleShape2D_b5pc3")
+
+[node name="FeedbackSprite" type="Sprite2D" parent="CollisionShape2D"]
+position = Vector2(0, -1)
+scale = Vector2(0.0824609, 0.0710678)
+texture = ExtResource("2_b5pc3")
+hframes = 2

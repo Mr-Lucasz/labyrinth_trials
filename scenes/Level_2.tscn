@@ -1,10 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://pdl1ynbuhdvh"]
+[gd_scene load_steps=6 format=3 uid="uid://pdl1ynbuhdvh"]
 
 [ext_resource type="Texture2D" uid="uid://b60nhubagallx" path="res://maps/mapafase2.png" id="1_2d6lq"]
+[ext_resource type="Script" uid="uid://bysewi4vujk2s" path="res://scripts/level_2.gd" id="1_lkt8x"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_vlf2x"]
+[ext_resource type="PackedScene" uid="uid://dnxf6h7pcckjn" path="res://scenes/puzzle_forma_sequencia.tscn" id="3_ci4st"]
 
-[node name="Level2" type="Node2D"]
-scale = Vector2(1.7087, 1.60647)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ci4st"]
+size = Vector2(255.509, 217.325)
+
+[node name="Level2" type="Node2D" node_paths=PackedStringArray("puzzle_formas")]
+scale = Vector2(2.09386, 2.10744)
+script = ExtResource("1_lkt8x")
+puzzle_formas = NodePath("puzzle_forma_sequencia")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(779, -525)
@@ -26,5 +33,19 @@ position = Vector2(544, -84)
 scale = Vector2(0.46045, 0.488298)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(770.178, -510.436)
-zoom = Vector2(0.425, 0.375)
+position = Vector2(767.959, -520.537)
+scale = Vector2(1.16993, 1.203)
+zoom = Vector2(0.35, 0.29)
+
+[node name="puzzle_forma_sequencia" parent="." instance=ExtResource("3_ci4st")]
+position = Vector2(1289.48, -643.909)
+scale = Vector2(0.325579, 0.288528)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1290.68, -639.164)
+shape = SubResource("RectangleShape2D_ci4st")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
