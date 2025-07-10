@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://pdl1ynbuhdvh"]
 
 [ext_resource type="Texture2D" uid="uid://b60nhubagallx" path="res://maps/mapafase2.png" id="1_2d6lq"]
-[ext_resource type="Script" path="res://scripts/level_2.gd" id="1_lkt8x"]
+[ext_resource type="Script" uid="uid://bysewi4vujk2s" path="res://scripts/level_2.gd" id="1_lkt8x"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_vlf2x"]
 [ext_resource type="PackedScene" uid="uid://dnxf6h7pcckjn" path="res://scenes/puzzle_forma_sequencia.tscn" id="3_ci4st"]
-[ext_resource type="Script" path="res://scripts/activation_area.gd" id="5_uih6o"]
+[ext_resource type="Script" uid="uid://do8bw7if0vmky" path="res://scripts/activation_area.gd" id="5_uih6o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ci4st"]
 size = Vector2(255.509, 217.325)
@@ -19,6 +19,7 @@ position = Vector2(779, -525)
 texture = ExtResource("1_2d6lq")
 
 [node name="Paredes" type="StaticBody2D" parent="."]
+collision_layer = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Paredes"]
 polygon = PackedVector2Array(28, -385, 227, -385, 229, -159, 454, -154, 452, -387, 558, -385, 558, -580, 774, -580, 774, -753, 457, -753, 455, -773, 805, -773, 807, -553, 585, -555, 586, -369, 479, -366, 482, -134, 202, -134, 202, -363, 28, -366)
@@ -43,7 +44,6 @@ position = Vector2(1292.35, -634.419)
 scale = Vector2(0.350705, 0.304969)
 
 [node name="ActivationArea" type="Area2D" parent="." node_paths=PackedStringArray("puzzle_node")]
-scale = Vector2(1, 1)
 collision_layer = 0
 script = ExtResource("5_uih6o")
 puzzle_node = NodePath("../puzzle_forma_sequencia")

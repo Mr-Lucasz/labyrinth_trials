@@ -86,6 +86,7 @@ scale = Vector2(2.37662, 2.24)
 texture = ExtResource("1_odhdn")
 
 [node name="Paredes" type="StaticBody2D" parent="."]
+collision_layer = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Paredes"]
 position = Vector2(10.8807, 93.3477)
