@@ -154,12 +154,12 @@ sprite_frames = SubResource("SpriteFrames_1lopk")
 animation = &"andando_up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(104.5, -137.5)
+position = Vector2(83, -137)
 shape = SubResource("RectangleShape2D_g1ob3")
 
 [node name="PickupDetector" type="Area2D" parent="."]
 position = Vector2(101, -79)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetector"]
-position = Vector2(0, -64)
+position = Vector2(-16, -64)
 shape = SubResource("CircleShape2D_qcln2")

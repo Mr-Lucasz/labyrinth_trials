@@ -1,15 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://pdl1ynbuhdvh"]
+[gd_scene load_steps=8 format=3 uid="uid://pdl1ynbuhdvh"]
 
 [ext_resource type="Texture2D" uid="uid://b60nhubagallx" path="res://maps/mapafase2.png" id="1_2d6lq"]
 [ext_resource type="Script" uid="uid://bysewi4vujk2s" path="res://scripts/level_2.gd" id="1_lkt8x"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_vlf2x"]
 [ext_resource type="PackedScene" uid="uid://dnxf6h7pcckjn" path="res://scenes/puzzle_forma_sequencia.tscn" id="3_ci4st"]
 [ext_resource type="Script" uid="uid://do8bw7if0vmky" path="res://scripts/activation_area.gd" id="5_uih6o"]
+[ext_resource type="PackedScene" uid="uid://dgkbwt2un42v5" path="res://scenes/puzzle_quebra_cabeca.tscn" id="6_wl4sj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ci4st"]
 size = Vector2(255.509, 217.325)
 
 [node name="Level2" type="Node2D" node_paths=PackedStringArray("puzzle_formas")]
+position = Vector2(-94, -166)
 scale = Vector2(2.09386, 2.10744)
 script = ExtResource("1_lkt8x")
 puzzle_formas = NodePath("puzzle_forma_sequencia")
@@ -51,6 +53,10 @@ puzzle_node = NodePath("../puzzle_forma_sequencia")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ActivationArea"]
 position = Vector2(1290.68, -639.164)
 shape = SubResource("RectangleShape2D_ci4st")
+
+[node name="PuzzleQuebraCabeca" parent="." instance=ExtResource("6_wl4sj")]
+position = Vector2(1209.25, -198.345)
+scale = Vector2(0.320098, 0.316533)
 
 [connection signal="body_entered" from="ActivationArea" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="ActivationArea" to="ActivationArea" method="_on_body_entered"]

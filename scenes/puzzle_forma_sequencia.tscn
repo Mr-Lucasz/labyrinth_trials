@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnxf6h7pcckjn"]
+[gd_scene load_steps=6 format=3 uid="uid://dnxf6h7pcckjn"]
 
 [ext_resource type="Texture2D" uid="uid://g77r6ik2nv3c" path="res://assets/grid.png" id="1_gniq6"]
 [ext_resource type="PackedScene" uid="uid://be20dxts31kje" path="res://scenes/grid_slot.tscn" id="1_lddor"]
 [ext_resource type="Script" uid="uid://dawiwtpu7m3il" path="res://scripts/puzzle_forma_sequencia.gd" id="1_oh4rd"]
+[ext_resource type="AudioStream" uid="uid://b2pdk648ejf5c" path="res://sons/som_sucesso.mp3" id="4_oh4rd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oh4rd"]
 size = Vector2(551, 538)
@@ -70,3 +71,8 @@ collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_oh4rd")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(-177, 27)
+scale = Vector2(3.79711, 3.78583)
+stream = ExtResource("4_oh4rd")

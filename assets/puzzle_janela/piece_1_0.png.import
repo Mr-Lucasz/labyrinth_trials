@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://t0xa6yr65hj3"
-path="res://.godot/imported/tileset_fase2.png-c0c35ee2539c2c117414c075a58bdf93.ctex"
+uid="uid://dcuctmf267xsi"
+path="res://.godot/imported/piece_1_0.png-d2ece747748c7b936088afc9f4e9ddb2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesetmap1/tileset_fase2.png"
-dest_files=["res://.godot/imported/tileset_fase2.png-c0c35ee2539c2c117414c075a58bdf93.ctex"]
+source_file="res://assets/puzzle_janela/piece_1_0.png"
+dest_files=["res://.godot/imported/piece_1_0.png-d2ece747748c7b936088afc9f4e9ddb2.ctex"]
 
 [params]
 
