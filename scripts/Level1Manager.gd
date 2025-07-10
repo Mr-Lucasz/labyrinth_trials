@@ -48,7 +48,7 @@ func _ready():
 	
 	# Cria e adiciona o PuzzleManager se não existir na cena
 	if not puzzle_manager:
-		puzzle_manager = preload("res://scripts/PuzzleManager.gd").new()
+		#puzzle_manager = preload("res://scripts/PuzzleManager.gd").new()
 		add_child(puzzle_manager)
 	
 	# Verifica se o jogo foi carregado de um checkpoint

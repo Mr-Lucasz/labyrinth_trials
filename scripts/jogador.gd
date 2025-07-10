@@ -81,27 +81,16 @@ func _physics_process(delta: float) -> void:
 	if OS.is_debug_build() and Input.is_action_just_pressed("debug_complete"):
 		_force_complete_and_rank()
 
-	# Verificação de conclusão dos puzzles
-	if shape_completed and number_completed and arrow_completed:
-		# Garante que labels antigos são escondidos
-		var canvas_layer = get_tree().current_scene.get_node_or_null("CanvasLayer")
-		var canvas_layer_forma = get_tree().current_scene.get_node_or_null("CanvasLayerForma")
-		if canvas_layer:
-			message_label = canvas_layer.get_node_or_null("MessageLabel") as Label
-			if message_label:
-				message_label.visible = false
-		if canvas_layer_forma:
-			message_label_forma = canvas_layer_forma.get_node_or_null("MessageLabel") as Label
-			if message_label_forma:
-				message_label_forma.visible = false
 
 	if Input.is_action_just_pressed("ui_select"):
 		if carried:
 			_drop_item()
 		elif nearby_item:
 			_pick_item(nearby_item)
-		elif nearby_arrow and not arrow_completed:
+		# só roda setas se não tiver nenhum pickable por perto
+		elif nearby_arrow and not arrow_completed and nearby_item == null:
 			_rotate_arrow(nearby_arrow)
+
 
 func _initialize_from_global_state():
 	# Carrega o estado do jogo a partir do singleton Global.
@@ -194,6 +183,19 @@ func _on_body_exited(body: Node) -> void:
 		nearby_arrow = null
 
 func _pick_item(item: Node2D) -> void:
+	# ——— Impede pegar formas já concluídas ———
+	if shape_completed and item.item_type in ["Triangulo", "Circulo", "Quadrado"]:
+		return
+	# ——— Impede pegar números já concluídos ———
+	if number_completed and item.item_type in ["Numero1", "Numero2", "Numero3"]:
+		return
+	# ——— Impede interagir com setas já concluídas ———
+	if arrow_completed and item.is_in_group("arrow"):
+		return
+
+	if carried != null:
+		_drop_item()
+		
 	carried = item
 	item.get_parent().remove_child(item)
 	add_child(item)
@@ -202,6 +204,7 @@ func _pick_item(item: Node2D) -> void:
 		item.get_node("CollisionShape2D").disabled = true
 
 func _drop_item() -> void:
+	# 1) calcula posição de drop e faz reparent seguro
 	var drop_pos = to_global(carried.position)
 	remove_child(carried)
 	get_tree().current_scene.add_child(carried)
@@ -209,17 +212,22 @@ func _drop_item() -> void:
 	if carried.has_node("CollisionShape2D"):
 		carried.get_node("CollisionShape2D").disabled = false
 
-	# Puzzle de formas
-	if not shape_completed:
+	# 2) tenta o puzzle de FORMAS (só se ainda não concluído e se o item for uma forma)
+	if not shape_completed and carried.item_type in ["Triangulo", "Circulo", "Quadrado"]:
 		for zone in get_tree().get_nodes_in_group("drop_zone"):
-			if zone.global_position.distance_to(drop_pos) < 32 and zone.accepts(carried):
-				zone.snap_item(carried)
-				break
-		if _check_shape_complete():
-			_on_shape_completed()
+			if zone.global_position.distance_to(drop_pos) < 32:
+				# encontrou uma zona de forma próxima
+				if zone.accepts(carried):
+					zone.snap_item(carried)
+					if _check_shape_complete():
+						_on_shape_completed()
+				# pare de tentar qualquer outro puzzle
+				nearby_item = null
+				carried = null
+				return
 
-	# Puzzle numérico
-	if not number_completed:
+	# 3) tenta o puzzle de NÚMEROS (só se não concluído e se for um número)
+	if not number_completed and carried.item_type.begins_with("Numero"):
 		for zone in get_tree().get_nodes_in_group("drop_zone_number"):
 			if zone.global_position.distance_to(drop_pos) < 32:
 				var expected = number_sequence[next_number_index]
@@ -228,12 +236,15 @@ func _drop_item() -> void:
 					next_number_index += 1
 					if _check_number_complete():
 						_on_number_completed()
-				else:
-					carried.global_position = drop_pos + Vector2(0,16)
-				break
+				# pare aqui também
+				nearby_item = null
+				carried = null
+				return
 
+	# 4) se chegou aqui, não entrou em nenhum slot: solta “no chão” onde largou
 	nearby_item = null
-	carried     = null
+	carried = null
+
 
 func _rotate_arrow(arrow: Node2D) -> void:
 	arrow.rotation_degrees = wrapf(arrow.rotation_degrees + 90.0, 0.0, 360.0)
@@ -241,11 +252,15 @@ func _rotate_arrow(arrow: Node2D) -> void:
 		var sp = arrow.get_node("Sprite2D") as Sprite2D
 		var target = arrow_targets.get(arrow.name, -1)
 		sp.modulate = Color(0,1,0) if int(arrow.rotation_degrees) == target else Color(1,1,1)
+
 	if _check_arrows_complete():
 		arrow_completed = true
 		message_label_seta.text    = "Puzzle de setas concluído!"
 		message_label_seta.visible = true
 		_check_all_puzzles()
+
+	# ➡️ protege contra rotações acidentais posteriores
+	nearby_arrow = null
 
 func _check_arrows_complete() -> bool:
 	for arrow_name in arrow_targets.keys():
