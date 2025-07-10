@@ -10,13 +10,14 @@ size = Vector2(44, 44)
 [node name="grid_slot" type="Area2D"]
 script = ExtResource("1_va3o0")
 
+[node name="forma_interativa" parent="." instance=ExtResource("3_6ldu5")]
+scale = Vector2(0.181542, 0.179964)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_b5pc3")
 
 [node name="FeedbackSprite" type="Sprite2D" parent="CollisionShape2D"]
-scale = Vector2(0.0824609, 0.0710678)
+position = Vector2(-3, 0)
+scale = Vector2(0.155074, 0.15002)
 texture = ExtResource("2_b5pc3")
 hframes = 2
-
-[node name="forma_interativa" parent="." instance=ExtResource("3_6ldu5")]
-scale = Vector2(0.181542, 0.179964)
