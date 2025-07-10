@@ -176,9 +176,10 @@ func _update_animation(iv: Vector2) -> void:
 	elif abs(iv.x) > abs(iv.y):
 		var anim = "andando_ladoR" if iv.x > 0 else "andando_ladoL"
 		$AnimatedSprite2D.play(anim)
+	elif iv.y < 0:
+		$AnimatedSprite2D.play("andando_up")
 	else:
-		var anim = "parado_costa" if iv.y < 0 else "parado_frente"
-		$AnimatedSprite2D.play(anim)
+		$AnimatedSprite2D.play("andando_down")
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("pickable") and carried == null:
