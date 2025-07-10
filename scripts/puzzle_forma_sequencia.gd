@@ -6,101 +6,99 @@ signal puzzle_concluido
 var puzzle_resolvido_flag = false
 
 @onready var slots_container = $GridSlots
-# Certifique-se de que o nó de áudio na sua cena tenha exatamente este nome.
-@onready var som_sucesso = $AudioStreamPlayer 
+@onready var som_sucesso = $AudioStreamPlayer
 
 func _ready():
-	# Esconde todos os feedbacks e conecta os sinais ao iniciar a cena.
+	# Conecta os sinais de todas as peças interativas.
 	for slot in slots_container.get_children():
-		# Conecta o sinal de cada peça para verificar a solução.
-		var peca_interativa = encontrar_peca_no_slot(slot)
-		if peca_interativa:
-			peca_interativa.forma_alterada.connect(verificar_solucao)
+		var peca = encontrar_peca_no_slot(slot)
+		if peca:
+			peca.forma_alterada.connect(verificar_solucao)
+		else:
+			print("AVISO: Slot '", slot.name, "' não contém uma peça interativa (forma_interativa).")
 
-		# Garante que o feedback comece invisível.
-		var feedback_sprite = slot.get_node_or_null("FeedbackSprite")
-		if feedback_sprite:
-			feedback_sprite.visible = false
-
-# --- NENHUMA ALTERAÇÃO NECESSÁRIA ATÉ AQUI ---
+		# Garante que todos os feedbacks comecem invisíveis.
+		var feedback = slot.get_node_or_null("FeedbackSprite")
+		if feedback:
+			feedback.visible = false
 
 func encontrar_peca_no_slot(slot_node):
+	# Esta função procura por um filho que tenha o script 'forma_interativa.gd'.
+	# É mais seguro do que checar pelo tipo 'Area2D'.
 	for child in slot_node.get_children():
-		# Assumindo que sua peça interativa herda de Area2D.
-		if child is Area2D:
+		if "forma_atual" in child: # Verifica se o nó tem a propriedade da nossa peça.
 			return child
 	return null
 
-# --- FUNÇÃO MODIFICADA ---
 func verificar_solucao():
 	if puzzle_resolvido_flag:
 		return
 
+	print("\n--- INICIANDO VERIFICAÇÃO ---")
 	var pecas_corretas = 0
-	
-	for slot in slots_container.get_children():
-		var peca_interativa = encontrar_peca_no_slot(slot)
-		var feedback_sprite = slot.get_node_or_null("FeedbackSprite")
+	var total_slots = slots_container.get_children().size()
 
-		# Pula a iteração se o slot não tiver a peça ou o feedback.
-		if not peca_interativa or not feedback_sprite:
+	for i in range(total_slots):
+		var slot = slots_container.get_child(i)
+		var peca = encontrar_peca_no_slot(slot)
+		var feedback = slot.get_node_or_null("FeedbackSprite")
+
+		# Pula este slot se algo estiver faltando, e nos avisa.
+		if not peca or not feedback:
+			print("Slot ", i, ": ERRO! Não encontrou a peça ou o feedback. Pulando.")
 			continue
 
-		# Verifica se a forma na peça é a forma correta para o slot.
-		if peca_interativa.forma_atual == slot.forma_correta:
-			# --- LÓGICA DE FEEDBACK CORRIGIDA ---
-			feedback_sprite.visible = true       # 1. Torna o feedback VISÍVEL.
-			feedback_sprite.modulate.a = 0.5     # 2. Define a TRANSPARÊNCIA (0.5 = 50%).
+		# --- PONTO CRÍTICO DA COMPARAÇÃO ---
+		# Adicionamos prints para ver os valores que estão sendo comparados.
+		print("Slot ", i, ": Comparando Peça (", peca.forma_atual, ") com Slot Correto (", slot.forma_correta, ")")
+
+		if peca.forma_atual == slot.forma_correta:
+			# CORRETO: Mostra o feedback e o torna translúcido.
+			print(" > Resultado: CORRETO.")
+			feedback.visible = true
+			feedback.modulate = Color(1.0, 1.0, 1.0, 0.5) # 50% de transparência
 			pecas_corretas += 1
 		else:
-			# Se a forma estiver incorreta, o feedback fica invisível.
-			feedback_sprite.visible = false
+			# INCORRETO: Garante que o feedback esteja escondido.
+			print(" > Resultado: INCORRETO.")
+			feedback.visible = false
 
-	# Verifica se todas as peças estão corretas.
-	if pecas_corretas == slots_container.get_child_count():
-		# Usa 'call_deferred' para garantir que a última atualização visual ocorra
-		# antes de desativar tudo.
+	print("--- FIM DA VERIFICAÇÃO: ", pecas_corretas, " de ", total_slots, " corretas. ---\n")
+
+	if pecas_corretas == total_slots:
 		call_deferred("puzzle_resolvido")
 
-# --- NENHUMA ALTERAÇÃO NECESSÁRIA EM set_interacao ---
 func set_interacao(ativa: bool):
 	if puzzle_resolvido_flag:
 		return
 
-	process_mode = Node.PROCESS_MODE_INHERIT if ativa else Node.PROCESS_MODE_DISABLED
-	
+	# Ativa ou desativa a interação nas peças.
 	for slot in slots_container.get_children():
-		var peca_interativa = encontrar_peca_no_slot(slot)
-		if peca_interativa:
-			peca_interativa.set_interativo(ativa)
-		
-		# Esconde todos os feedbacks quando o jogador sai da área de interação.
-		if not ativa:
-			var feedback_sprite = slot.get_node_or_null("FeedbackSprite")
-			if feedback_sprite:
-				feedback_sprite.visible = false
-			
+		var peca = encontrar_peca_no_slot(slot)
+		if peca:
+			peca.set_interativo(ativa)
+	
+	# A visibilidade do feedback agora é controlada APENAS por verificar_solucao.
+	# Esta é a correção principal para o feedback que aparecia direto.
 	if ativa:
-		# Ao entrar na área, reavalia a solução.
+		# Quando o jogador entra na área, verificamos o estado atual do puzzle.
 		verificar_solucao()
+	else:
+		# Quando o jogador sai, escondemos todos os feedbacks.
+		for slot in slots_container.get_children():
+			var feedback = slot.get_node_or_null("FeedbackSprite")
+			if feedback:
+				feedback.visible = false
 
-# --- FUNÇÃO MODIFICADA ---
 func puzzle_resolvido():
 	if puzzle_resolvido_flag:
 		return
 		
-	print("PARABÉNS! PUZZLE RESOLVIDO!")
+	print("!!! PARABÉNS! PUZZLE RESOLVIDO! !!!")
 	puzzle_resolvido_flag = true
 
-	# Toca o som de sucesso.
 	if som_sucesso:
 		som_sucesso.play()
 
-	# Emite o sinal para o mapa (level2.gd) remover a porta.
 	emit_signal("puzzle_concluido")
-	
-	# Desativa a interação com as peças permanentemente.
-	for slot in slots_container.get_children():
-		var peca_interativa = encontrar_peca_no_slot(slot)
-		if peca_interativa:
-			peca_interativa.set_interativo(false)
+	set_interacao(false) # Desativa o puzzle permanentemente.
