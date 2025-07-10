@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b60nhubagallx"
-path="res://.godot/imported/mapafase2.png-b5c9ce87d97674ec1a4ea6d83161f140.ctex"
+uid="uid://b1qu44fis00et"
+path="res://.godot/imported/shapes (1) (4).png-5e00bfdc4b506e2665ecd42cf9c188af.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://maps/mapafase2.png"
-dest_files=["res://.godot/imported/mapafase2.png-b5c9ce87d97674ec1a4ea6d83161f140.ctex"]
+source_file="res://assets/shapes (1) (4).png"
+dest_files=["res://.godot/imported/shapes (1) (4).png-5e00bfdc4b506e2665ecd42cf9c188af.ctex"]
 
 [params]
 

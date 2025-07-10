@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dh1r6m1uyxjkm"]
+
+[ext_resource type="Script" uid="uid://ch3fupqj20bup" path="res://scripts/forma_interativa.gd" id="1_2i81v"]
+[ext_resource type="Texture2D" uid="uid://b1qu44fis00et" path="res://assets/shapes (1) (4).png" id="2_uo88i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5cmng"]
+size = Vector2(241, 242)
+
+[sub_resource type="GDScript" id="GDScript_1ae5f"]
+script/source = "extends CollisionShape2D
+"
+
+[node name="forma_interativa" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_2i81v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5cmng")
+script = SubResource("GDScript_1ae5f")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.76628, 1.98633)
+texture = ExtResource("2_uo88i")
+hframes = 3
+region_enabled = true
+region_rect = Rect2(0.767883, 166.454, 1535.5, 178.968)
