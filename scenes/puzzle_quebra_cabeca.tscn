@@ -1,0 +1,95 @@
+[gd_scene load_steps=8 format=3 uid="uid://dgkbwt2un42v5"]
+
+[ext_resource type="Texture2D" uid="uid://g77r6ik2nv3c" path="res://assets/grid.png" id="1_wlh78"]
+[ext_resource type="Script" uid="uid://bixy8ao41vtjj" path="res://scripts/puzzle_quebra_cabeca.gd" id="1_xrlps"]
+[ext_resource type="PackedScene" uid="uid://7m8poajea5p8" path="res://scenes/Slot_quebra_cabeca.tscn" id="2_i7jfw"]
+[ext_resource type="AudioStream" uid="uid://b2pdk648ejf5c" path="res://sons/som_sucesso.mp3" id="4_5hjs8"]
+[ext_resource type="Script" uid="uid://w40e8oxoo1ik" path="res://scripts/puzzle_activation.gd" id="5_8jyf6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5hjs8"]
+size = Vector2(801, 793)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8jyf6"]
+size = Vector2(679, 663)
+
+[node name="PuzzleQuebraCabeca" type="Node2D"]
+script = ExtResource("1_xrlps")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_wlh78")
+
+[node name="SlotsContainer" type="Node2D" parent="."]
+
+[node name="Slot_0_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(-178, -152)
+scale = Vector2(8.2303, 8.51812)
+id_peca_atual = 1
+
+[node name="Slot_0_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(2, -151)
+scale = Vector2(7.84461, 8.15111)
+id_peca_correta = 1
+id_peca_atual = 2
+
+[node name="Slot_0_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(178, -150)
+scale = Vector2(8.38208, 8.45132)
+id_peca_correta = 2
+id_peca_atual = 5
+
+[node name="Slot_1_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(-178, 30)
+scale = Vector2(8.54885, 8.32617)
+id_peca_correta = 3
+id_peca_atual = 4
+
+[node name="Slot_1_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(0, 29)
+scale = Vector2(8.05796, 8.0362)
+id_peca_correta = 4
+id_peca_atual = 7
+
+[node name="Slot_1_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(176, 27)
+scale = Vector2(8.05796, 8.0362)
+id_peca_correta = 5
+id_peca_atual = 3
+
+[node name="Slot_2_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(-176, 196)
+scale = Vector2(8.0573, 7.35939)
+id_peca_correta = 6
+id_peca_atual = 8
+
+[node name="Slot_2_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(1, 193)
+scale = Vector2(7.84725, 7.059)
+id_peca_correta = 7
+id_peca_atual = 8
+
+[node name="Slot_2_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(178, 192)
+scale = Vector2(8.68213, 7.21908)
+id_peca_correta = 8
+id_peca_atual = 7
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_5hjs8")
+
+[node name="AreaDeAtivacao" type="Area2D" parent="."]
+script = ExtResource("5_8jyf6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDeAtivacao"]
+position = Vector2(4.5, 3.5)
+shape = SubResource("RectangleShape2D_5hjs8")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-3, 10)
+collision_layer = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(7.5, -6.5)
+shape = SubResource("RectangleShape2D_8jyf6")
+
+[connection signal="body_entered" from="AreaDeAtivacao" to="AreaDeAtivacao" method="_on_body_entered"]
+[connection signal="body_exited" from="AreaDeAtivacao" to="AreaDeAtivacao" method="_on_body_exited"]
