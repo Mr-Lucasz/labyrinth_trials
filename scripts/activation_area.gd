@@ -18,13 +18,12 @@ func _on_body_entered(body):
 	if body.is_in_group("player") and puzzle_node:
 		# Verifica se o puzzle já foi resolvido
 		var puzzle_resolvido = false
-		if puzzle_node.has_method("get") and puzzle_node.get("puzzle_resolvido_flag"):
-			puzzle_resolvido = true
-		elif puzzle_node.has_method("get") and puzzle_node.get("puzzle_resolvido"):
-			puzzle_resolvido = true
-		
+		if puzzle_node.has_method("get"):
+			if "puzzle_resolvido_flag" in puzzle_node:
+				puzzle_resolvido = puzzle_node.get("puzzle_resolvido_flag") == true
+			elif "puzzle_resolvido" in puzzle_node:
+				puzzle_resolvido = puzzle_node.get("puzzle_resolvido") == true
 		print("DEBUG: Puzzle resolvido = ", puzzle_resolvido, " para puzzle: ", puzzle_node.name)
-		
 		if not puzzle_resolvido:
 			print("Jogador entrou na área, ativando puzzle.")
 			if puzzle_node.has_method("set_interacao"):
@@ -43,15 +42,14 @@ func _on_body_exited(body):
 	if body.is_in_group("player") and puzzle_node:
 		# Verifica se o puzzle já foi resolvido
 		var puzzle_resolvido = false
-		if puzzle_node.has_method("get") and puzzle_node.get("puzzle_resolvido_flag"):
-			puzzle_resolvido = true
-		elif puzzle_node.has_method("get") and puzzle_node.get("puzzle_resolvido"):
-			puzzle_resolvido = true
-		
+		if puzzle_node.has_method("get"):
+			if "puzzle_resolvido_flag" in puzzle_node:
+				puzzle_resolvido = puzzle_node.get("puzzle_resolvido_flag") == true
+			elif "puzzle_resolvido" in puzzle_node:
+				puzzle_resolvido = puzzle_node.get("puzzle_resolvido") == true
 		if not puzzle_resolvido:
 			print("Jogador saiu da área, desativando puzzle.")
 			if puzzle_node.has_method("set_interacao"):
 				puzzle_node.set_interacao(false)
-		
 		if hint_label:
 			hint_label.visible = false
