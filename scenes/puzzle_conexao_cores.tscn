@@ -1,0 +1,93 @@
+[gd_scene load_steps=8 format=3 uid="uid://o5b6e0q3bo8b"]
+
+[ext_resource type="Script" uid="uid://dj00xirl61nle" path="res://scripts/puzzle_conexao_cores.gd" id="1_aen80"]
+[ext_resource type="Texture2D" uid="uid://ctyfo5dtoa0rx" path="res://assets/painel_puzzle.png" id="1_hgob6"]
+[ext_resource type="Texture2D" uid="uid://dwxut1jeb1wx4" path="res://assets/pinos.png" id="2_ivxyp"]
+[ext_resource type="Texture2D" uid="uid://f7142dh2d75n" path="res://assets/feedback.png" id="3_ivxyp"]
+[ext_resource type="Texture2D" uid="uid://b2u4m47gpic7m" path="res://assets/ChatGPT Image 10 de jul. de 2025, 14_32_01 (1).png" id="4_gfjc2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aen80"]
+size = Vector2(254, 268)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gfjc2"]
+size = Vector2(1120.12, 988.148)
+
+[node name="PuzzleConexaoCores" type="Node2D"]
+script = ExtResource("1_aen80")
+
+[node name="PainelSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_hgob6")
+
+[node name="PinosContainer" type="Node2D" parent="."]
+
+[node name="PinoVermelho" type="Sprite2D" parent="PinosContainer"]
+position = Vector2(-270, -442)
+scale = Vector2(0.773659, 0.826058)
+texture = ExtResource("2_ivxyp")
+region_enabled = true
+region_rect = Rect2(32.1349, 123.62, 317.609, 756.048)
+
+[node name="PinoAmarelo" type="Sprite2D" parent="PinosContainer"]
+position = Vector2(7, -445)
+scale = Vector2(0.752595, 0.822751)
+texture = ExtResource("4_gfjc2")
+region_enabled = true
+region_rect = Rect2(370.458, 123.62, 289.991, 756.048)
+
+[node name="PinoVerde" type="Sprite2D" parent="PinosContainer"]
+position = Vector2(251, -459)
+scale = Vector2(0.715017, 0.8375)
+texture = ExtResource("2_ivxyp")
+region_enabled = true
+region_rect = Rect2(681.162, 138.967, 293.443, 720.7)
+
+[node name="BotoesContainer" type="Node2D" parent="."]
+
+[node name="BotaoVermelho" type="Area2D" parent="BotoesContainer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BotoesContainer/BotaoVermelho"]
+position = Vector2(-270, 141)
+shape = SubResource("RectangleShape2D_aen80")
+
+[node name="BotaoAmarelo" type="Area2D" parent="BotoesContainer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BotoesContainer/BotaoAmarelo"]
+position = Vector2(4, 141)
+shape = SubResource("RectangleShape2D_aen80")
+
+[node name="BotaoVerde" type="Area2D" parent="BotoesContainer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BotoesContainer/BotaoVerde"]
+position = Vector2(270, 144)
+shape = SubResource("RectangleShape2D_aen80")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+scale = Vector2(0.752595, 0.822751)
+collision_layer = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(6.64355, -1.21552)
+shape = SubResource("RectangleShape2D_gfjc2")
+
+[node name="FeedbackSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-276, 168)
+scale = Vector2(0.60578, 0.450365)
+texture = ExtResource("3_ivxyp")
+hframes = 2
+
+[node name="FeedbackSprite2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-7.00003, 161)
+scale = Vector2(0.60578, 0.450365)
+texture = ExtResource("3_ivxyp")
+hframes = 2
+
+[node name="FeedbackSprite3" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(268, 172)
+scale = Vector2(0.60578, 0.450365)
+texture = ExtResource("3_ivxyp")
+hframes = 2

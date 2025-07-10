@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://pdl1ynbuhdvh"]
+[gd_scene load_steps=11 format=3 uid="uid://pdl1ynbuhdvh"]
 
 [ext_resource type="Texture2D" uid="uid://b60nhubagallx" path="res://maps/mapafase2.png" id="1_2d6lq"]
 [ext_resource type="Script" uid="uid://bysewi4vujk2s" path="res://scripts/level_2.gd" id="1_lkt8x"]
@@ -6,15 +6,19 @@
 [ext_resource type="PackedScene" uid="uid://dnxf6h7pcckjn" path="res://scenes/puzzle_forma_sequencia.tscn" id="3_ci4st"]
 [ext_resource type="Script" uid="uid://do8bw7if0vmky" path="res://scripts/activation_area.gd" id="5_uih6o"]
 [ext_resource type="PackedScene" uid="uid://dgkbwt2un42v5" path="res://scenes/puzzle_quebra_cabeca.tscn" id="6_wl4sj"]
+[ext_resource type="Texture2D" uid="uid://c2j22ciqlyi5" path="res://assets/objetos_dicas.png" id="7_at62m"]
+[ext_resource type="Texture2D" uid="uid://bdtuuym8figm7" path="res://assets/ChatGPT Image 10 de jul. de 2025, 14_29_02.png" id="8_at62m"]
+[ext_resource type="PackedScene" uid="uid://o5b6e0q3bo8b" path="res://scenes/puzzle_conexao_cores.tscn" id="9_puzzle_cores"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ci4st"]
 size = Vector2(255.509, 217.325)
 
-[node name="Level2" type="Node2D" node_paths=PackedStringArray("puzzle_formas")]
+[node name="Level2" type="Node2D" node_paths=PackedStringArray("puzzle_formas", "puzzle_cores")]
 position = Vector2(-94, -166)
 scale = Vector2(2.09386, 2.10744)
 script = ExtResource("1_lkt8x")
 puzzle_formas = NodePath("puzzle_forma_sequencia")
+puzzle_cores = NodePath("PuzzleConexaoCores")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(779, -525)
@@ -33,7 +37,7 @@ polygon = PackedVector2Array(227, -567, 227, -520, 364, -520, 365, -734, 337, -7
 polygon = PackedVector2Array(228, -772, 228, -719, 82, -721, 83, -982, 1468, -986, 1475, -756, 1162, -750, 1162, -557, 924, -554, 928, -373, 800, -357, 804, -159, 1048, -155, 1050, -385, 1468, -384, 1470, -332, 1350, -332, 1346, -368, 1211, -366, 1213, -320, 1079, -318, 1077, -136, 776, -134, 777, -385, 893, -387, 899, -576, 1132, -574, 1132, -774, 1445, -772, 1443, -969, 973, -962, 974.427, -762.541, 945.165, -762.541, 942, -962, 488, -968, 486, -890, 453, -886, 449, -964, 112, -964, 114, -777)
 
 [node name="Jogador" parent="." groups=["player"] instance=ExtResource("2_vlf2x")]
-position = Vector2(1256.05, -390.521)
+position = Vector2(87.8757, -408.553)
 scale = Vector2(0.46045, 0.488298)
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -58,7 +62,54 @@ shape = SubResource("RectangleShape2D_ci4st")
 position = Vector2(1209.25, -198.345)
 scale = Vector2(0.320098, 0.316533)
 
+[node name="ActivationAreaQuebraCabeca" type="Area2D" parent="." node_paths=PackedStringArray("puzzle_node")]
+collision_layer = 0
+script = ExtResource("5_uih6o")
+puzzle_node = NodePath("../PuzzleQuebraCabeca")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActivationAreaQuebraCabeca"]
+position = Vector2(1209.25, -198.345)
+shape = SubResource("RectangleShape2D_ci4st")
+
+[node name="PuzzleConexaoCores" parent="." instance=ExtResource("9_puzzle_cores")]
+position = Vector2(341.952, -260.031)
+scale = Vector2(0.254644, 0.241091)
+
+[node name="ActivationAreaCores" type="Area2D" parent="." node_paths=PackedStringArray("puzzle_node")]
+collision_layer = 0
+script = ExtResource("5_uih6o")
+puzzle_node = NodePath("../PuzzleConexaoCores")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActivationAreaCores"]
+position = Vector2(341.952, -260.031)
+shape = SubResource("RectangleShape2D_ci4st")
+
+[node name="Pista_Vaso" type="Sprite2D" parent="."]
+position = Vector2(52.5346, -953.289)
+scale = Vector2(0.251113, 0.260778)
+texture = ExtResource("7_at62m")
+region_enabled = true
+region_rect = Rect2(178.9, 93.5, 160, 332)
+
+[node name="Pista_Cristal" type="Sprite2D" parent="."]
+position = Vector2(611.311, -485.423)
+scale = Vector2(0.125886, 0.12952)
+texture = ExtResource("8_at62m")
+region_enabled = true
+region_rect = Rect2(498.095, 57.1114, 452.859, 863.068)
+
+[node name="Pista_Tapestry" type="Sprite2D" parent="."]
+position = Vector2(826.703, -913.905)
+scale = Vector2(0.251113, 0.260778)
+texture = ExtResource("7_at62m")
+region_enabled = true
+region_rect = Rect2(1185.58, 125.5, 188, 258)
+
 [connection signal="body_entered" from="ActivationArea" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="ActivationArea" to="ActivationArea" method="_on_body_entered"]
 [connection signal="body_exited" from="ActivationArea" to="." method="_on_area_2d_body_exited"]
 [connection signal="body_exited" from="ActivationArea" to="ActivationArea" method="_on_body_exited"]
+[connection signal="body_entered" from="ActivationAreaQuebraCabeca" to="ActivationAreaQuebraCabeca" method="_on_body_entered"]
+[connection signal="body_exited" from="ActivationAreaQuebraCabeca" to="ActivationAreaQuebraCabeca" method="_on_body_exited"]
+[connection signal="body_entered" from="ActivationAreaCores" to="ActivationAreaCores" method="_on_body_entered"]
+[connection signal="body_exited" from="ActivationAreaCores" to="ActivationAreaCores" method="_on_body_exited"]

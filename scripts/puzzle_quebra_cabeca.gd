@@ -55,6 +55,17 @@ func set_interacao(ativa: bool):
 
 	for slot in slots_container.get_children():
 		slot.set_interativo(ativa)
+	
+	# Se estiver ativando a interação, atualiza apenas feedbacks das peças corretas
+	if ativa:
+		for slot in slots_container.get_children():
+			if slot.peca:
+				slot.peca._update_feedback()
+	else:
+		# Se estiver desativando, esconde todos os feedbacks
+		for slot in slots_container.get_children():
+			if slot.peca and slot.peca.feedback_sprite:
+				slot.peca.feedback_sprite.visible = false
 
 # Função chamada quando o puzzle é resolvido.
 func resolver_puzzle():
