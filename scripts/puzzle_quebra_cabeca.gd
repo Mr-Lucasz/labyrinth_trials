@@ -39,8 +39,11 @@ func verificar_solucao():
 	var total_slots = slots_container.get_children().size()
 
 	for slot in slots_container.get_children():
+		print("Slot:", slot.name, "id_peca_atual:", slot.id_peca_atual, "id_peca_correta:", slot.id_peca_correta)
 		if slot.id_peca_atual == slot.id_peca_correta:
 			pecas_corretas += 1
+
+	print("Pecas corretas:", pecas_corretas, "/", total_slots)
 
 	if pecas_corretas == total_slots:
 		call_deferred("resolver_puzzle")

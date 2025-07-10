@@ -55,8 +55,8 @@ position = Vector2(1290.68, -639.164)
 shape = SubResource("RectangleShape2D_ci4st")
 
 [node name="PuzzleQuebraCabeca" parent="." instance=ExtResource("6_wl4sj")]
-position = Vector2(1450.91, -111.984)
-scale = Vector2(0.253584, 0.248282)
+position = Vector2(1209.25, -198.345)
+scale = Vector2(0.320098, 0.316533)
 
 [connection signal="body_entered" from="ActivationArea" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="ActivationArea" to="ActivationArea" method="_on_body_entered"]

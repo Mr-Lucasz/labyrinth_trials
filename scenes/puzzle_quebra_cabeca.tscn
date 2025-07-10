@@ -18,61 +18,6 @@ script = ExtResource("1_xrlps")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_wlh78")
 
-[node name="SlotsContainer" type="Node2D" parent="."]
-
-[node name="Slot_0_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(-178, -152)
-scale = Vector2(8.2303, 8.51812)
-id_peca_atual = 1
-
-[node name="Slot_0_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(2, -151)
-scale = Vector2(7.84461, 8.15111)
-id_peca_correta = 1
-id_peca_atual = 2
-
-[node name="Slot_0_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(178, -150)
-scale = Vector2(8.38208, 8.45132)
-id_peca_correta = 2
-id_peca_atual = 5
-
-[node name="Slot_1_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(-178, 30)
-scale = Vector2(8.54885, 8.32617)
-id_peca_correta = 3
-id_peca_atual = 4
-
-[node name="Slot_1_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(0, 29)
-scale = Vector2(8.05796, 8.0362)
-id_peca_correta = 4
-id_peca_atual = 7
-
-[node name="Slot_1_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(176, 27)
-scale = Vector2(8.05796, 8.0362)
-id_peca_correta = 5
-id_peca_atual = 3
-
-[node name="Slot_2_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(-176, 196)
-scale = Vector2(8.0573, 7.35939)
-id_peca_correta = 6
-id_peca_atual = 8
-
-[node name="Slot_2_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(1, 193)
-scale = Vector2(7.84725, 7.059)
-id_peca_correta = 7
-id_peca_atual = 8
-
-[node name="Slot_2_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
-position = Vector2(178, 192)
-scale = Vector2(8.68213, 7.21908)
-id_peca_correta = 8
-id_peca_atual = 7
-
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_5hjs8")
 
@@ -80,7 +25,7 @@ stream = ExtResource("4_5hjs8")
 script = ExtResource("5_8jyf6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDeAtivacao"]
-position = Vector2(4.5, 3.5)
+position = Vector2(5, 12)
 shape = SubResource("RectangleShape2D_5hjs8")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
@@ -88,8 +33,144 @@ position = Vector2(-3, 10)
 collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(7.5, -6.5)
+position = Vector2(-5, -8)
 shape = SubResource("RectangleShape2D_8jyf6")
+
+[node name="SlotsContainer" type="Node2D" parent="."]
+
+[node name="Slot_0_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(-177, -156)
+scale = Vector2(7.74335, 8.0887)
+id_peca_atual = 1
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_0_0/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_0_0/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
+
+[node name="Slot_0_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(4, -154)
+scale = Vector2(7.20095, 8.00189)
+id_peca_correta = 1
+id_peca_atual = 1
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_0_1/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_0_1/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
+
+[node name="Slot_0_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(177, -156)
+scale = Vector2(7.20095, 8.00189)
+id_peca_correta = 2
+id_peca_atual = 7
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_0_2/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_0_2/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
+
+[node name="Slot_1_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(-178, 23)
+scale = Vector2(7.56964, 7.57797)
+id_peca_correta = 3
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_1_0/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_1_0/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
+
+[node name="Slot_1_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(1, 20)
+scale = Vector2(7.13999, 7.43658)
+id_peca_correta = 4
+id_peca_atual = 1
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_1_1/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_1_1/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
+
+[node name="Slot_1_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(177, 19)
+scale = Vector2(7.13999, 7.43658)
+id_peca_correta = 5
+id_peca_atual = 2
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_1_2/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_1_2/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
+
+[node name="Slot_2_0" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(-178, 186)
+scale = Vector2(7.41286, 7.14206)
+id_peca_correta = 6
+id_peca_atual = 8
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_2_0/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_2_0/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
+
+[node name="Slot_2_1" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(-1.00002, 188)
+scale = Vector2(7.41286, 7.14206)
+id_peca_correta = 7
+id_peca_atual = 3
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_2_1/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_2_1/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
+
+[node name="Slot_2_2" parent="SlotsContainer" instance=ExtResource("2_i7jfw")]
+position = Vector2(179, 189)
+scale = Vector2(7.41286, 7.14206)
+id_peca_correta = 8
+id_peca_atual = 4
+
+[node name="CollisionShape2D" parent="SlotsContainer/Slot_2_2/Peca" index="0"]
+position = Vector2(0.0607529, 0.763081)
+scale = Vector2(1, 1)
+
+[node name="Sprite2D" parent="SlotsContainer/Slot_2_2/Peca" index="1"]
+position = Vector2(0.243006, 1.05657)
+scale = Vector2(0.066274, 0.0626575)
 
 [connection signal="body_entered" from="AreaDeAtivacao" to="AreaDeAtivacao" method="_on_body_entered"]
 [connection signal="body_exited" from="AreaDeAtivacao" to="AreaDeAtivacao" method="_on_body_exited"]
+
+[editable path="SlotsContainer/Slot_0_0"]
+[editable path="SlotsContainer/Slot_0_1"]
+[editable path="SlotsContainer/Slot_0_2"]
+[editable path="SlotsContainer/Slot_1_0"]
+[editable path="SlotsContainer/Slot_1_1"]
+[editable path="SlotsContainer/Slot_1_2"]
+[editable path="SlotsContainer/Slot_2_0"]
+[editable path="SlotsContainer/Slot_2_1"]
+[editable path="SlotsContainer/Slot_2_2"]
