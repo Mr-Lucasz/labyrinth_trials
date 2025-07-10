@@ -3,60 +3,83 @@ extends Node2D
 
 signal puzzle_concluido
 
-@onready var pecas_container = $Pieces
+var puzzle_resolvido_flag = false
+
 @onready var slots_container = $GridSlots
-var interacao_ativa = true # Começa ativo para o puzzle poder ser jogado
 
 func _ready():
-	# Desativa a interação no início, para ser ativada por proximidade
-	set_interacao(false) 
-	
-	# Conecta o sinal de cada peça a uma função de verificação
-	for peca in pecas_container.get_children():
-		peca.peca_solta.connect(_on_peca_solta)
+	print("[LOG] _ready chamado em puzzle_forma_sequencia.gd")
+	process_mode = Node.PROCESS_MODE_DISABLED
 
-func _on_peca_solta(peca):
-	# Sempre que uma peça é solta, verificamos o estado do puzzle
-	verificar_solucao()
+	for slot in slots_container.get_children():
+		var peca_interativa = encontrar_peca_no_slot(slot)
+		
+		if peca_interativa:
+			print("[LOG] Conectando 'forma_alterada' de:", peca_interativa.name, "em", slot.name)
+			peca_interativa.forma_alterada.connect(verificar_solucao)
+		else:
+			print("[AVISO] Não foi encontrada uma peça interativa (Area2D) no slot: ", slot.name)
+
+		var feedback_sprite = slot.get_node_or_null("FeedbackSprite")
+		if feedback_sprite:
+			feedback_sprite.visible = false
+		else:
+			print("[ERRO NO READY] Não foi possível encontrar 'FeedbackSprite' no slot: ", slot.name)
+
+# Função auxiliar para encontrar a peça interativa (Area2D) dentro de um slot
+func encontrar_peca_no_slot(slot_node):
+	for child in slot_node.get_children():
+		if child is Area2D: # Assumimos que a peça é o único Area2D filho do slot
+			return child
+	return null
 
 func verificar_solucao():
+	if puzzle_resolvido_flag:
+		return
+
 	var pecas_corretas = 0
-	var total_pecas_nos_slots = 0
 	
-	# Percorre todos os 9 slots
 	for slot in slots_container.get_children():
-		var feedback_sprite = slot.get_node("FeedbackSprite")
-		
-		# Verifica se existe uma peça neste slot
-		if slot.peca_atual != null:
-			total_pecas_nos_slots += 1
-			feedback_sprite.visible = true # Torna o feedback visível
+		var peca_interativa = encontrar_peca_no_slot(slot)
+		var feedback_sprite = slot.get_node_or_null("FeedbackSprite")
 
-			# Se a peça no slot for a correta...
-			if slot.peca_atual.tipo_forma == slot.forma_correta:
-				feedback_sprite.frame = 0 # MOSTRA O FRAME 0 (VERDE)
-				pecas_corretas += 1
-			# Se for a incorreta...
-			else:
-				feedback_sprite.frame = 1 # MOSTRA O FRAME 1 (VERMELHO)
-		# Se o slot estiver vazio...
+		if not peca_interativa or not feedback_sprite:
+			continue
+
+		if peca_interativa.forma_atual == slot.forma_correta:
+			feedback_sprite.frame = 0 # VERDE
+			pecas_corretas += 1
 		else:
-			feedback_sprite.visible = false # Esconde o feedback
+			feedback_sprite.frame = 1 # VERMELHO
+		
+		feedback_sprite.visible = true
 
-	# Condição de vitória: Apenas se todos os 9 slots tiverem peças E todas estiverem corretas.
-	if total_pecas_nos_slots == 9 and pecas_corretas == 9:
+	if pecas_corretas == slots_container.get_child_count():
 		puzzle_resolvido()
 
-func set_interacao(ativa : bool):
-	interacao_ativa = ativa
-	# O modo de processamento "Disabled" congela o nó e seus filhos, parando a interação.
+func set_interacao(ativa: bool):
+	if puzzle_resolvido_flag:
+		return
+
+	process_mode = Node.PROCESS_MODE_INHERIT if ativa else Node.PROCESS_MODE_DISABLED
+	
+	for slot in slots_container.get_children():
+		var peca_interativa = encontrar_peca_no_slot(slot)
+		if peca_interativa:
+			peca_interativa.set_interativo(ativa)
+		
+		var feedback_sprite = slot.get_node_or_null("FeedbackSprite")
+		if feedback_sprite:
+			feedback_sprite.visible = ativa
+			
 	if ativa:
-		process_mode = Node.PROCESS_MODE_INHERIT
-	else:
-		process_mode = Node.PROCESS_MODE_DISABLED
+		verificar_solucao()
 
 func puzzle_resolvido():
+	if puzzle_resolvido_flag:
+		return
+
 	print("PARABÉNS! PUZZLE RESOLVIDO!")
+	puzzle_resolvido_flag = true
 	emit_signal("puzzle_concluido")
-	# Desativa o puzzle permanentemente após a resolução.
 	set_interacao(false)

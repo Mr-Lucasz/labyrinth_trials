@@ -143,6 +143,7 @@ size = Vector2(125, 227)
 radius = 150.0
 
 [node name="Jogador" type="CharacterBody2D"]
+collision_mask = 2
 script = ExtResource("1_g1ob3")
 speed = 450.0
 

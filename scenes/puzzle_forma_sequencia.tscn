@@ -3,9 +3,12 @@
 [ext_resource type="Texture2D" uid="uid://g77r6ik2nv3c" path="res://assets/grid.png" id="1_gniq6"]
 [ext_resource type="PackedScene" uid="uid://be20dxts31kje" path="res://scenes/grid_slot.tscn" id="1_lddor"]
 [ext_resource type="Script" uid="uid://dawiwtpu7m3il" path="res://scripts/puzzle_forma_sequencia.gd" id="1_oh4rd"]
-[ext_resource type="PackedScene" uid="uid://dh1r6m1uyxjkm" path="res://scenes/peca_arrastavel.tscn" id="3_po60h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oh4rd"]
+size = Vector2(551, 538)
 
 [node name="puzzle_forma_sequencia" type="Node2D"]
+position = Vector2(3, -10)
 script = ExtResource("1_oh4rd")
 
 [node name="GridSprite" type="Sprite2D" parent="."]
@@ -14,125 +17,56 @@ texture = ExtResource("1_gniq6")
 [node name="GridSlots" type="Node2D" parent="."]
 
 [node name="grid_slot1" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(-264, -238)
+position = Vector2(-179, -149)
 scale = Vector2(3.77304, 3.75958)
-forma_correta = "circulo"
+forma_inicial = 1
 
 [node name="grid_slot2" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(-83, -236)
-scale = Vector2(3.59643, 3.74994)
-forma_correta = "quadrado"
+position = Vector2(-1, -151)
+scale = Vector2(3.61722, 3.78583)
+forma_inicial = 1
 
 [node name="grid_slot3" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(91, -237)
-scale = Vector2(3.77304, 3.75958)
-forma_correta = "triangulo"
+position = Vector2(177, -150)
+scale = Vector2(3.79711, 3.78583)
+forma_inicial = 1
 
 [node name="grid_slot4" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(-264, -58)
-scale = Vector2(3.77304, 3.75958)
-forma_correta = "circulo"
+position = Vector2(-177, 27)
+scale = Vector2(3.79711, 3.78583)
+forma_correta = 1
+forma_inicial = 2
 
 [node name="grid_slot5" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(-83, -59)
-scale = Vector2(3.5868, 3.73611)
-forma_correta = "quadrado"
+position = Vector2(-1, 28)
+scale = Vector2(3.67104, 3.84826)
+forma_correta = 1
+forma_inicial = 2
 
 [node name="grid_slot6" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(89, -58)
-scale = Vector2(3.82842, 3.73611)
-forma_correta = "triangulo"
+position = Vector2(177, 27)
+scale = Vector2(3.85481, 3.81981)
+forma_correta = 1
+forma_inicial = 2
 
 [node name="grid_slot7" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(-265, 121)
-scale = Vector2(3.80549, 3.19023)
-forma_correta = "circulo"
+position = Vector2(-177, 195)
+scale = Vector2(3.76839, 3.36915)
+forma_correta = 2
 
 [node name="grid_slot8" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(-84, 120)
-scale = Vector2(3.61471, 3.20982)
-forma_correta = "quadrado"
+position = Vector2(-1, 197)
+scale = Vector2(3.76839, 3.36915)
+forma_correta = 2
 
 [node name="grid_slot9" parent="GridSlots" instance=ExtResource("1_lddor")]
-position = Vector2(89, 121)
-scale = Vector2(3.82853, 3.20982)
-forma_correta = "triangulo"
+position = Vector2(181, 196)
+scale = Vector2(3.76839, 3.36915)
+forma_correta = 2
 
-[node name="Pieces" type="Node2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-3, 10)
+collision_layer = 3
 
-[node name="peca_arrastavel1" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-659, -207)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "circulo"
-
-[node name="peca_arrastavel2" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-476, -25)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "circulo"
-
-[node name="peca_arrastavel3" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-305, 139)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "circulo"
-
-[node name="peca_arrastavel4" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-476, -211)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "quadrado"
-
-[node name="Sprite2D" parent="Pieces/peca_arrastavel4" index="1"]
-frame = 1
-
-[node name="peca_arrastavel5" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-300, -211)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "quadrado"
-
-[node name="Sprite2D" parent="Pieces/peca_arrastavel5" index="1"]
-frame = 1
-
-[node name="peca_arrastavel6" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-302, -24)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "quadrado"
-
-[node name="Sprite2D" parent="Pieces/peca_arrastavel6" index="1"]
-frame = 1
-
-[node name="peca_arrastavel7" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-653, -32)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "triangulo"
-
-[node name="Sprite2D" parent="Pieces/peca_arrastavel7" index="1"]
-frame = 2
-
-[node name="peca_arrastavel8" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-650, 146)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "triangulo"
-
-[node name="Sprite2D" parent="Pieces/peca_arrastavel8" index="1"]
-frame = 2
-
-[node name="peca_arrastavel9" parent="Pieces" instance=ExtResource("3_po60h")]
-position = Vector2(-305, 139)
-scale = Vector2(0.418592, 0.367129)
-tipo_forma = "triangulo"
-
-[node name="CollisionShape2D" parent="Pieces/peca_arrastavel9" index="0"]
-position = Vector2(731.023, 136.192)
-
-[node name="Sprite2D" parent="Pieces/peca_arrastavel9" index="1"]
-position = Vector2(735.801, 128.02)
-frame = 2
-
-[editable path="Pieces/peca_arrastavel1"]
-[editable path="Pieces/peca_arrastavel2"]
-[editable path="Pieces/peca_arrastavel3"]
-[editable path="Pieces/peca_arrastavel4"]
-[editable path="Pieces/peca_arrastavel5"]
-[editable path="Pieces/peca_arrastavel6"]
-[editable path="Pieces/peca_arrastavel7"]
-[editable path="Pieces/peca_arrastavel8"]
-[editable path="Pieces/peca_arrastavel9"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_oh4rd")

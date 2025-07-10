@@ -74,6 +74,12 @@ debug_complete={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="PLAYER"
+2d_physics/layer_2="MUNDO"
+2d_physics/layer_3="interactables"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
