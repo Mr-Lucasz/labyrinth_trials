@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://pdl1ynbuhdvh"]
 
 [ext_resource type="Texture2D" uid="uid://b60nhubagallx" path="res://maps/mapafase2.png" id="1_2d6lq"]
-[ext_resource type="Script" uid="uid://bysewi4vujk2s" path="res://scripts/level_2.gd" id="1_lkt8x"]
+[ext_resource type="Script" path="res://scripts/level_2.gd" id="1_lkt8x"]
 [ext_resource type="PackedScene" uid="uid://bpviuslabowc7" path="res://scenes/jogador.tscn" id="2_vlf2x"]
 [ext_resource type="PackedScene" uid="uid://dnxf6h7pcckjn" path="res://scenes/puzzle_forma_sequencia.tscn" id="3_ci4st"]
-[ext_resource type="Script" uid="uid://do8bw7if0vmky" path="res://scripts/activation_area.gd" id="5_uih6o"]
+[ext_resource type="Script" path="res://scripts/activation_area.gd" id="5_uih6o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ci4st"]
 size = Vector2(255.509, 217.325)
