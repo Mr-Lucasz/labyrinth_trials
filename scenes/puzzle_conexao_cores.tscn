@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://o5b6e0q3bo8b"]
+[gd_scene load_steps=9 format=3 uid="uid://o5b6e0q3bo8b"]
 
 [ext_resource type="Script" uid="uid://dj00xirl61nle" path="res://scripts/puzzle_conexao_cores.gd" id="1_aen80"]
 [ext_resource type="Texture2D" uid="uid://ctyfo5dtoa0rx" path="res://assets/painel_puzzle.png" id="1_hgob6"]
 [ext_resource type="Texture2D" uid="uid://dwxut1jeb1wx4" path="res://assets/pinos.png" id="2_ivxyp"]
 [ext_resource type="Texture2D" uid="uid://f7142dh2d75n" path="res://assets/feedback.png" id="3_ivxyp"]
 [ext_resource type="Texture2D" uid="uid://b2u4m47gpic7m" path="res://assets/ChatGPT Image 10 de jul. de 2025, 14_32_01 (1).png" id="4_gfjc2"]
+[ext_resource type="AudioStream" uid="uid://b2pdk648ejf5c" path="res://sons/som_sucesso.mp3" id="5_som"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aen80"]
 size = Vector2(254, 268)
@@ -91,3 +92,6 @@ position = Vector2(268, 172)
 scale = Vector2(0.60578, 0.450365)
 texture = ExtResource("3_ivxyp")
 hframes = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_som")

@@ -38,3 +38,6 @@ func set_interativo(ativo: bool):
 	# Quando desativar, volta ao normal
 	if not ativo:
 		sprite.modulate = Color(1, 1, 1, 1)
+	else:
+		# Quando ativar, atualiza o feedback baseado no estado atual
+		_update_feedback()

@@ -16,6 +16,7 @@ var puzzle_resolvido: bool = false
 @onready var feedback_posicao_1 = $FeedbackSprite
 @onready var feedback_posicao_2 = $FeedbackSprite2
 @onready var feedback_posicao_3 = $FeedbackSprite3
+@onready var som_sucesso = $AudioStreamPlayer
 
 func _ready():
 	# Conecta os botões (Area2D)
@@ -91,10 +92,19 @@ func verificar_solucao():
 		# Solução correta!
 		puzzle_resolvido = true
 		
+		# Desativa a interação dos botões
+		botao_a.input_pickable = false
+		botao_b.input_pickable = false
+		botao_c.input_pickable = false
+		
 		# Mostra feedback de sucesso (frame 0) em todas as posições
 		feedback_posicao_1.frame = 0
 		feedback_posicao_2.frame = 0
 		feedback_posicao_3.frame = 0
+		
+		# Toca o som de sucesso
+		if som_sucesso:
+			som_sucesso.play()
 		
 		print("Puzzle resolvido!")
 		emit_signal("puzzle_concluido")
