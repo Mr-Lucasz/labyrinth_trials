@@ -255,6 +255,7 @@ texture = ExtResource("5_4dyl1")
 [node name="StaticBody2D" type="StaticBody2D" parent="Area2D/Formas"]
 
 [node name="Triangulo" type="StaticBody2D" parent="." groups=["pickable"]]
+z_index = 1
 position = Vector2(342, -592)
 script = ExtResource("8_ipmer")
 item_type = "Triangulo"
@@ -268,6 +269,7 @@ position = Vector2(9, -14)
 shape = SubResource("RectangleShape2D_jxjwb")
 
 [node name="Bola" type="StaticBody2D" parent="." groups=["pickable"]]
+z_index = 1
 position = Vector2(1284, -1883)
 script = ExtResource("8_ipmer")
 item_type = "Circulo"
@@ -279,6 +281,7 @@ texture = ExtResource("6_jxjwb")
 shape = SubResource("CircleShape2D_2meft")
 
 [node name="Quadrado" type="StaticBody2D" parent="." groups=["pickable"]]
+z_index = 1
 position = Vector2(3434, -1870)
 script = ExtResource("8_ipmer")
 item_type = "Quadrado"
@@ -291,6 +294,8 @@ position = Vector2(-2.5, -1.5)
 shape = SubResource("RectangleShape2D_2meft")
 
 [node name="Numero1" type="StaticBody2D" parent="." groups=["pickable"]]
+z_index = 1
+z_as_relative = false
 position = Vector2(3141, -1021)
 script = ExtResource("8_ipmer")
 item_type = "Numero1"
@@ -303,6 +308,8 @@ position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_4dyl1")
 
 [node name="Numero2" type="StaticBody2D" parent="." groups=["pickable"]]
+z_index = 1
+z_as_relative = false
 position = Vector2(3381, -1019)
 script = ExtResource("8_ipmer")
 item_type = "Numero2"
@@ -315,6 +322,8 @@ position = Vector2(-0.5, -1.5)
 shape = SubResource("RectangleShape2D_0xqs2")
 
 [node name="Numero3" type="StaticBody2D" parent="." groups=["pickable"]]
+z_index = 1
+z_as_relative = false
 position = Vector2(2874, -1021)
 script = ExtResource("8_ipmer")
 item_type = "Numero3"
@@ -387,6 +396,7 @@ shape = SubResource("RectangleShape2D_t46sy")
 [node name="ArrowSlots" type="Node2D" parent="."]
 
 [node name="Seta1" type="StaticBody2D" parent="ArrowSlots" groups=["arrow"]]
+z_index = 1
 position = Vector2(2135, -1791)
 rotation = 6.29323
 
@@ -400,6 +410,7 @@ position = Vector2(0, 3)
 shape = SubResource("CircleShape2D_av1gt")
 
 [node name="Seta2" type="StaticBody2D" parent="ArrowSlots" groups=["arrow"]]
+z_index = 1
 position = Vector2(2321, -1791)
 rotation = 1.57656
 
@@ -413,7 +424,8 @@ position = Vector2(3.04971, -1.92341)
 shape = SubResource("CircleShape2D_r7dij")
 
 [node name="Seta3" type="StaticBody2D" parent="ArrowSlots" groups=["arrow"]]
-position = Vector2(2516, -1798)
+z_index = 1
+position = Vector2(2520, -1802)
 rotation = -1.56899
 
 [node name="Sprite2D" type="Sprite2D" parent="ArrowSlots/Seta3"]

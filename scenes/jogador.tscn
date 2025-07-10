@@ -88,7 +88,7 @@ animations = [{
 size = Vector2(125, 227)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qcln2"]
-radius = 150.0
+radius = 125.004
 
 [node name="Jogador" type="CharacterBody2D"]
 script = ExtResource("1_g1ob3")
@@ -108,7 +108,7 @@ shape = SubResource("RectangleShape2D_g1ob3")
 position = Vector2(101, -79)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetector"]
-position = Vector2(0, -55)
+position = Vector2(0, -64)
 shape = SubResource("CircleShape2D_qcln2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
