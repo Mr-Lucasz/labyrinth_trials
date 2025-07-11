@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 @export var speed: float = 300.0 # Player movement speed.
 
-const HOLD_OFFSET: Vector2 = Vector2(0, -24)
+const HOLD_OFFSET: Vector2 = Vector2(-100, 104)
 
 var player_name: String = ""
 # ——— Flags dos puzzles ———
