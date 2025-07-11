@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("16_av1gt")
+volume_db = -43.187
+autoplay = true
+loop = true

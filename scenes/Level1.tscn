@@ -219,7 +219,7 @@ scale = Vector2(0.529296, 0.213647)
 polygon = PackedVector2Array(-3110.3, 336.349, -1791.14, 382.467, -1816.13, -10.0161, -3104.63, -131.712)
 
 [node name="Jogador" parent="." instance=ExtResource("2_dw26h")]
-position = Vector2(2253, -106)
+position = Vector2(2319, -187)
 speed = 500.0
 
 [node name="Area2D (Portal saída)" type="Area2D" parent="."]

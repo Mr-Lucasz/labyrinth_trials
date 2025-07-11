@@ -1,4 +1,14 @@
+
 extends Node2D
+
+var _fase1_completada := false
+
+func _process(_delta):
+	print("[DEBUG] puzzles_completados:", puzzles_completados)
+	if not _fase1_completada and puzzles_completados >= 3:
+		_fase1_completada = true
+		print("[FORCE] Detecção automática: Fase 1 completa! Redirecionando para Fase 2...")
+		get_tree().change_scene_to_file("res://scenes/Level_2.tscn")
 
 # Variáveis de controle do puzzle
 @export var puzzle_atual: int = 1
@@ -45,11 +55,10 @@ func _ready():
 		
 	# Inicializar gerenciadores de puzzles
 	puzzle_manager = get_node_or_null("PuzzleManager")
-	
-	# Cria e adiciona o PuzzleManager se não existir na cena
-	if not puzzle_manager:
-		#puzzle_manager = preload("res://scripts/PuzzleManager.gd").new()
-		add_child(puzzle_manager)
+	# Se quiser criar um PuzzleManager, descomente e ajuste o preload:
+	# if not puzzle_manager:
+	#     puzzle_manager = preload("res://scripts/PuzzleManager.gd").new()
+	#     add_child(puzzle_manager)
 	
 	# Verifica se o jogo foi carregado de um checkpoint
 	
@@ -80,10 +89,23 @@ func start_from_checkpoint():
 	puzzle_atual = Global.puzzle_atual
 	puzzles_completados = Global.puzzles_completados
 	checkpoint_salvo = true
-	
+
 	# Posiciona o jogador no início do terceiro desafio
 	position_player_at_checkpoint()
-	
+
+	# Restaurar estado detalhado dos puzzles
+	var save_data = Global.get_saved_game_at_checkpoint()
+	if save_data:
+		var formas = get_node_or_null("Formas")
+		var setas = get_node_or_null("Setas")
+		var numero = get_node_or_null("Numero")
+		if formas and formas.has_method("load_save_state") and "formas" in save_data:
+			formas.load_save_state(save_data["formas"])
+		if setas and setas.has_method("load_save_state") and "setas" in save_data:
+			setas.load_save_state(save_data["setas"])
+		if numero and numero.has_method("load_save_state") and "numero" in save_data:
+			numero.load_save_state(save_data["numero"])
+
 	# Carrega o puzzle correto baseado no progresso salvo
 	match puzzle_atual:
 		1:
@@ -118,23 +140,34 @@ func connect_puzzle_signals():
 func on_puzzle_completed(puzzle_number: int):
 	print("Puzzle ", puzzle_number, " completado!")
 	puzzles_completados += 1
-	
-	# Atualiza as variáveis globais
 	Global.puzzles_completados = puzzles_completados
-	
 	# Verifica se completou o segundo puzzle (momento do checkpoint)
 	if puzzle_number == 2 and not checkpoint_salvo:
 		save_checkpoint()
-	
-	# Avança para o próximo puzzle
-	advance_to_next_puzzle()
+	# Se completou o último puzzle, chama complete_phase
+	if puzzles_completados >= 3:
+		complete_phase()
+	else:
+		# Avança para o próximo puzzle
+		advance_to_next_puzzle()
 
 func save_checkpoint():
 	print("=== CHECKPOINT ALCANÇADO ===")
 	Global.checkpoint_alcancado = true
 	Global.puzzle_atual = 3 # Próximo puzzle após o checkpoint
 	if jogador:
-		Global.save_game_at_checkpoint(jogador._get_current_state())
+		var save_data = jogador._get_current_state()
+		# Salvar estado detalhado dos puzzles
+		var formas = get_node_or_null("Formas")
+		var setas = get_node_or_null("Setas")
+		var numero = get_node_or_null("Numero")
+		if formas and formas.has_method("get_save_state"):
+			save_data["formas"] = formas.get_save_state()
+		if setas and setas.has_method("get_save_state"):
+			save_data["setas"] = setas.get_save_state()
+		if numero and numero.has_method("get_save_state"):
+			save_data["numero"] = numero.get_save_state()
+		Global.save_game_at_checkpoint(save_data)
 	else:
 		print("[ERRO] Jogador não encontrado ao salvar checkpoint!")
 	checkpoint_salvo = true
@@ -158,35 +191,35 @@ func load_speed_reaction_puzzle():
 	print("=== INICIANDO PUZZLE 1: VELOCIDADE E TEMPO DE REAÇÃO ===")
 	# Aqui você implementaria a lógica específica do primeiro puzzle
 	# Por exemplo: ativar objetos específicos, configurar timers, etc.
-	
+	#
 	# O PuzzleManager detectará automaticamente quando este puzzle for completado
+	# Se quiser forçar a conclusão para teste, descomente a linha abaixo:
+	# trigger_puzzle_completion(1)
 
 func load_rotation_puzzle():
 	print("=== INICIANDO PUZZLE 2: ROTAÇÃO ===")
 	# Aqui você implementaria a lógica específica do segundo puzzle
 	# Por exemplo: mostrar objetos rotativos, configurar controles, etc.
-	
+	#
 	# O PuzzleManager detectará automaticamente quando este puzzle for completado
+	# Se quiser forçar a conclusão para teste, descomente a linha abaixo:
+	# trigger_puzzle_completion(2)
 
 func load_numerical_order_puzzle():
 	print("=== INICIANDO PUZZLE 3: ORDEM NUMÉRICA ===")
 	# Aqui você implementaria a lógica específica do terceiro puzzle
 	# Por exemplo: mostrar números, configurar sistema de ordenação, etc.
-	
+	#
 	# O PuzzleManager detectará automaticamente quando este puzzle for completado
+	# Se quiser forçar a conclusão para teste, descomente a linha abaixo:
+	# trigger_puzzle_completion(3)
 
 func complete_phase():
-	print("=== FASE 1 COMPLETADA! ===")
-	
-	# Aqui você pode implementar:
-	# - Tela de parabéns
-	# - Estatísticas do jogador
-	# - Transição para próxima fase
-	# - Salvar progresso final
-	
-	# Por enquanto, volta ao menu principal
-	await get_tree().create_timer(2.0).timeout
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	print("=== FASE 1 COMPLETADA! Exibindo popup de parabéns ===")
+	var parabens_dialog_scene = preload("res://scenes/ParabensDialog.tscn")
+	var parabens_dialog = parabens_dialog_scene.instantiate()
+	get_tree().current_scene.add_child(parabens_dialog)
+	parabens_dialog.popup_centered()
 
 # Funções auxiliares para serem chamadas pelos sistemas de puzzle
 func trigger_puzzle_completion(puzzle_number: int):

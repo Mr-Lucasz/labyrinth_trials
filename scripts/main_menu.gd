@@ -22,9 +22,9 @@ func _on_button_carregar_pressed():
 		nickname_window.popup_centered()
 		nickname_edit.placeholder_text = "Digite seu apelido para carregar o jogo"
 		return
-		
 	if not Global.has_save_file(Global.player_nickname):
 		print("Nenhum jogo salvo encontrado para: " + Global.player_nickname)
+		show_feedback("Nenhum jogo salvo encontrado para este apelido.")
 		return
 
 	# Primeiro tenta carregar do sistema Global
@@ -52,7 +52,14 @@ func _on_button_carregar_pressed():
 		print("Tentando carregar no formato antigo...")
 	
 	print("Carregando jogo para: " + Global.player_nickname)
+	show_feedback("Jogo carregado com sucesso!")
 	get_tree().change_scene_to_file("res://scenes/Level1.tscn")
+# Função para mostrar feedback visual ao usuário
+func show_feedback(msg: String):
+	var popup = AcceptDialog.new()
+	popup.dialog_text = msg
+	add_child(popup)
+	popup.popup_centered()
 
 # Esta função será chamada pelo botão "Ranking".
 func _on_button_ranking_pressed():
@@ -73,9 +80,13 @@ func _ready():
 
 	# Busca o botão carregar na cena (ajuste o caminho conforme sua estrutura)
 	carregar_button = find_button_by_name("carregar") # Tentativa de encontrar automaticamente
-	
+
 	# Atualiza o estado do botão carregar
 	update_carregar_button_state()
+
+func _notification(what):
+	if what == NOTIFICATION_VISIBILITY_CHANGED and is_visible_in_tree():
+		update_carregar_button_state()
 
 func find_button_by_name(button_name: String) -> Button:
 	# Função auxiliar para encontrar um botão pelo nome ou texto

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmspuwpj5wc23"]
+
+[ext_resource type="Script" uid="uid://cr3lck4e61j0p" path="res://scripts/ParabensDialog.gd" id="1"]
+
+[node name="ParabensDialog" type="AcceptDialog"]
+script = ExtResource("1")

@@ -278,7 +278,7 @@ scale = Vector2(2, 2)
 speed = 500.0
 
 [node name="SobreWindow" type="AcceptDialog" parent="."]
-title = "SOBREc"
+title = "SOBRE"
 initial_position = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SobreWindow"]
@@ -293,27 +293,47 @@ offset_right = 128.5
 offset_bottom = 95.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="SobreWindow/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 22
 text = "Labirinto dos Desafios"
+horizontal_alignment = 1
 
 [node name="DevsLabel" type="Label" parent="SobreWindow/VBoxContainer"]
 layout_mode = 2
-text = "Desenvolvedores:
+theme_override_font_sizes/font_size = 16
+text = "Créditos:
 Lucas Rodrigues
 Breno Coelho"
 
+[node name="TipsLabel" type="Label" parent="SobreWindow/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Dicas dos Puzzles:
+
+- Observe as formas e cores: cada puzzle tem uma lógica única.
+- Experimente combinações diferentes se travar.
+- O tempo é limitado, mas pense com calma!
+- Alguns puzzles têm checkpoints, aproveite.
+- Use as dicas visuais do cenário para ajudar na solução.
+- Se errar, tente de novo: cada tentativa ensina algo novo!"
+
 [node name="ContactLabel" type="Label" parent="SobreWindow/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "Contato: l.cunha14.lc@gmail.com"
 
 [node name="VersionLabel" type="Label" parent="SobreWindow/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "Versão 1.0"
 
 [node name="CloseButton" type="Button" parent="SobreWindow/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 text = "Fechar"
 
 [node name="RankingWindow" type="AcceptDialog" parent="."]
@@ -341,3 +361,4 @@ zoom = Vector2(0.34, 0.285)
 [connection signal="pressed" from="VBoxContainer/ButtonSobre" to="." method="_on_button_sobre_pressed"]
 [connection signal="close_requested" from="NicknameWindow" to="." method="_on_nickname_window_close_requested"]
 [connection signal="pressed" from="NicknameWindow/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="SobreWindow/VBoxContainer/CloseButton" to="." method="_on_sobre_close_button_pressed"]

@@ -1,4 +1,9 @@
+
 extends Node
+
+func get_saved_game_at_checkpoint() -> Dictionary:
+	# Retorna o dicionário salvo do checkpoint do jogador atual
+	return load_game_data(player_nickname)
 
 # Dados do jogador
 var player_nickname: String = ""
@@ -108,6 +113,8 @@ func apply_loaded_data(data: Dictionary) -> void:
 
 func add_score(nickname: String, time_seconds: float) -> void:
 	var ranking = load_ranking()
+	# Remove entradas duplicadas do mesmo nickname (mantém só o melhor tempo)
+	ranking = ranking.filter(func(entry): return entry["nickname"] != nickname)
 	ranking.append({"nickname": nickname, "time": time_seconds})
 
 	# Ordena o ranking antes de salvar

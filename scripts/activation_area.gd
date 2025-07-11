@@ -14,18 +14,42 @@ func _ready():
 		hint_label.visible = false
 
 func _on_body_entered(body):
-	# Verifica se quem entrou é o jogador e se o puzzle ainda não foi resolvido
-	if body.is_in_group("player") and puzzle_node and not puzzle_node.get("puzzle_resolvido_flag"):
-		print("Jogador entrou na área, ativando puzzle.")
-		puzzle_node.set_interacao(true)
-		if hint_label:
-			hint_label.text = "Pressione [E] para interagir." # Ou a tecla que preferir
-			hint_label.visible = true
+	# Verifica se quem entrou é o jogador
+	if body.is_in_group("player") and puzzle_node:
+		# Verifica se o puzzle já foi resolvido
+		var puzzle_resolvido = false
+		if puzzle_node.has_method("get"):
+			if "puzzle_resolvido_flag" in puzzle_node:
+				puzzle_resolvido = puzzle_node.get("puzzle_resolvido_flag") == true
+			elif "puzzle_resolvido" in puzzle_node:
+				puzzle_resolvido = puzzle_node.get("puzzle_resolvido") == true
+		print("DEBUG: Puzzle resolvido = ", puzzle_resolvido, " para puzzle: ", puzzle_node.name)
+		if not puzzle_resolvido:
+			print("Jogador entrou na área, ativando puzzle.")
+			if puzzle_node.has_method("set_interacao"):
+				puzzle_node.set_interacao(true)
+			if hint_label:
+				hint_label.text = "Pressione [E] para interagir."
+				hint_label.visible = true
+		else:
+			print("Puzzle já foi resolvido!")
+			if hint_label:
+				hint_label.text = "Puzzle já resolvido!"
+				hint_label.visible = true
 
 func _on_body_exited(body):
 	# Verifica se quem saiu é o jogador
 	if body.is_in_group("player") and puzzle_node:
-		print("Jogador saiu da área, desativando puzzle.")
-		puzzle_node.set_interacao(false)
+		# Verifica se o puzzle já foi resolvido
+		var puzzle_resolvido = false
+		if puzzle_node.has_method("get"):
+			if "puzzle_resolvido_flag" in puzzle_node:
+				puzzle_resolvido = puzzle_node.get("puzzle_resolvido_flag") == true
+			elif "puzzle_resolvido" in puzzle_node:
+				puzzle_resolvido = puzzle_node.get("puzzle_resolvido") == true
+		if not puzzle_resolvido:
+			print("Jogador saiu da área, desativando puzzle.")
+			if puzzle_node.has_method("set_interacao"):
+				puzzle_node.set_interacao(false)
 		if hint_label:
 			hint_label.visible = false
