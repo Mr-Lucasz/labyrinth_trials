@@ -308,6 +308,18 @@ text = "Créditos:
 Lucas Rodrigues
 Breno Coelho"
 
+[node name="TipsLabel" type="Label" parent="SobreWindow/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Dicas dos Puzzles:
+
+- Observe as formas e cores: cada puzzle tem uma lógica única.
+- Experimente combinações diferentes se travar.
+- O tempo é limitado, mas pense com calma!
+- Alguns puzzles têm checkpoints, aproveite.
+- Use as dicas visuais do cenário para ajudar na solução.
+- Se errar, tente de novo: cada tentativa ensina algo novo!"
+
 [node name="ContactLabel" type="Label" parent="SobreWindow/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
