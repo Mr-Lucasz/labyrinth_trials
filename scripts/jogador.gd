@@ -45,9 +45,16 @@ var arrow_targets := {
 
 func _ready() -> void:
 	# --- Setup Inicial ---
+	# Se for novo jogo, inicia o cronômetro do ranking
+	if not Global.checkpoint_alcancado:
+		start_time = Time.get_unix_time_from_system()
 	_initialize_from_global_state()
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
+
+	# Garante que o sprite do jogador está visível
+	if $AnimatedSprite2D:
+		$AnimatedSprite2D.visible = true
 
 	message_label       = get_tree().current_scene.get_node_or_null("CanvasLayer/MessageLabel") as Label
 	message_label_forma = get_tree().current_scene.get_node_or_null("CanvasLayerForma/MessageLabel") as Label
@@ -96,7 +103,7 @@ func _initialize_from_global_state():
 	# Carrega o estado do jogo a partir do singleton Global.
 	# Isso centraliza a lógica de save/load e simplifica o jogador.
 	var data = Global.get_player_state_for_level()
-	
+
 	shape_completed = data.get("shape_completed", false)
 	number_completed = data.get("number_completed", false)
 	arrow_completed = data.get("arrow_completed", false)
@@ -104,11 +111,11 @@ func _initialize_from_global_state():
 	checkpoint_reached = data.get("checkpoint_reached", false)
 	all_completed_printed = data.get("all_completed_printed", false)
 	start_time = data.get("start_time", Time.get_unix_time_from_system())
-	
+
 	var start_pos = data.get("position", null)
 	if start_pos:
 		position = Vector2(start_pos["x"], start_pos["y"])
-	
+
 	print("Jogador inicializado para '%s' com %d puzzles completos." % [Global.player_nickname, data.get("puzzles_completados", 0)])
 	_update_puzzle_visuals()
 
@@ -257,6 +264,13 @@ func _rotate_arrow(arrow: Node2D) -> void:
 		arrow_completed = true
 		message_label_seta.text    = "Puzzle de setas concluído!"
 		message_label_seta.visible = true
+		# Chama o Level1Manager para registrar a conclusão do puzzle das setas
+		var level_manager = get_tree().current_scene
+		if level_manager and level_manager.has_method("trigger_puzzle_completion"):
+			print("[LOG] Chamando trigger_puzzle_completion(2) no Level1Manager pelo puzzle das setas!")
+			level_manager.trigger_puzzle_completion(2)
+		else:
+			print("[ERRO] Level1Manager não encontrado ou não possui trigger_puzzle_completion!")
 		_check_all_puzzles()
 
 	# ➡️ protege contra rotações acidentais posteriores
@@ -277,9 +291,15 @@ func _check_shape_complete() -> bool:
 
 func _on_shape_completed() -> void:
 	shape_completed = true
-
 	message_label_forma.text    = "Puzzle de formas concluído!"
 	message_label_forma.visible = true
+	# Notifica o Level1Manager
+	var level_manager = get_tree().current_scene
+	if level_manager and level_manager.has_method("trigger_puzzle_completion"):
+		print("[LOG] Chamando trigger_puzzle_completion(1) no Level1Manager pelo puzzle de formas!")
+		level_manager.trigger_puzzle_completion(1)
+	else:
+		print("[ERRO] Level1Manager não encontrado ou não possui trigger_puzzle_completion!")
 	_check_all_puzzles()
 
 func _check_number_complete() -> bool:
@@ -287,9 +307,15 @@ func _check_number_complete() -> bool:
 
 func _on_number_completed() -> void:
 	number_completed = true
-
 	message_label.text    = "Puzzle de números concluído!"
 	message_label.visible = true
+	# Notifica o Level1Manager
+	var level_manager = get_tree().current_scene
+	if level_manager and level_manager.has_method("trigger_puzzle_completion"):
+		print("[LOG] Chamando trigger_puzzle_completion(3) no Level1Manager pelo puzzle de números!")
+		level_manager.trigger_puzzle_completion(3)
+	else:
+		print("[ERRO] Level1Manager não encontrado ou não possui trigger_puzzle_completion!")
 	_check_all_puzzles()
 
 func _check_all_puzzles(return_to_menu := false) -> void:

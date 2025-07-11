@@ -19,18 +19,27 @@ var total_puzzles = 3
 func _ready():
 	# Conecta os sinais dos puzzles
 	puzzle_formas.puzzle_concluido.connect(_on_puzzle_formas_concluido)
-	
 	if puzzle_cores:
 		puzzle_cores.puzzle_concluido.connect(_on_puzzle_cores_concluido)
-	
 	if puzzle_quebra_cabeca:
 		puzzle_quebra_cabeca.puzzle_concluido.connect(_on_puzzle_quebra_cabeca_concluido)
-	
+
 	# Inicializa o timer
 	iniciar_timer()
-	
 	# Desativa todos os puzzles inicialmente
 	desativar_todos_puzzles()
+
+	# Garante que o jogador da cena está na posição correta ao entrar na fase
+	var jogador = get_node_or_null("Jogador")
+	if jogador:
+		# Se houver dados salvos, restaura a posição, senão usa a posição padrão da cena
+		var data = null
+		if typeof(Global) != TYPE_NIL and Global.has_method("get_player_state_for_level"):
+			data = Global.get_player_state_for_level()
+		if data and data.has("checkpoint_reached") and data["checkpoint_reached"] and data.has("position"):
+			jogador.position = Vector2(data["position"]["x"], data["position"]["y"])
+		else:
+			jogador.position = Vector2(87.876, -408.553)
 
 func _process(delta):
 	if timer_ativo:
@@ -72,10 +81,18 @@ func _on_puzzle_formas_concluido():
 	puzzles_resolvidos += 1
 	verificar_vitoria()
 
+	# Checkpoint: se for o segundo puzzle resolvido, salva o progresso
+	if puzzles_resolvidos == 2:
+		_save_checkpoint()
+
 func _on_puzzle_cores_concluido():
 	print("Puzzle de cores concluído!")
 	puzzles_resolvidos += 1
 	verificar_vitoria()
+
+	# Checkpoint: se for o segundo puzzle resolvido, salva o progresso
+	if puzzles_resolvidos == 2:
+		_save_checkpoint()
 
 func _on_puzzle_quebra_cabeca_concluido():
 	print("Puzzle de quebra-cabeça concluído!")
@@ -87,3 +104,45 @@ func verificar_vitoria():
 		timer_ativo = false
 		print("Parabéns! Todos os puzzles foram resolvidos!")
 		# Aqui você pode adicionar uma tela de vitória ou carregar a próxima fase
+
+
+# --- CHECKPOINT ---
+func _save_checkpoint():
+	var jogador = get_node_or_null("Jogador")
+	if jogador:
+		jogador.checkpoint_reached = true
+		Global.fase_atual = 2
+		Global.puzzle_atual = puzzles_resolvidos + 1
+		Global.checkpoint_alcancado = true
+		var save_data = jogador._get_current_state()
+		if puzzle_formas and puzzle_formas.has_method("get_save_state"):
+			save_data["puzzle_formas"] = puzzle_formas.get_save_state()
+		if puzzle_cores and puzzle_cores.has_method("get_save_state"):
+			save_data["puzzle_cores"] = puzzle_cores.get_save_state()
+		if puzzle_quebra_cabeca and puzzle_quebra_cabeca.has_method("get_save_state"):
+			save_data["puzzle_quebra_cabeca"] = puzzle_quebra_cabeca.get_save_state()
+		Global.save_game_at_checkpoint(save_data)
+		print("Checkpoint salvo na Fase 2!")
+
+# --- RESTAURAÇÃO DE ESTADO AO CARREGAR ---
+
+	# Restaura posição do jogador e estado dos puzzles se houver checkpoint
+	_restore_from_checkpoint()
+
+func _restore_from_checkpoint():
+	var data = Global.get_player_state_for_level()
+	if data and data.has("checkpoint_reached") and data["checkpoint_reached"]:
+		var jogador = get_node_or_null("Jogador")
+		if jogador and data.has("position"):
+			jogador.position = Vector2(data["position"]["x"], data["position"]["y"])
+
+		# Restaurar estado detalhado dos puzzles
+		if puzzle_formas and data.has("puzzle_formas"):
+			puzzle_formas.load_save_state(data["puzzle_formas"])
+		if puzzle_cores and data.has("puzzle_cores"):
+			puzzle_cores.load_save_state(data["puzzle_cores"])
+		if puzzle_quebra_cabeca and data.has("puzzle_quebra_cabeca"):
+			puzzle_quebra_cabeca.load_save_state(data["puzzle_quebra_cabeca"])
+
+		# Atualiza contagem de puzzles resolvidos
+		puzzles_resolvidos = int(data.get("shape_completed", false)) + int(data.get("number_completed", false)) + int(data.get("arrow_completed", false))
