@@ -38,10 +38,6 @@ polygon = PackedVector2Array(227, -567, 227, -520, 364, -520, 365, -734, 337, -7
 [node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Paredes"]
 polygon = PackedVector2Array(228, -772, 228, -719, 82, -721, 83, -982, 1468, -986, 1475, -756, 1162, -750, 1162, -557, 924, -554, 928, -373, 800, -357, 804, -159, 1048, -155, 1050, -385, 1468, -384, 1470, -332, 1350, -332, 1346, -368, 1211, -366, 1213, -320, 1079, -318, 1077, -136, 776, -134, 777, -385, 893, -387, 899, -576, 1132, -574, 1132, -774, 1445, -772, 1443, -969, 973, -962, 974.427, -762.541, 945.165, -762.541, 942, -962, 488, -968, 486, -890, 453, -886, 449, -964, 112, -964, 114, -777)
 
-[node name="Jogador" parent="." groups=["player"] instance=ExtResource("2_vlf2x")]
-position = Vector2(87.876, -408.553)
-scale = Vector2(0.46045, 0.488298)
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(767.959, -520.537)
 scale = Vector2(1.16993, 1.203)
@@ -122,6 +118,10 @@ horizontal_alignment = 1
 stream = ExtResource("16_av1gt")
 volume_db = -43.187
 autoplay = true
+
+[node name="Jogador" parent="." instance=ExtResource("2_vlf2x")]
+position = Vector2(635.668, -132.863)
+scale = Vector2(0.477628, 0.545177)
 
 [connection signal="body_entered" from="ActivationArea" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="ActivationArea" to="ActivationArea" method="_on_body_entered"]

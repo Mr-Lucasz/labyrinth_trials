@@ -148,18 +148,14 @@ script = ExtResource("1_g1ob3")
 speed = 450.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(92.8769, -137.428)
 scale = Vector2(0.540311, 0.533484)
 sprite_frames = SubResource("SpriteFrames_1lopk")
 animation = &"andando_up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(83, -137)
 shape = SubResource("RectangleShape2D_g1ob3")
 
 [node name="PickupDetector" type="Area2D" parent="."]
-position = Vector2(101, -79)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetector"]
-position = Vector2(-16, -64)
 shape = SubResource("CircleShape2D_qcln2")

@@ -52,9 +52,13 @@ func _ready() -> void:
 	$PickupDetector.body_entered.connect(_on_body_entered)
 	$PickupDetector.body_exited.connect(_on_body_exited)
 
-	# Garante que o sprite do jogador está visível
+	# Garante que o sprite do jogador está visível e acima dos outros
 	if $AnimatedSprite2D:
 		$AnimatedSprite2D.visible = true
+		$AnimatedSprite2D.z_index = 100
+		$AnimatedSprite2D.modulate.a = 1.0
+	self.z_index = 100
+	self.visible = true
 
 	message_label       = get_tree().current_scene.get_node_or_null("CanvasLayer/MessageLabel") as Label
 	message_label_forma = get_tree().current_scene.get_node_or_null("CanvasLayerForma/MessageLabel") as Label
